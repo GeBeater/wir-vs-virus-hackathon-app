@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {HealthService} from '../api/health.service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+    selector: 'app-tab3',
+    templateUrl: 'tab3.page.html',
+    styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
 
-  constructor() {}
+    status: string;
 
+    constructor(private healthService: HealthService) {
+    }
+
+    ngOnInit(): void {
+        this.healthService.status().subscribe(
+            (status) => this.status = status
+        );
+    }
 }
