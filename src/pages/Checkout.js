@@ -37,7 +37,7 @@ export default function Checkout() {
         const data = {
             nonce,
             amount: amount,
-            placeIdAmount: request
+            placeIdAmounts: request
         }
         await fetch('/api/payment/checkout', {
             method: "POST",
