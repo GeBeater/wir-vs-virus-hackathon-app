@@ -72,10 +72,11 @@ export default function Home() {
     return (
         <Container>
             <div className={classes.root}>
-                <AppBar position="static">
+                <AppBar position="static">  
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter}/>
+                        <img src={Logo} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
                     </Toolbar>
                 </AppBar>
             </div>

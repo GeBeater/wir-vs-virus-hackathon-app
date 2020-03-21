@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
         backgroundColor: colors.grayA05,
         display: "flex",
         borderRadius: "4px",
-        width: "60%",
+        flexGrow: 1,
         padding: `${spacing.s} ${spacing.m}`,
         marginLeft: spacing.m
     },
