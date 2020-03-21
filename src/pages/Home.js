@@ -8,9 +8,8 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
-import {ADD_PLACE, useAppContext} from "../context/AppContext";
+import {useAppContext, ADD_PLACE} from "../context/AppContext";
 import Map from '../maps/Map';
-import {getPlaceDetails} from "../maps/placesApi";
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
@@ -38,24 +37,25 @@ export default function Home() {
     const [currentPlace, setCurrentPlace] = useState(null);
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
-    const [{loading, google, places}, dispatch] = useAppContext();
+    const [{loading, google, places, map}, dispatch] = useAppContext();
     let geocoder;
 
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
-            getPlaceDetails(placeId).then(data => {
-                setCurrentPlace({placeId, data})
-            });
+            setCurrentPlace(placeId)
         }
     };
 
     // selection changes
     useEffect(() => {
-        if (currentPlace && places.indexOf(currentPlace) === -1) {
-            dispatch({type: ADD_PLACE, payload: currentPlace});
+        if (currentPlace && places.filter(place => place.id === currentPlace).length == 0) {
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails({placeId: currentPlace}, (details) => {
+                dispatch({type: ADD_PLACE, payload: details});
+            });
         }
-    }, [currentPlace, places])
+    }, [currentPlace    ])
 
     useEffect(() => {
         if (location.loaded && !location.error && center === defaultLocation) {
@@ -84,7 +84,7 @@ export default function Home() {
                     <div>
                         {places.map(place => {
                             if (place) {
-                                return <p key={place.placeId}>{place.data.result.name}</p>
+                                return <p key={place.id}>{place.name}</p>
                             }   
                         })}
                     </div>

@@ -1,18 +1,21 @@
 import React, {useContext, useReducer} from "react";
 
 export const ADD_PLACE = 'ADD_PLACE';
+export const ADD_PLACE_ID = 'ADD_PLACE_ID';
 export const REMOVE_PLACE = 'REMOVE_PLACE';
 export const SET_LOGGED_IN = 'SET_LOGGED_IN';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_GOOGLE_INSTANCE = 'SET_GOOGLE_INSTANCE';
+export const SET_MAP = 'SET_MAP';
 
 export const initialAppContextState = {
     google: null,
     places: [],
     isLoggedIn: false,
     loading: true,
-    error: null
+    error: null,
+    map: null
 };
 
 export const appReducer = (state, action) => {
@@ -21,6 +24,8 @@ export const appReducer = (state, action) => {
         case ADD_PLACE:
             // todo prevent duplicates
             return { ...state, places: [...state.places, action.payload] };
+        case SET_MAP:
+            return { ...state, map: action.payload };;
         case REMOVE_PLACE:
             let newPlaces = state.places.slice();
             const index = newPlaces.indexOf(action.payload);

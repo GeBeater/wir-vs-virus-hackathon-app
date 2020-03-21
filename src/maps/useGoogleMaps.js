@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {useAppContext} from "../context/AppContext";
-
+import {useAppContext, SET_MAP} from "../context/AppContext";
 const eventsMapping = {
   onClick: ["click", (event, map) => {return {event, map}}]
 };
@@ -21,6 +20,7 @@ export default function useGoogleMap({zoom, center, events}) {
       });
 
       setMapState({maps: google.maps, map, loading: false});
+      dispatch({type: SET_MAP, payload: map});
     }
   }, [google]);
   return {mapRef, ...mapState};
