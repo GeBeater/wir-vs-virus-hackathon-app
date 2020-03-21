@@ -1,7 +1,10 @@
-import React, {useState, useEffect} from 'react';
+
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
+import useGoogleApi from '../maps/useGoogleApi';
+
 import {fade, makeStyles} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -10,6 +13,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+
+const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,7 +75,10 @@ export default function Home() {
     const classes = useStyles();
     const [places, setPlaces] = useState([]);
     const [currentPlace, setCurrentPlace] = useState(null);
+    const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
+    const google = useGoogleApi();
+    let geocoder;
 
     const events = {
         onClick: (data) => {
@@ -85,12 +94,26 @@ export default function Home() {
         }
     }, [currentPlace, places])
 
-    function getCenter() {
-        if (location.error) {
-            return {lat: 53.551086, lng: 9.293682};
-        } else {
-            return location;
+    useEffect(() => {
+        if (location.loaded && !location.error && center == defaultLocation) {
+            setCenter({...location})
         }
+    }, [location])
+
+    function onSearch(event) {
+        event.preventDefault();
+        const searchTerm = event.target.value;
+        console.log("Hello, my name is David Hasselhoff and today I'm not looking for love but: " + searchTerm);
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        geocoder.geocode({'address': searchTerm}, function (results, status) {
+            if (status == "OK") {
+                setCenter(results[0].geometry.location);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
     }
 
     return (
@@ -110,8 +133,8 @@ export default function Home() {
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
                             </div>
-                            <InputBase
-                                placeholder="Search…"
+                            <InputBase onChange={onSearch}
+                                placeholder="Search for a business you want to support..."
                                 classes={{
                                     root: classes.inputRoot,
                                     input: classes.inputInput,
@@ -120,7 +143,9 @@ export default function Home() {
                                 autoFocus
                             />
                         </div>
-                        <Button color="black">Login</Button>
+                        <Link href="/signin" variant="body2">
+                            <Button color="black">Login</Button>
+                        </Link>
                     </Toolbar>
                 </AppBar>
             </div>
@@ -132,15 +157,14 @@ export default function Home() {
                         })}
                     </Places>
                 }
-                {location.loaded &&
-                    <BoxedMap>
-                        <Map
-                            zoom={16}
-                            center={getCenter()}
-                            events={events}
-                        />
-                    </BoxedMap>
-                }
+                <BoxedMap>
+                    <Map
+                        zoom={16}
+                        center={center}
+                        events={events}
+                        google={google}
+                    />
+                </BoxedMap>
             </MapContainer>
         </Container>
     )

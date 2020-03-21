@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import ForgotPw from "./pages/ForgotPw";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Payment from "./pages/Payment";
 
 import {createGlobalStyle} from 'styled-components'
 import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route path="/forgotpw">
             <ForgotPw />
+          </Route>
+          <Route path="/payment">
+            <Payment/>
           </Route>
         </Switch>
       </Router>

@@ -52,7 +52,9 @@ export default function SignIn() {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
+                <Link href="/" variant="body2">
+                    <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
+                </Link>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>

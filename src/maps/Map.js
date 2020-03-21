@@ -2,8 +2,8 @@ import React, {useEffect} from "react";
 import useGoogleMap from "./useGoogleMaps";
 import styled from "styled-components";
 
-export default function Map({center, zoom, children, events}) {
-  const {maps, map, mapRef, loading} = useGoogleMap({zoom, center, events});
+export default function Map({center, zoom, children, events, google}) {
+  const {maps, map, mapRef, loading} = useGoogleMap({zoom, center, events, google});
 
   useEffect(
     () => {

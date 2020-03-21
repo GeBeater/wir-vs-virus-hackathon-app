@@ -1,17 +1,14 @@
-import {useEffect, useState, useRef} from "react";
-import GoogleMapsApiLoader from "google-maps-api-loader";
-
-const apiKey = process.env.REACT_APP_GOOGLE_KEY;
+import {useEffect, useRef, useState} from "react";
 
 const eventsMapping = {
   onClick: ["click", (event, map) => {return {event, map}}]
 };
 
-export default function useGoogleMap({zoom, center, events}) {
+export default function useGoogleMap({zoom, center, events, google}) {
   const [mapState, setMapState] = useState({loading: true});
   const mapRef = useRef();
   useEffect(() => {
-    GoogleMapsApiLoader({apiKey}).then(google => {
+    if (google) {
       const map = new google.maps.Map(mapRef.current, {zoom, center, disableDefaultUI: true, zoomControl: true});
       Object.keys(events).forEach(eventName => {
         map.addListener(eventsMapping[eventName][0], (event) => {
@@ -20,7 +17,7 @@ export default function useGoogleMap({zoom, center, events}) {
       });
 
       setMapState({maps: google.maps, map, loading: false});
-    });
-  }, []);
+    }
+  }, [google]);
   return {mapRef, ...mapState};
 }
