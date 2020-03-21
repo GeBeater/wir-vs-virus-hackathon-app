@@ -12,10 +12,12 @@ export const usePosition = () => {
         });
         setLoaded(true)
     };
+
     const onError = (error) => {
         setError(error.message);
         setLoaded(true)
     };
+
     useEffect(() => {
         const geo = navigator.geolocation;
         if (!geo) {
