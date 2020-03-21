@@ -9,7 +9,7 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container';
 import {Link} from "react-router-dom";
 import List from '@material-ui/core/List';
-import {useAppContext} from "../context/AppContext";
+import {REMOVE_PLACE, useAppContext} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
 
 const useStyles = makeStyles(theme => ({
@@ -70,7 +70,13 @@ export default function CompanyList() {
         }
 
         setChecked(newChecked);
-    }
+    };
+
+    const handleDeleteTile = value => () => {
+        dispatch({type: REMOVE_PLACE, payload: value});
+    };
+
+    const hasPlaces = !!places.length;
 
     return (
         <Container component="main" maxWidth="lg" className={classes.container}>
@@ -103,13 +109,20 @@ export default function CompanyList() {
                         </Grid>
 
                         <List dense className={classes.list}>
-                        {places.map(place =>
-                            <PlaceTile
-                                key={place.id}
-                                place={place}
-                                showCheckbox={true}
-                                isChecked={checked.indexOf(place.place_id) !== -1}
-                                handleToggle={handleToggle} />
+                            {hasPlaces && places.map(place =>
+                                <PlaceTile
+                                    key={place.id}
+                                    place={place}
+                                    showCheckbox={true}
+                                    isChecked={checked.indexOf(place.place_id) !== -1}
+                                    handleToggle={handleToggle}
+                                    showDeleteBtn={true}
+                                    handleDelete={handleDeleteTile} />
+                                )}
+                            {!hasPlaces && (
+                                <Typography component="h6" variant="h6">
+                                    No places selected
+                                </Typography>
                             )}
                         </List>
 
@@ -119,6 +132,7 @@ export default function CompanyList() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={!hasPlaces}
                         >
                             Pay now
                     </Button>

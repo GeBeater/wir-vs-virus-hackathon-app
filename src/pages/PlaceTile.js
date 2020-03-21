@@ -6,6 +6,8 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import React from "react";
 import {fade, makeStyles} from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles(theme => ({
     listitem: {
@@ -25,11 +27,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const PlaceTile = ({place, showCheckbox = false, handleToggle = null, isChecked = false}) => {
+export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, showCheckbox = false, handleToggle = null, isChecked = false}) => {
     const classes = useStyles();
     const {name, place_id, icon, formatted_address} = place;
     const labelId = `checkbox-list-secondary-label-${place_id}`;
-
 
     return (
         <ListItem button className={classes.listitem}>
@@ -41,15 +42,18 @@ export const PlaceTile = ({place, showCheckbox = false, handleToggle = null, isC
                 />
             </ListItemAvatar>
             <ListItemText id={labelId} primary={name} secondary={formatted_address} className={classes.listheader}/>
-            {showCheckbox && (<ListItemSecondaryAction>
-                <Checkbox
+            <ListItemSecondaryAction>
+                {showCheckbox && (<Checkbox
                     edge="end"
                     onChange={handleToggle(place_id)}
                     checked={isChecked}
                     inputProps={{'aria-labelledby': labelId}}
                     className={classes.checkbox}
-                />
-            </ListItemSecondaryAction>)}
+                />)}
+                {showDeleteBtn && (<IconButton edge="end" aria-label="delete" onClick={handleDelete(place_id)}>
+                    <CloseIcon />
+                </IconButton>)}
+            </ListItemSecondaryAction>
         </ListItem>
     );
 };
