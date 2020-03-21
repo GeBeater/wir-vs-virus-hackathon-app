@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
 import Map from '../maps/Map';
+import {usePosition} from '../maps/useLocation';
 
 export default function Home() {
     const [places, setPlaces] = useState([]);
     const [currentPlace, setCurrentPlace] = useState(null);
+    const location = usePosition();
 
     const events = {
         onClick: (data) => {
@@ -13,11 +15,20 @@ export default function Home() {
         }
     }
 
+    // selection changes
     useEffect(() => {
         if (currentPlace && places.indexOf(currentPlace) === -1) {
             setPlaces([...places, currentPlace]);
         }
-    }, [currentPlace])
+    }, [currentPlace, places])
+
+    function getCenter() {
+        if (location.error) {
+            return {lat: 53.551086, lng: 9.293682};
+        } else {
+            return location;
+        }
+    }
 
     return (
         <Container>
@@ -32,13 +43,15 @@ export default function Home() {
                         })}
                     </Places>
                 }
-                <BoxedMap>
-                    <Map
-                        zoom={16}
-                        center={{lat: 53.551086, lng: 9.993682}}
-                        events={events}
-                    />
-                </BoxedMap>
+                {location.loaded &&
+                    <BoxedMap>
+                        <Map
+                            zoom={16}
+                            center={getCenter()}
+                            events={events}
+                        />
+                    </BoxedMap>
+                }
             </MapContainer>
         </Container>
     )
