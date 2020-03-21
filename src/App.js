@@ -3,7 +3,7 @@ import './App.css';
 import Home from './pages/Home';
 
 import {createGlobalStyle} from 'styled-components'
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -21,11 +21,13 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Switch>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <Router>
+        <Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 }

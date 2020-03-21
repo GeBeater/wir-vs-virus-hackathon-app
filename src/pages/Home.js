@@ -12,7 +12,7 @@ export default function Home() {
                 <SearchField autoFocus placeholder="Search your location..."></SearchField>
             </SearchBar>
             <Map
-                zoom={13}
+                zoom={16}
                 center={{lat: 53.551086, lng: 9.993682}}
             />
         </Container>
