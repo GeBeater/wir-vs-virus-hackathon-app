@@ -34,7 +34,13 @@ export default function Payment() {
                 <>
                     <DropIn
                         options={{
-                            authorization: token
+                            authorization: token,
+                            paypal: {
+                                flow: 'checkout',
+                                amount: 10.00,
+                                currency: 'EUR',
+                                commit: true
+                            }
                         }}
                         onInstance={setInstance}
                     />
