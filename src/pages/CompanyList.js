@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {fade, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
@@ -19,6 +19,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 const useStyles = makeStyles(theme => ({
     paper: {
+        fontFamily: "Helvetica Neue",
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
@@ -35,6 +36,8 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        padding: theme.spacing(2),
+        fontWeight: 'bold'
     },
     list: {
         width: '100%',
@@ -48,7 +51,24 @@ const useStyles = makeStyles(theme => ({
     },
     map: {
         width: '100%',
-        height: '100px'
+    },
+    listitem: {
+        borderBottom: '1px solid lightgrey',
+        padding: '20px'
+    },
+    header: {
+        textAlign: 'left'
+    },
+    listheader: {
+        color: 'grey',
+        fontSize: '15px'
+    },
+    checkbox: {
+        color : 'grey',
+        '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: fade(theme.palette.common.black, 0.05),
+        }
     }
 }));
 
@@ -76,46 +96,15 @@ export default function CompanyList() {
         <Container component="main" maxWidth="lg" className={classes.container}>
             <CssBaseline />
             <Container component="main" maxWidth="md" className={classes.container}>
-                <div className={classes.map}>
-                    <MapContainer>
-                        <MapRef ref={mapRef} />
-                        {!loading &&
-                            React.Children.map(this.props.children, child => {
-                                return React.cloneElement(child, { map, maps });
-                            })}
-                    </MapContainer>
-                </div>
-            </Container>
-            <Container component="main" maxWidth="xs" className={classes.container}>
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">
-                        Companies
-                </Typography>
-
-                    <List dense className={classes.list}>
-                        {[0, 1, 2, 3].map(value => {
-                            const labelId = `checkbox-list-secondary-label-${value}`;
-                            return (
-                                <ListItem key={value} button>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={`Avatar n°${value + 1}`}
-                                            src={`/static/images/avatar/${value + 1}.jpg`}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText id={labelId} primary={`Company ${value + 1}`} />
-                                    <ListItemSecondaryAction>
-                                        <Checkbox
-                                            edge="end"
-                                            onChange={handleToggle(value)}
-                                            checked={checked.indexOf(value) !== -1}
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                        />
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            );
-                        })}
-                    </List>
+                    <div className={classes.header}>
+                        <Typography component="h1" variant="h4" className={classes.h1}>
+                            Good Choice!
+                        </Typography>
+                        <Typography component="h1" variant="h4" className={classes.h1}>
+                            Tell us how much money you would like to donate
+                        </Typography>
+                    </div>
 
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2}>
@@ -125,13 +114,40 @@ export default function CompanyList() {
                                     required
                                     fullWidth
                                     name="donation"
-                                    label="Donate"
+                                    label="Your Amount"
                                     type="number"
                                     id="donation"
                                     autoFocus
                                 />
                             </Grid>
                         </Grid>
+
+                        <List dense className={classes.list}>
+                        {['Goldene Gans', 'Liebes Bisschen', 'Oak Store', 'Aurel Bar'].map(value => {
+                            const labelId = `checkbox-list-secondary-label-${value}`;
+                            return (
+                                <ListItem key={value} button className={classes.listitem}>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={`Avatar n°${value + 1}`}
+                                            src={`/static/images/avatar/${value}.jpg`}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText id={labelId} primary={`${value}`} className={classes.listheader}/>
+                                    <ListItemSecondaryAction>
+                                        <Checkbox
+                                            edge="end"
+                                            onChange={handleToggle(value)}
+                                            checked={checked.indexOf(value) !== -1}
+                                            inputProps={{ 'aria-labelledby': labelId }}
+                                            className={classes.checkbox}
+                                        />
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            );
+                        })}
+                        </List>
+
                         <Button
                             type="submit"
                             fullWidth
@@ -141,14 +157,18 @@ export default function CompanyList() {
                         >
                             Pay now
                     </Button>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Go back
-                            </Link>
-                            </Grid>
-                        </Grid>
                     </form>
+                </div>
+            </Container>
+            <Container component="main" maxWidth="md" className={classes.container}>
+                <div className={classes.map}>
+                    <MapContainer>
+                        <MapRef ref={mapRef} />
+                        {!loading &&
+                            React.Children.map(this.props.children, child => {
+                                return React.cloneElement(child, { map, maps });
+                            })}
+                    </MapContainer>
                 </div>
             </Container>
         </Container>

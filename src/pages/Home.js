@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Map from '../maps/Map';
+import CompanyList from '../pages/CompanyList';
 import {usePosition} from '../maps/useLocation';
 import useGoogleApi from '../maps/useGoogleApi';
 
