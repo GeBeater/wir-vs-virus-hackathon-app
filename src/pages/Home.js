@@ -8,11 +8,13 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
-import {ADD_PLACE, useAppContext} from "../context/AppContext";
+import {ADD_PLACE, REMOVE_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
+import {PlaceTile} from "./PlaceTile";
+import List from "@material-ui/core/List";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -30,6 +32,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "space-between"
     },
+    list: {
+        width: '100%',
+    }
 }));
 
 export default function Home() {
@@ -52,8 +57,10 @@ export default function Home() {
         console.log(places)
         if (currentPlace && places.filter(place => place.place_id === currentPlace).length == 0) {
             const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace}, (details) => {
-                dispatch({type: ADD_PLACE, payload: details});
+            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    dispatch({type: ADD_PLACE, payload: details});
+                }
             });
         }
     }, [currentPlace])
@@ -64,10 +71,14 @@ export default function Home() {
         }
     }, [location, center]);
 
+    const handleDeleteTile = value => () => {
+        dispatch({type: REMOVE_PLACE, payload: value});
+    };
+
     return (
         <Container>
             <div className={classes.root}>
-                <AppBar position="static">  
+                <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter}/>
@@ -82,13 +93,9 @@ export default function Home() {
                         <h3>Let us together help our favourite stores</h3>
                         <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
                     </header>
-                    <div>
-                        {places.map(place => {
-                            if (place) {
-                                return <p key={place.id}>{place.name}</p>
-                            }   
-                        })}
-                    </div>
+                    <List dense className={classes.list}>
+                        {places.map(place => <PlaceTile key={place.id} place={place} showDeleteBtn={true} handleDelete={handleDeleteTile} />)}
+                    </List>
                     <footer>
                         <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true} >
                             Support your favorite branches

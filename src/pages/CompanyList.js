@@ -1,13 +1,10 @@
-import Avatar from '@material-ui/core/Avatar';
-import Checkbox from '@material-ui/core/Checkbox';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
-import {useAppContext} from "../context/AppContext";
+import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
+import {PlaceTile} from "./PlaceTile";
+import {Typography} from '@material-ui/core';
+
 const useStyles = makeStyles(theme => ({
     avatar: {
         margin: theme.spacing(1),
@@ -35,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CompanyList() {
-    const [{_, places}] = useAppContext();
+    const [{_, places}, dispatch] = useAppContext();
 
     const classes = useStyles();
     const [checked, setChecked] = useState([1]);
@@ -52,33 +49,31 @@ export default function CompanyList() {
         }
 
         setChecked(newChecked);
-    }
+    };
+
+    const handleDeleteTile = value => () => {
+        dispatch({type: REMOVE_PLACE, payload: value});
+    };
+
+    const hasPlaces = !!places.length;
 
     return (
         <List dense className={classes.list}>
-            {places.map(value => {
-                const labelId = `checkbox-list-secondary-label-${value}`;
-                return (
-                    <ListItem key={value} button className={classes.listitem}>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt={`Avatar n°${value + 1}`}
-                                src={value.icon}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText id={labelId} primary={`${value.name}`} className={classes.listheader} />
-                        <ListItemSecondaryAction>
-                            <Checkbox
-                                edge="end"
-                                onChange={handleToggle(value)}
-                                checked={checked.indexOf(value) !== -1}
-                                inputProps={{'aria-labelledby': labelId}}
-                                className={classes.checkbox}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                );
-            })}
+            {hasPlaces && places.map(place =>
+                <PlaceTile
+                    key={place.id}
+                    place={place}
+                    showCheckbox={true}
+                    isChecked={checked.indexOf(place.place_id) !== -1}
+                    handleToggle={handleToggle}
+                    showDeleteBtn={true}
+                    handleDelete={handleDeleteTile} />
+            )}
+            {!hasPlaces && (
+                <Typography component="h6" variant="h6">
+                    No places selected
+                </Typography>
+            )}
         </List>
     );
 }

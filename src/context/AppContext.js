@@ -21,17 +21,13 @@ export const initialAppContextState = {
 export const appReducer = (state, action) => {
     console.log('appReducer', state, action);
     switch (action.type) {
-        case ADD_PLACE:
-            return { ...state, places: [...state.places, action.payload] };
         case SET_MAP:
             return { ...state, map: action.payload };;
+        case ADD_PLACE:
+            return { ...state, places: [...state.places, action.payload] };
         case REMOVE_PLACE:
-            let newPlaces = state.places.slice();
-            const index = newPlaces.indexOf(action.payload);
-            if (index > -1) {
-                newPlaces.splice(index, 1);
-            }
-            return { ...state, selectedPlaces: newPlaces };
+            const newPlaces = state.places.filter(p => p.place_id !== action.payload);
+            return { ...state, places: newPlaces };
         case SET_LOGGED_IN:
             return { ...state, loggedIn: action.payload };
         case SET_LOADING:
