@@ -26,7 +26,7 @@ function App() {
       <GlobalStyle />
       <Router>
         <Switch>
-          <Route path="/">
+          <Route exact path="/">
             <Home />
           </Route>
           <Route path="/signup">
