@@ -8,6 +8,8 @@ import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
 import CompanyList from './pages/CompanyList';
 
+import {AppContext, AppContextWrapper} from "./context/AppContext";
+import {AppInitializer} from "./context/AppInitializer";
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -23,28 +25,29 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <>
-      <GlobalStyle />
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="/list">
-            <CompanyList />
-          </Route>
-          <Route path="/getit">
-            <InvitationCode />
-          </Route>
-          <Route path="/payment">
-            <Payment />
-          </Route>
-        </Switch>
-      </Router>
-    </>
+      <AppContextWrapper>
+          <AppInitializer />
+          <GlobalStyle />
+          <Router>
+              <Switch>
+                  <Route path="/signup">
+                      <SignUp />
+                  </Route>
+                  <Route path="/list">
+                      <CompanyList />
+                  </Route>
+                  <Route path="/getit">
+                      <InvitationCode />
+                  </Route>
+                  <Route path="/payment">
+                      <Payment />
+                  </Route>
+                  <Route path="/">
+                      <Home />
+                  </Route>
+              </Switch>
+          </Router>
+      </AppContextWrapper>
   );
 }
 

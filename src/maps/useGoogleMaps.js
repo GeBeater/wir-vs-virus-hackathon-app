@@ -1,11 +1,13 @@
 import {useEffect, useRef, useState} from "react";
+import {useAppContext} from "../context/AppContext";
 
 const eventsMapping = {
   onClick: ["click", (event, map) => {return {event, map}}]
 };
 
-export default function useGoogleMap({zoom, center, events, google}) {
+export default function useGoogleMap({zoom, center, events}) {
   const [mapState, setMapState] = useState({loading: true});
+  const [{loading, google}] = useAppContext();
   const mapRef = useRef();
   useEffect(() => {
     if (google) {

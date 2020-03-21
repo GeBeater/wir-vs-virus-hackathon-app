@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import {useAppContext} from "../context/AppContext";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -73,7 +74,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CompanyList() {
-    const { maps, map, mapRef, loading } = useGoogleMap(3, { lat: 3, lng: 3 });
+    // const { maps, map, mapRef, loading } = useGoogleMap(3, { lat: 3, lng: 3 });
+    const [{google, places}, dispatch] = useAppContext();
 
     const classes = useStyles();
 
@@ -123,7 +125,7 @@ export default function CompanyList() {
                         </Grid>
 
                         <List dense className={classes.list}>
-                        {['Goldene Gans', 'Liebes Bisschen', 'Oak Store', 'Aurel Bar'].map(value => {
+                        {places.map(value => {
                             const labelId = `checkbox-list-secondary-label-${value}`;
                             return (
                                 <ListItem key={value} button className={classes.listitem}>
@@ -160,17 +162,17 @@ export default function CompanyList() {
                     </form>
                 </div>
             </Container>
-            <Container component="main" maxWidth="md" className={classes.container}>
-                <div className={classes.map}>
-                    <MapContainer>
-                        <MapRef ref={mapRef} />
-                        {!loading &&
-                            React.Children.map(this.props.children, child => {
-                                return React.cloneElement(child, { map, maps });
-                            })}
-                    </MapContainer>
-                </div>
-            </Container>
+            {/*<Container component="main" maxWidth="md" className={classes.container}>*/}
+            {/*    <div className={classes.map}>*/}
+            {/*        <MapContainer>*/}
+            {/*            <MapRef ref={mapRef} />*/}
+            {/*            {!loading &&*/}
+            {/*                React.Children.map(this.props.children, child => {*/}
+            {/*                    return React.cloneElement(child, { map, maps });*/}
+            {/*                })}*/}
+            {/*        </MapContainer>*/}
+            {/*    </div>*/}
+            {/*</Container>*/}
         </Container>
     );
 }
