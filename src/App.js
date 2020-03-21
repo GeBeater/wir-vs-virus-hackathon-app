@@ -1,10 +1,13 @@
 import React from 'react';
 import './App.css';
 import Home from './pages/Home';
+import ForgotPw from "./pages/ForgotPw";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 import List from './pages/List';
 
 import {createGlobalStyle} from 'styled-components'
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -24,11 +27,20 @@ function App() {
       <GlobalStyle />
       <Router>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
+          </Route>
+          <Route path="/signin">
+            <SignIn />
+          </Route>
+          <Route path="/forgotpw">
+            <ForgotPw />
+          </Route>
           <Route path="/list">
             <List />
-          </Route>
-          <Route path="/">
-            <Home />
           </Route>
         </Switch>
       </Router>

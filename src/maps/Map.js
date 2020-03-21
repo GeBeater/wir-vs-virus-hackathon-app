@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import useGoogleMap from "./useGoogleMaps";
 import styled from "styled-components";
 
-export default function Map({ center, zoom, children}) {
-  const { maps, map, mapRef, loading } = useGoogleMap({ zoom, center });
+export default function Map({center, zoom, children, events}) {
+  const {maps, map, mapRef, loading} = useGoogleMap({zoom, center, events});
 
   useEffect(
     () => {
@@ -17,7 +17,7 @@ export default function Map({ center, zoom, children}) {
       <MapRef ref={mapRef} />
       {!loading &&
         React.Children.map(children, child => {
-          return React.cloneElement(child, { map, maps });
+          return React.cloneElement(child, {map, maps});
         })}
     </MapContainer>
   );
