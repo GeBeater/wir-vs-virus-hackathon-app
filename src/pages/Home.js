@@ -1,16 +1,17 @@
 
 import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import InputBase from "@material-ui/core/InputBase";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
-import SearchIcon from "../assets/search.svg";
+import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
-import {ADD_PLACE, SET_LOADING, useAppContext} from "../context/AppContext";
+import {Link} from "react-router-dom";
+import Search from "../search/Search";
+import {colors, spacing} from "../theme/theme";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -19,33 +20,15 @@ const useStyles = makeStyles(theme => ({
         zIndex: 3
     },
     toolbar: {
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: colors.white,
     },
     paper: {
         width: "25%",
-        padding: "25px",
+        padding: spacing.l,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between"
     },
-    search: {
-        backgroundColor: "#F0F0F2",
-        display: "flex",
-        borderRadius: "10px",
-        width: "60%",
-        padding: "8px 16px",
-        marginLeft: "20px"
-    },
-    searchInput: {
-        marginLeft: "16px",
-        flexGrow: 1,
-    },
-    searchField: {
-        '&::placeholder': {
-            color: '#687688',
-            opacity: 1
-        }
-    }
 }));
 
 export default function Home() {
@@ -54,13 +37,22 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{loading, google, places}, dispatch] = useAppContext();
-    // const [places, setPlaces] = useState([]);
     let geocoder;
+    // const [places, setPlaces] = useState([]);
+
+    // const handleGetPlaceDetails = (place, status) => {
+    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //         console.log('handleGetPlaceDetails', place);
+    //         setCurrentPlace(place);
+    //     }
+    // };
 
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
             setCurrentPlace(placeId);
+            // TODO get place details
+            // placesService.getDetails(placeId, handleGetPlaceDetails);
         }
     }
 
@@ -68,7 +60,6 @@ export default function Home() {
     useEffect(() => {
         if (currentPlace && places.indexOf(currentPlace) === -1) {
             dispatch({type: ADD_PLACE, payload: currentPlace});
-            // setPlaces([...places, currentPlace]);
         }
     }, [currentPlace, places])
 
@@ -76,22 +67,7 @@ export default function Home() {
         if (location.loaded && !location.error && center === defaultLocation) {
             setCenter({...location})
         }
-    }, [location, center])
-
-    function onSearch(event) {
-        event.preventDefault();
-        const searchTerm = event.target.search.value;
-        if (!geocoder) {
-            geocoder = new google.maps.Geocoder();
-        }
-        geocoder.geocode({'address': searchTerm}, function (results, status) {
-            if (status === "OK") {
-                setCenter(results[0].geometry.location);
-            } else {
-                //alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
-    }
+    }, [location, center]);
 
     return (
         <Container>
@@ -99,15 +75,7 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <form onSubmit={onSearch} className={classes.search}>
-                            <img src={SearchIcon} style={{width: 30, height: 30, color: "#687688"}} alt="CoFund Logo" />
-                            <InputBase
-                                name="search"
-                                placeholder="Search for a business you want to support..."
-                                autoFocus
-                                classes={{root: classes.searchInput, input: classes.searchField}}
-                            />
-                        </form>
+                        <Search onSelected={setCenter}/>
                     </Toolbar>
                 </AppBar>
             </div>
@@ -124,7 +92,7 @@ export default function Home() {
                         })}
                     </div>
                     <footer>
-                        <Button variant="contained" color="primary" disableElevation fullWidth={true}>
+                        <Button component={Link} to="/list" variant="contained" color="primary" disableElevation fullWidth={true} >
                             Support your favorite branches
                         </Button>
                     </footer>
