@@ -13,6 +13,7 @@ import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
+import {PlaceTile} from "./PlaceTile";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -52,8 +53,10 @@ export default function Home() {
         console.log(places)
         if (currentPlace && places.filter(place => place.place_id === currentPlace).length == 0) {
             const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace}, (details) => {
-                dispatch({type: ADD_PLACE, payload: details});
+            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    dispatch({type: ADD_PLACE, payload: details});
+                }
             });
         }
     }, [currentPlace])
@@ -67,7 +70,7 @@ export default function Home() {
     return (
         <Container>
             <div className={classes.root}>
-                <AppBar position="static">  
+                <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter}/>
@@ -83,11 +86,7 @@ export default function Home() {
                         <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
                     </header>
                     <div>
-                        {places.map(place => {
-                            if (place) {
-                                return <p key={place.id}>{place.name}</p>
-                            }   
-                        })}
+                        {places.map(place => <PlaceTile key={place.id} place={place} />)}
                     </div>
                     <footer>
                         <Button component={Link} to="/list" variant="contained" color="primary" disableElevation fullWidth={true} >

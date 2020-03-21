@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -10,12 +9,8 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import Container from '@material-ui/core/Container';
 import {Link} from "react-router-dom";
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import {useAppContext} from "../context/AppContext";
+import {PlaceTile} from "./PlaceTile";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -52,23 +47,8 @@ const useStyles = makeStyles(theme => ({
     map: {
         width: '100%',
     },
-    listitem: {
-        borderBottom: '1px solid lightgrey',
-        padding: '20px'
-    },
     header: {
         textAlign: 'left'
-    },
-    listheader: {
-        color: 'grey',
-        fontSize: '15px'
-    },
-    checkbox: {
-        color : 'grey',
-        '&:hover': {
-            cursor: 'pointer',
-            backgroundColor: fade(theme.palette.common.black, 0.05),
-        }
     }
 }));
 
@@ -123,29 +103,14 @@ export default function CompanyList() {
                         </Grid>
 
                         <List dense className={classes.list}>
-                        {places.map(value => {
-                            const labelId = `checkbox-list-secondary-label-${value}`;
-                            return (
-                                <ListItem key={value} button className={classes.listitem}>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={`Avatar n°${value + 1}`}
-                                            src={`/static/images/avatar/${value}.jpg`}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText id={labelId} primary={`${value}`} className={classes.listheader}/>
-                                    <ListItemSecondaryAction>
-                                        <Checkbox
-                                            edge="end"
-                                            onChange={handleToggle(value)}
-                                            checked={checked.indexOf(value) !== -1}
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                            className={classes.checkbox}
-                                        />
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            );
-                        })}
+                        {places.map(place =>
+                            <PlaceTile
+                                key={place.id}
+                                place={place}
+                                showCheckbox={true}
+                                isChecked={checked.indexOf(place.place_id) !== -1}
+                                handleToggle={handleToggle} />
+                            )}
                         </List>
 
                         <Button
