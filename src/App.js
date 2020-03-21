@@ -11,6 +11,7 @@ import CompanyList from './pages/CompanyList';
 
 import {AppContextWrapper} from "./context/AppContext";
 import {AppInitializer} from "./context/AppInitializer";
+import {createBrowserHistory} from "history";
 import {appTheme} from "./theme/theme";
 
 const GlobalStyle = createGlobalStyle`
@@ -24,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 `
+const history = createBrowserHistory();
 
 function App() {
   return (
@@ -31,7 +33,7 @@ function App() {
           <AppContextWrapper>
               <AppInitializer />
               <GlobalStyle />
-              <Router>
+              <Router history={history}>
                   <Switch>
                       <Route path="/signup">
                           <SignUp />

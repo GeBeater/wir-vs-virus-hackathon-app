@@ -5,13 +5,11 @@ export const REMOVE_PLACE = 'REMOVE_PLACE';
 export const SET_LOGGED_IN = 'SET_LOGGED_IN';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_ERROR = 'SET_ERROR';
-export const SET_PLACES_SERVICE_INSTANCE = 'SET_PLACES_SERVICE_INSTANCE';
 export const SET_GOOGLE_INSTANCE = 'SET_GOOGLE_INSTANCE';
 
 export const initialAppContextState = {
     google: null,
-    placesServiceInstance: null,
-    places: ['test'],
+    places: [],
     isLoggedIn: false,
     loading: true,
     error: null
@@ -35,8 +33,6 @@ export const appReducer = (state, action) => {
             return { ...state, loading: true };
         case SET_ERROR:
             return { ...state, error: action.payload };
-        case SET_PLACES_SERVICE_INSTANCE:
-            return { ...state, placesServiceInstance: action.payload };
         case SET_GOOGLE_INSTANCE:
             return { ...state, google: action.payload };
         default:
@@ -53,10 +49,7 @@ export const AppContext = React.createContext([
     defaultDispatch,
 ]);
 
-export const AppContextWrapper = ({
-                                      children,
-                                      initialState = initialAppContextState,
-                                  }) => (
+export const AppContextWrapper = ({children, initialState = initialAppContextState}) => (
     <AppContext.Provider value={useReducer(appReducer, initialState)}>
         {children}
     </AppContext.Provider>
