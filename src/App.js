@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import Home from './pages/Home';
+import List from './pages/List';
 
 import {createGlobalStyle} from 'styled-components'
-import {Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -21,11 +22,16 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Switch>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <Router>
+        <Switch>
+          <Route path="/list">
+            <List />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 }
