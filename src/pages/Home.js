@@ -12,8 +12,6 @@ import {usePosition} from '../maps/useLocation';
 import {Link} from "react-router-dom";
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
-import useGoogleMap from "../maps/useGoogleMaps";
-import useGooglePlaces from "../maps/useGooglePlaces";
 import {getPlaceDetails} from "../maps/placesApi";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
