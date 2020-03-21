@@ -1,16 +1,16 @@
 
+import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import InputBase from "@material-ui/core/InputBase";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
-import styled, {ThemeProvider} from "styled-components";
+import styled from "styled-components";
+import Logo from "../assets/cofund.svg";
+import SearchIcon from "../assets/search.svg";
 import Map from '../maps/Map';
 import useGoogleApi from '../maps/useGoogleApi';
 import {usePosition} from '../maps/useLocation';
-import Logo from "../assets/cofund.svg";
-import {Paper, Button} from "@material-ui/core";
-import {theme} from "../App";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -30,9 +30,21 @@ const useStyles = makeStyles(theme => ({
     },
     search: {
         backgroundColor: "#F0F0F2",
-        padding: "5px 20px",
+        display: "flex",
         borderRadius: "10px",
-        width: "60%"
+        width: "60%",
+        padding: "8px 16px",
+        marginLeft: "20px"
+    },
+    searchInput: {
+        marginLeft: "16px",
+        flexGrow: 1,
+    },
+    searchField: {
+        '&::placeholder': {
+            color: '#687688',
+            opacity: 1
+        }
     }
 }));
 
@@ -86,12 +98,13 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <form onSubmit={onSearch} style={{width: "100%", marginLeft: "20px"}}>
+                        <form onSubmit={onSearch} className={classes.search}>
+                            <img src={SearchIcon} style={{width: 30, height: 30, color: "#687688"}} alt="CoFund Logo" />
                             <InputBase
                                 name="search"
                                 placeholder="Search for a business you want to support..."
                                 autoFocus
-                                classes={{root: classes.search}}
+                                classes={{root: classes.searchInput, input: classes.searchField}}
                             />
                         </form>
                     </Toolbar>
