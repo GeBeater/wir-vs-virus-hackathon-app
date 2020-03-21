@@ -8,9 +8,10 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import SearchIcon from "../assets/search.svg";
+import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
-import {ADD_PLACE, SET_LOADING, useAppContext} from "../context/AppContext";
+import {colors, spacing} from "../theme/theme";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -19,30 +20,30 @@ const useStyles = makeStyles(theme => ({
         zIndex: 3
     },
     toolbar: {
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: colors.white,
     },
     paper: {
         width: "25%",
-        padding: "25px",
+        padding: spacing.l,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between"
     },
     search: {
-        backgroundColor: "#F0F0F2",
+        backgroundColor: colors.grayA05,
         display: "flex",
-        borderRadius: "10px",
+        borderRadius: "4px",
         width: "60%",
-        padding: "8px 16px",
-        marginLeft: "20px"
+        padding: `${spacing.s} ${spacing.m}`,
+        marginLeft: spacing.m
     },
     searchInput: {
-        marginLeft: "16px",
+        marginLeft: spacing.m,
         flexGrow: 1,
     },
     searchField: {
         '&::placeholder': {
-            color: '#687688',
+            color: colors.grayA50,
             opacity: 1
         }
     }
@@ -100,7 +101,7 @@ export default function Home() {
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <form onSubmit={onSearch} className={classes.search}>
-                            <img src={SearchIcon} style={{width: 30, height: 30, color: "#687688"}} alt="CoFund Logo" />
+                            <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
                             <InputBase
                                 name="search"
                                 placeholder="Search for a business you want to support..."
