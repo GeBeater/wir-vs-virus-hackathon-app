@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Map from '../maps/Map';
 import useGoogleApi from '../maps/useGoogleApi';
 import {usePosition} from '../maps/useLocation';
-
+import Logo from "../assets/cofund.svg";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -69,7 +69,8 @@ export default function Home() {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
-                        <form onSubmit={onSearch} style={{width: "100%"}}>
+                        <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
+                        <form onSubmit={onSearch} style={{width: "100%", marginLeft: "20px"}}>
                             <InputBase
                                 name="search"
                                 placeholder="Search for a business you want to support..."
