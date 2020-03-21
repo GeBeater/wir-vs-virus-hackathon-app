@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import ForgotPw from "./pages/ForgotPw";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import List from './pages/List';
+import CompanyList from './pages/CompanyList';
 
 import {createGlobalStyle} from 'styled-components'
 import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
@@ -40,7 +40,7 @@ function App() {
             <ForgotPw />
           </Route>
           <Route path="/list">
-            <List />
+            <CompanyList />
           </Route>
         </Switch>
       </Router>
