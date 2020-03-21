@@ -7,6 +7,8 @@ import InvitationCode from "./pages/InvitationCode";
 import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
 import CompanyList from './pages/CompanyList';
+import DonationOverview from "./pages/DonationOverview";
+import BankDetails from "./pages/BankDetails";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -38,6 +40,12 @@ function App() {
           </Route>
           <Route path="/getit">
             <InvitationCode />
+          </Route>
+          <Route path="/showmethemoney">
+            <DonationOverview />
+          </Route>
+          <Route path="/bankdetails">
+            <BankDetails />
           </Route>
           <Route path="/payment">
             <Payment />

@@ -88,7 +88,7 @@ export default function Home() {
             if (status === "OK") {
                 setCenter(results[0].geometry.location);
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                //alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     }

@@ -57,78 +57,18 @@ export default function SignUp() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Sign up to collect donations
+                    Enter payout details
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField className={classes.disabled}
-                                variant="outlined"
-                                disabled
-                                fullWidth
-                                name="company"
-                                label="Company"
-                                type="company"
-                                id="company"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField className={classes.disabled}
-                                variant="outlined"
-                                disabled
-                                fullWidth
-                                name="address"
-                                label="Address"
-                                type="address"
-                                id="address"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField className={classes.disabled}
-                                autoComplete="zipCode"
-                                name="zipCode"
-                                variant="outlined"
-                                disabled
-                                fullWidth
-                                id="zipCode"
-                                label="Zip Code"
-                                autoComplete="zipCode"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={8}>
-                            <TextField className={classes.disabled}
-                                autoComplete="city"
-                                variant="outlined"
-                                disabled
-                                fullWidth
-                                id="city"
-                                label="City"
-                                name="city"
-                                autoComplete="city"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoComplete="fname"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
+                                id="name"
+                                label="Name"
+                                name="name"
                                 autoComplete="lname"
                             />
                         </Grid>
@@ -137,10 +77,21 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Paypal Email"
-                                name="email"
-                                autoComplete="email"
+                                id="iban"
+                                label="IBAN"
+                                name="iban"
+                                autoComplete="iban"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="bic"
+                                label="BIC"
+                                name="bic"
+                                autoComplete="bic"
                             />
                         </Grid>
                     </Grid>
