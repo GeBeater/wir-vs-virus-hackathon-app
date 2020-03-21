@@ -43,13 +43,6 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
             </ListItemAvatar>
             <ListItemText id={labelId} primary={name} secondary={formatted_address} className={classes.listheader}/>
             <ListItemSecondaryAction>
-                {showCheckbox && (<Checkbox
-                    edge="end"
-                    onChange={handleToggle(place_id)}
-                    checked={isChecked}
-                    inputProps={{'aria-labelledby': labelId}}
-                    className={classes.checkbox}
-                />)}
                 {showDeleteBtn && (<IconButton edge="end" aria-label="delete" onClick={handleDelete(place_id)}>
                     <CloseIcon />
                 </IconButton>)}

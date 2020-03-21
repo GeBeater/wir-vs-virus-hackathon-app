@@ -15,6 +15,7 @@ import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import {PlaceTile} from "./PlaceTile";
 import List from "@material-ui/core/List";
+import CompanyList from "./CompanyList";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -93,9 +94,7 @@ export default function Home() {
                         <h3>Let us together help our favourite stores</h3>
                         <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
                     </header>
-                    <List dense className={classes.list}>
-                        {places.map(place => <PlaceTile key={place.id} place={place} showDeleteBtn={true} handleDelete={handleDeleteTile} />)}
-                    </List>
+                    <CompanyList/>
                     <footer>
                         <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true} >
                             Support your favorite branches
