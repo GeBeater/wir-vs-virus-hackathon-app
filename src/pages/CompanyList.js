@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -38,94 +39,126 @@ const useStyles = makeStyles(theme => ({
     list: {
         width: '100%',
         maxWidth: 1000,
-      },
+    },
     container: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '60%',
+        height: '100%',
+    },
+    map: {
+        width: '100%',
+        height: '100px'
     }
 }));
 
 export default function CompanyList() {
-    const { maps, map, mapRef, loading } = useGoogleMap( 3, {lat: 3, lng: 3});
+    const { maps, map, mapRef, loading } = useGoogleMap(3, { lat: 3, lng: 3 });
 
     const classes = useStyles();
 
     const [checked, setChecked] = React.useState([1]);
-  
+
     const handleToggle = value => () => {
-      const currentIndex = checked.indexOf(value);
-      const newChecked = [...checked];
-  
-      if (currentIndex === -1) {
-        newChecked.push(value);
-      } else {
-        newChecked.splice(currentIndex, 1);
-      }
-  
-      setChecked(newChecked);
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        setChecked(newChecked);
     }
 
     return (
-        <Container component="main" maxWidth="xs" className={classes.container}>
+        <Container component="main" maxWidth="lg" className={classes.container}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Companies
+            <Container component="main" maxWidth="md" className={classes.container}>
+                <div className={classes.map}>
+                    <MapContainer>
+                        <MapRef ref={mapRef} />
+                        {!loading &&
+                            React.Children.map(this.props.children, child => {
+                                return React.cloneElement(child, { map, maps });
+                            })}
+                    </MapContainer>
+                </div>
+            </Container>
+            <Container component="main" maxWidth="xs" className={classes.container}>
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h5">
+                        Companies
                 </Typography>
-                
-                <List dense className={classes.list}>
-                    {[0, 1, 2, 3].map(value => {
-                    const labelId = `checkbox-list-secondary-label-${value}`;
-                    return (
-                        <ListItem key={value} button>
-                        <ListItemAvatar>
-                            <Avatar
-                            alt={`Avatar n°${value + 1}`}
-                            src={`/static/images/avatar/${value + 1}.jpg`}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                        <ListItemSecondaryAction>
-                            <Checkbox
-                            edge="end"
-                            onChange={handleToggle(value)}
-                            checked={checked.indexOf(value) !== -1}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                        </ListItemSecondaryAction>
-                        </ListItem>
-                    );
-                    })}
-                </List>
 
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="number"
-                                label="Donate"
-                                type="number"
-                                id="number"
-                                autoFocus
-                            />
+                    <List dense className={classes.list}>
+                        {[0, 1, 2, 3].map(value => {
+                            const labelId = `checkbox-list-secondary-label-${value}`;
+                            return (
+                                <ListItem key={value} button>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={`Avatar n°${value + 1}`}
+                                            src={`/static/images/avatar/${value + 1}.jpg`}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText id={labelId} primary={`Company ${value + 1}`} />
+                                    <ListItemSecondaryAction>
+                                        <Checkbox
+                                            edge="end"
+                                            onChange={handleToggle(value)}
+                                            checked={checked.indexOf(value) !== -1}
+                                            inputProps={{ 'aria-labelledby': labelId }}
+                                        />
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+
+                    <form className={classes.form} noValidate>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="donation"
+                                    label="Donate"
+                                    type="number"
+                                    id="donation"
+                                    autoFocus
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Pay now
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Pay now
                     </Button>
-                </form>
-            </div>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link href="/" variant="body2">
+                                    Go back
+                            </Link>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </div>
+            </Container>
         </Container>
     );
 }
+
+const MapContainer = styled.div`
+    height: 100px;
+`;
+
+const MapRef = styled.div`
+    height: 100px;
+`;

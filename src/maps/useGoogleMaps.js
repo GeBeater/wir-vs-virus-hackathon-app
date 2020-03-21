@@ -43,10 +43,8 @@ export default function useGoogleMap({zoom, center, events}) {
       placesService.getDetails({
         placeId: 'ChIJAUKRDWz2wokRxngAavG2TD8'
       }, function(place, status) {
-        console.log("test");
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          console.log(place.reviews);
-          // Intended behavior is to set this.setState({places.place.reviews})
+          console.log(place);
         }
       })
 
