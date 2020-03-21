@@ -9,9 +9,8 @@ import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import SearchIcon from "../assets/search.svg";
 import Map from '../maps/Map';
-import CompanyList from '../pages/CompanyList';
-import useGoogleApi from '../maps/useGoogleApi';
 import {usePosition} from '../maps/useLocation';
+import {ADD_PLACE, SET_LOADING, useAppContext} from "../context/AppContext";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -51,11 +50,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function Home() {
     const classes = useStyles();
-    const [places, setPlaces] = useState([]);
     const [currentPlace, setCurrentPlace] = useState(null);
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
-    const google = useGoogleApi();
+    const [{loading, google, places}, dispatch] = useAppContext();
+    // const [places, setPlaces] = useState([]);
     let geocoder;
 
     const events = {
@@ -68,7 +67,8 @@ export default function Home() {
     // selection changes
     useEffect(() => {
         if (currentPlace && places.indexOf(currentPlace) === -1) {
-            setPlaces([...places, currentPlace]);
+            dispatch({type: ADD_PLACE, payload: currentPlace});
+            // setPlaces([...places, currentPlace]);
         }
     }, [currentPlace, places])
 
