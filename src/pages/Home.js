@@ -1,16 +1,15 @@
 
 import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import InputBase from "@material-ui/core/InputBase";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
-import SearchIcon from "../assets/search.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
+import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
@@ -29,24 +28,6 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "space-between"
     },
-    search: {
-        backgroundColor: colors.grayA05,
-        display: "flex",
-        borderRadius: "4px",
-        width: "60%",
-        padding: `${spacing.s} ${spacing.m}`,
-        marginLeft: spacing.m
-    },
-    searchInput: {
-        marginLeft: spacing.m,
-        flexGrow: 1,
-    },
-    searchField: {
-        '&::placeholder': {
-            color: colors.grayA50,
-            opacity: 1
-        }
-    }
 }));
 
 export default function Home() {
@@ -56,7 +37,6 @@ export default function Home() {
     const location = usePosition();
     const [{loading, google, places}, dispatch] = useAppContext();
     // const [places, setPlaces] = useState([]);
-    let geocoder;
 
     const events = {
         onClick: (data) => {
@@ -79,36 +59,13 @@ export default function Home() {
         }
     }, [location, center])
 
-    function onSearch(event) {
-        event.preventDefault();
-        const searchTerm = event.target.search.value;
-        if (!geocoder) {
-            geocoder = new google.maps.Geocoder();
-        }
-        geocoder.geocode({'address': searchTerm}, function (results, status) {
-            if (status === "OK") {
-                setCenter(results[0].geometry.location);
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
-    }
-
     return (
         <Container>
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <form onSubmit={onSearch} className={classes.search}>
-                            <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
-                            <InputBase
-                                name="search"
-                                placeholder="Search for a business you want to support..."
-                                autoFocus
-                                classes={{root: classes.searchInput, input: classes.searchField}}
-                            />
-                        </form>
+                        <Search onSelected={setCenter}/>
                     </Toolbar>
                 </AppBar>
             </div>
