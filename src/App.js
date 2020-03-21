@@ -27,7 +27,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/">
-            <ForgotPw />
+            <Home />
           </Route>
           <Route path="/signup">
             <SignUp />
