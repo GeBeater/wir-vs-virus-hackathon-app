@@ -58,7 +58,8 @@ export default function Search({onSelected}) {
     }
 
     function onSelect(result) {
-        onSelected(result.geometry.location);
+        const newCenter = {lat:result.geometry.location.lat(), lng: result.geometry.location.lng(), placeId: result.place_id};
+        onSelected(newCenter);
         setResults([])
     }
     return (
@@ -79,7 +80,7 @@ export default function Search({onSelected}) {
                             results.map((result) => {
                                 return <Result onClick={() => onSelect(result)}>{result.formatted_address}</Result>
                             })
-                        }
+                        }                        
                     </Paper>
                 }
             </QuickSearch>
