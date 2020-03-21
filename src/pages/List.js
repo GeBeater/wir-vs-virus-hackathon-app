@@ -10,9 +10,12 @@ export default function List() {
     }, []);
     return (
         <Container>
-             <Text>
-              Here is a really long text that you can do nothing about, its gonna be long wether you like it or not, so be prepared for it to go off screen. Right? Right..!
-            </Text>
+             <ListContainer>
+                 <CompanyList>
+                     <li>COYO GmbH</li>
+                     <li>mindsmash GmbH</li>
+                 </CompanyList>
+             </ListContainer>
         </Container>
     )
 }
@@ -22,7 +25,13 @@ const Container = styled.div`
     height: calc(100% - 75px);
 `;
 
-const Text = styled.div`
-    width: 100%;
-    font-size: 15px;
+const ListContainer = styled.div`
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CompanyList = styled.div`
+    list-style: none;  
 `;

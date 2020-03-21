@@ -13,7 +13,7 @@ let placesService;
 
 export async function initApis() {
   if (!isInitialized) {
-    const mapRef = useRef();
+    /* const mapRef = useRef();
 
     await GoogleMapsApiLoader({
       libraries: ['places'],
@@ -23,7 +23,7 @@ export async function initApis() {
         placesService = new google.maps.places.PlacesService(map);
         isInitialized = true;
         return Promise.resolve();
-    })
+    }) */
   } else {
     return Promise.resolve();
   }
