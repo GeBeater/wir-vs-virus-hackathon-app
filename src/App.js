@@ -1,13 +1,13 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {createGlobalStyle} from 'styled-components';
 import './App.css';
-import Home from './pages/Home';
 import ForgotPw from "./pages/ForgotPw";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
+import Home from './pages/Home';
 import Payment from "./pages/Payment";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
-import {createGlobalStyle} from 'styled-components'
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -40,7 +40,7 @@ function App() {
             <ForgotPw />
           </Route>
           <Route path="/payment">
-            <Payment/>
+            <Payment />
           </Route>
         </Switch>
       </Router>
