@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import Home from './pages/Home';
 
-import { createGlobalStyle } from 'styled-components'
+import {createGlobalStyle} from 'styled-components'
+import {Switch, Route} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -19,8 +20,12 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <>
-      <GlobalStyle/>
-      <Home></Home>
+      <GlobalStyle />
+      <Switch>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </>
   );
 }
