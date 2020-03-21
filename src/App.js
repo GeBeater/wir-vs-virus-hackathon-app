@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import Home from './pages/Home';
-import ForgotPw from "./pages/ForgotPw";
+import InvitationCode from "./pages/InvitationCode";
 import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
 import Payment from "./pages/Payment";
 
 import {createGlobalStyle} from 'styled-components'
@@ -33,11 +32,8 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-          <Route path="/signin">
-            <SignIn />
-          </Route>
-          <Route path="/forgotpw">
-            <ForgotPw />
+          <Route path="/getit">
+            <InvitationCode />
           </Route>
           <Route path="/payment">
             <Payment/>

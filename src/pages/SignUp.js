@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Logo from '../assets/cofund.svg';
+import {fade} from "@material-ui/core";
 
 function Copyright() {
     return (
@@ -40,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    disabled: {
+        backgroundColor: fade(theme.palette.common.black, 0.05)
+    }
 }));
 
 export default function SignUp() {
@@ -58,15 +62,51 @@ export default function SignUp() {
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField
+                            <TextField className={classes.disabled}
                                 variant="outlined"
-                                required
+                                disabled
                                 fullWidth
                                 name="company"
                                 label="Company"
                                 type="company"
                                 id="company"
                                 autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField className={classes.disabled}
+                                variant="outlined"
+                                disabled
+                                fullWidth
+                                name="address"
+                                label="Address"
+                                type="address"
+                                id="address"
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField className={classes.disabled}
+                                autoComplete="zipCode"
+                                name="zipCode"
+                                variant="outlined"
+                                disabled
+                                fullWidth
+                                id="zipCode"
+                                label="Zip Code"
+                                autoComplete="zipCode"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={8}>
+                            <TextField className={classes.disabled}
+                                autoComplete="city"
+                                variant="outlined"
+                                disabled
+                                fullWidth
+                                id="city"
+                                label="City"
+                                name="city"
+                                autoComplete="city"
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -98,7 +138,7 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Email"
                                 name="email"
                                 autoComplete="email"
                             />
@@ -108,11 +148,10 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                id="email2"
+                                label="Confirm Email"
+                                name="email2"
+                                autoComplete="email2"
                             />
                         </Grid>
                     </Grid>
