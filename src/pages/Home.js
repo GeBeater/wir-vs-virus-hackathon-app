@@ -4,15 +4,16 @@ import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
+import Help from "../assets/help-icon.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
+import {getPlaceDetails} from "../maps/placesApi";
 import {usePosition} from '../maps/useLocation';
-import {Link} from "react-router-dom";
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
-import {getPlaceDetails} from "../maps/placesApi";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -69,7 +70,7 @@ export default function Home() {
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter}/>
-                        <img src={Logo} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
+                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
                     </Toolbar>
                 </AppBar>
             </div>
