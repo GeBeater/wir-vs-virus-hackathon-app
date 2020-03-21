@@ -1,22 +1,51 @@
 
+import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import InputBase from "@material-ui/core/InputBase";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
+import Logo from "../assets/cofund.svg";
+import SearchIcon from "../assets/search.svg";
 import Map from '../maps/Map';
+import CompanyList from '../pages/CompanyList';
 import useGoogleApi from '../maps/useGoogleApi';
 import {usePosition} from '../maps/useLocation';
-import Logo from "../assets/cofund.svg";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
 const useStyles = makeStyles(theme => ({
     root: {
+        zIndex: 3
     },
     toolbar: {
         backgroundColor: theme.palette.common.white,
+    },
+    paper: {
+        width: "25%",
+        padding: "25px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    },
+    search: {
+        backgroundColor: "#F0F0F2",
+        display: "flex",
+        borderRadius: "10px",
+        width: "60%",
+        padding: "8px 16px",
+        marginLeft: "20px"
+    },
+    searchInput: {
+        marginLeft: "16px",
+        flexGrow: 1,
+    },
+    searchField: {
+        '&::placeholder': {
+            color: '#687688',
+            opacity: 1
+        }
     }
 }));
 
@@ -44,10 +73,10 @@ export default function Home() {
     }, [currentPlace, places])
 
     useEffect(() => {
-        if (location.loaded && !location.error && center == defaultLocation) {
+        if (location.loaded && !location.error && center === defaultLocation) {
             setCenter({...location})
         }
-    }, [location])
+    }, [location, center])
 
     function onSearch(event) {
         event.preventDefault();
@@ -56,7 +85,7 @@ export default function Home() {
             geocoder = new google.maps.Geocoder();
         }
         geocoder.geocode({'address': searchTerm}, function (results, status) {
-            if (status == "OK") {
+            if (status === "OK") {
                 setCenter(results[0].geometry.location);
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
@@ -70,23 +99,36 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <form onSubmit={onSearch} style={{width: "100%", marginLeft: "20px"}}>
+                        <form onSubmit={onSearch} className={classes.search}>
+                            <img src={SearchIcon} style={{width: 30, height: 30, color: "#687688"}} alt="CoFund Logo" />
                             <InputBase
                                 name="search"
                                 placeholder="Search for a business you want to support..."
                                 autoFocus
-                                fullWidth={true}
+                                classes={{root: classes.searchInput, input: classes.searchField}}
                             />
                         </form>
                     </Toolbar>
                 </AppBar>
             </div>
             <MapContainer>
-                <Places>
-                    {places.map(place => {
-                        return <p key={place}>{place}</p>
-                    })}
-                </Places>
+                <Paper className={classes.paper}>
+                    <header style={{flexGrow: 1}}>
+                        <h1>Hello!</h1>
+                        <h3>Let us together help our favourite stores</h3>
+                        <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
+                    </header>
+                    <div>
+                        {places.map(place => {
+                            return <p key={place}>{place}</p>
+                        })}
+                    </div>
+                    <footer>
+                        <Button variant="contained" color="primary" disableElevation fullWidth={true}>
+                            Support your favorite branches
+                        </Button>
+                    </footer>
+                </Paper>
                 <BoxedMap>
                     <Map
                         zoom={16}
@@ -110,11 +152,6 @@ const MapContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    z-index: -1;
-`;
-const Places = styled.div`
-    width: 20%;
-    height: 100%;
 `;
 const BoxedMap = styled.div`
     height: 100%;

@@ -1,12 +1,14 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {createGlobalStyle} from 'styled-components';
 import './App.css';
 import Home from './pages/Home';
 import InvitationCode from "./pages/InvitationCode";
 import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
+import CompanyList from './pages/CompanyList';
+import SignIn from "./pages/SignIn";
 
-import {createGlobalStyle} from 'styled-components'
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -32,11 +34,14 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
+          <Route path="/list">
+            <CompanyList />
+          </Route>
           <Route path="/getit">
             <InvitationCode />
           </Route>
           <Route path="/payment">
-            <Payment/>
+            <Payment />
           </Route>
         </Switch>
       </Router>

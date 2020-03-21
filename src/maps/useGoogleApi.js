@@ -5,7 +5,7 @@ import {apiKey} from "./apiKey";
 export default function useGoogleApi() {
   const [google, setGoogle] = useState(null);
   useEffect(() => {
-    GoogleMapsApiLoader({apiKey}).then(google => {
+    GoogleMapsApiLoader({apiKey, libraries: ['places']}).then(google => {
       setGoogle(google);
     });
   }, []);
