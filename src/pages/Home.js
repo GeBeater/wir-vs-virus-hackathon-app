@@ -90,7 +90,7 @@ export default function Home() {
                         })}
                     </div>
                     <footer>
-                        <Button component={Link} to="/list" variant="contained" color="primary" disableElevation fullWidth={true} >
+                        <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true} >
                             Support your favorite branches
                         </Button>
                     </footer>
