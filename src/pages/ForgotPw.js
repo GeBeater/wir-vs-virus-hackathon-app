@@ -1,5 +1,4 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,9 +6,9 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import HelpIcon from '@material-ui/icons/Help';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Logo from "../assets/cofund.svg";
 
 function Copyright() {
     return (
@@ -50,9 +49,9 @@ export default function ForgotPw() {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <HelpIcon />
-                </Avatar>
+                <Link href="/" variant="body2">
+                    <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
+                </Link>
                 <Typography component="h1" variant="h5">
                     Forgot password
                 </Typography>

@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "braintree-web-drop-in-react": "^1.1.0",
     "google-maps-api-loader": "^1.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -15,6 +16,7 @@
     "react-scripts": "3.4.1",
     "styled-components": "^5.0.1"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
