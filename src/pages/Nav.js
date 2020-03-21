@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function DonationOverview() {
+export default function Nav() {
     const classes = useStyles();
 
     return (
@@ -48,25 +48,38 @@ export default function DonationOverview() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Access your donations
+                    List of all frontend designs available
                 </Typography>
-                <Typography component="h1" variant="h1" className={classes.paper}>
-                    100€
-                </Typography>
-                <Typography component="h1" variant="h6">
-                    from 198 donors
-                </Typography>
-                <form className={classes.form} noValidate>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Pay out
-                    </Button>
-                </form>
+                <Link href="/" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        Home
+                    </Typography>
+                </Link>
+                <Link href="/list" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        CompanyList
+                    </Typography>
+                </Link>
+                <Link href="/getit" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        InvitationCode
+                    </Typography>
+                </Link>
+                <Link href="/showmethemoney" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        SignUp
+                    </Typography>
+                </Link>
+                <Link href="/payoutdetails" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        PayoutDetails
+                    </Typography>
+                </Link>
+                <Link href="/payment" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        Payment
+                    </Typography>
+                </Link>
             </div>
             <Box mt={5}>
                 <Copyright />

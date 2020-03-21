@@ -8,10 +8,11 @@ import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
 import CompanyList from './pages/CompanyList';
 import DonationOverview from "./pages/DonationOverview";
-import BankDetails from "./pages/BankDetails";
+import PayoutDetails from "./pages/BankingDetails";
 
 import {AppContext, AppContextWrapper} from "./context/AppContext";
 import {AppInitializer} from "./context/AppInitializer";
+import Nav from "./pages/Nav";
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -32,8 +33,8 @@ function App() {
           <GlobalStyle />
           <Router>
               <Switch>
-                  <Route path="/signup">
-                      <SignUp />
+                  <Route path="/nav">
+                      <Nav />
                   </Route>
                   <Route path="/list">
                       <CompanyList />
@@ -41,11 +42,14 @@ function App() {
                   <Route path="/getit">
                       <InvitationCode />
                   </Route>
+                  <Route path="/signup">
+                      <SignUp />
+                  </Route>
                   <Route path="/showmethemoney">
                       <DonationOverview />
                   </Route>
-                  <Route path="/bankdetails">
-                      <BankDetails />
+                  <Route path="/payoutdetails">
+                      <PayoutDetails />
                   </Route>
                   <Route path="/payment">
                       <Payment />
