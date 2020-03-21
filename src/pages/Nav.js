@@ -65,9 +65,14 @@ export default function Nav() {
                         InvitationCode
                     </Typography>
                 </Link>
-                <Link href="/showmethemoney" variant="body2">
+                <Link href="/signup" variant="body2">
                     <Typography component="h1" variant="h6">
                         SignUp
+                    </Typography>
+                </Link>
+                <Link href="/showmethemoney" variant="body2">
+                    <Typography component="h1" variant="h6">
+                        DonationOverview
                     </Typography>
                 </Link>
                 <Link href="/payoutdetails" variant="body2">
