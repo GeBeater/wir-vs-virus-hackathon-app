@@ -7,7 +7,6 @@ import InvitationCode from "./pages/InvitationCode";
 import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
 import CompanyList from './pages/CompanyList';
-import SignIn from "./pages/SignIn";
 
 
 const GlobalStyle = createGlobalStyle`
