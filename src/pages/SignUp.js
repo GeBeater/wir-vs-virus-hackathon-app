@@ -57,7 +57,7 @@ export default function SignUp() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    Sign up to collect donations
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
@@ -138,20 +138,9 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email"
+                                label="Paypal Email"
                                 name="email"
                                 autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email2"
-                                label="Confirm Email"
-                                name="email2"
-                                autoComplete="email2"
                             />
                         </Grid>
                     </Grid>

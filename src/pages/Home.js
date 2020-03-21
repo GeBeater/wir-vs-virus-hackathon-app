@@ -12,6 +12,7 @@ import {usePosition} from '../maps/useLocation';
 import {Link} from "react-router-dom";
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
+import {getPlaceDetails} from "../maps/placesApi";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -38,23 +39,15 @@ export default function Home() {
     const location = usePosition();
     const [{loading, google, places}, dispatch] = useAppContext();
     let geocoder;
-    // const [places, setPlaces] = useState([]);
-
-    // const handleGetPlaceDetails = (place, status) => {
-    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //         console.log('handleGetPlaceDetails', place);
-    //         setCurrentPlace(place);
-    //     }
-    // };
 
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
-            setCurrentPlace(placeId);
-            // TODO get place details
-            // placesService.getDetails(placeId, handleGetPlaceDetails);
+            getPlaceDetails(placeId).then(data => {
+                setCurrentPlace({placeId, data})
+            });
         }
-    }
+    };
 
     // selection changes
     useEffect(() => {
@@ -89,7 +82,9 @@ export default function Home() {
                     </header>
                     <div>
                         {places.map(place => {
-                            return <p key={place}>{place}</p>
+                            if (place) {
+                                return <p key={place.placeId}>{place.data.result.name}</p>
+                            }   
                         })}
                     </div>
                     <footer>
