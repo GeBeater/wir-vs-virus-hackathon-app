@@ -22,7 +22,6 @@ export const appReducer = (state, action) => {
     console.log('appReducer', state, action);
     switch (action.type) {
         case ADD_PLACE:
-            // todo prevent duplicates
             return { ...state, places: [...state.places, action.payload] };
         case SET_MAP:
             return { ...state, map: action.payload };;

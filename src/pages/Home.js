@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
-import {useAppContext, ADD_PLACE} from "../context/AppContext";
+import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
@@ -49,13 +49,14 @@ export default function Home() {
 
     // selection changes
     useEffect(() => {
-        if (currentPlace && places.filter(place => place.id === currentPlace).length == 0) {
+        console.log(places)
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length == 0) {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({placeId: currentPlace}, (details) => {
                 dispatch({type: ADD_PLACE, payload: details});
             });
         }
-    }, [currentPlace    ])
+    }, [currentPlace])
 
     useEffect(() => {
         if (location.loaded && !location.error && center === defaultLocation) {
