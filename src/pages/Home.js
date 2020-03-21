@@ -14,6 +14,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import Logo from "../assets/cofund.svg";
+import Typography from "@material-ui/core/Typography";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -32,10 +34,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         flexGrow: 1,
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
+        backgroundColor: fade(theme.palette.common.black, 0.025),
         marginLeft: 0,
         width: '100%',
         [theme.breakpoints.up('sm')]: {
@@ -55,6 +54,7 @@ const useStyles = makeStyles(theme => ({
     },
     inputRoot: {
         color: 'inherit',
+        width: '100%',
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
@@ -62,11 +62,10 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
+    },
+    login: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none',
         },
     },
 }));
@@ -121,14 +120,7 @@ export default function Home() {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="open drawer"
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                        <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
@@ -143,7 +135,7 @@ export default function Home() {
                                 autoFocus
                             />
                         </div>
-                        <Link href="/signin" variant="body2">
+                        <Link href="/signin" variant="body2" className={classes.login}>
                             <Button color="black">Login</Button>
                         </Link>
                     </Toolbar>
