@@ -9,6 +9,7 @@ import Logo from "../assets/cofund.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
+import {Link} from "react-router-dom";
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 
@@ -36,12 +37,22 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{loading, google, places}, dispatch] = useAppContext();
+    let geocoder;
     // const [places, setPlaces] = useState([]);
+
+    // const handleGetPlaceDetails = (place, status) => {
+    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //         console.log('handleGetPlaceDetails', place);
+    //         setCurrentPlace(place);
+    //     }
+    // };
 
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
             setCurrentPlace(placeId);
+            // TODO get place details
+            // placesService.getDetails(placeId, handleGetPlaceDetails);
         }
     }
 
@@ -49,7 +60,6 @@ export default function Home() {
     useEffect(() => {
         if (currentPlace && places.indexOf(currentPlace) === -1) {
             dispatch({type: ADD_PLACE, payload: currentPlace});
-            // setPlaces([...places, currentPlace]);
         }
     }, [currentPlace, places])
 
@@ -57,7 +67,7 @@ export default function Home() {
         if (location.loaded && !location.error && center === defaultLocation) {
             setCenter({...location})
         }
-    }, [location, center])
+    }, [location, center]);
 
     return (
         <Container>
@@ -82,7 +92,7 @@ export default function Home() {
                         })}
                     </div>
                     <footer>
-                        <Button variant="contained" color="primary" disableElevation fullWidth={true}>
+                        <Button component={Link} to="/list" variant="contained" color="primary" disableElevation fullWidth={true} >
                             Support your favorite branches
                         </Button>
                     </footer>
