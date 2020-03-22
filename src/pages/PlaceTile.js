@@ -34,13 +34,13 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, showCheckbox = false, handleToggle = null, isChecked = false}) => {
+export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null}) => {
     const classes = useStyles();
     const {name, place_id, icon, formatted_address} = place;
     const labelId = `checkbox-list-secondary-label-${place_id}`;
 
     return (
-        <ListItem button className={classes.listitem} boxShadow={0}>
+        <ListItem button className={classes.listitem}>
             <ListItemAvatar>
                 <Avatar
                     variant='rounded'

@@ -1,4 +1,3 @@
-
 import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
@@ -16,6 +15,8 @@ import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
+import {isSupportedType, isValidPlace} from "../maps/placesUtils";
+import AlertDialog from "../components/AlertDialog";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -35,6 +36,11 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    alertWrapper: {
+        position: 'absolute',
+        width: '100%',
+        top: 0
     }
 }));
 
@@ -45,7 +51,10 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
-
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
+    const [pendingPlaceDetails, setPendingPlaceDetails] = useState(null);
+    let hideAlertTimeoutId;
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
@@ -55,6 +64,56 @@ export default function Home() {
 
     useEffect(selectCurrentPlace, [currentPlace])
     useEffect(refreshCenter, [location, center]);
+
+    const showAlertInvalidPlace = () => {
+        setIsAlertVisible(true);
+        clearTimeout(hideAlertTimeoutId);
+        hideAlertTimeoutId = setTimeout(() => {
+            setIsAlertVisible(false);
+        }, 2000);
+    };
+
+    const handleDialogAgree = () => {
+        if (pendingPlaceDetails) {
+            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            setPendingPlaceDetails(null);
+        }
+        setIsDialogVisible(false);
+    };
+
+    const handleDialogDisagree = () => {
+        setPendingPlaceDetails(null);
+        setIsDialogVisible(false);
+    };
+
+    function refreshCenter() {
+        if (!loading && !location.error && location.lat && center === defaultLocation) {
+            setCenter({...location})
+        }
+    }
+
+    function selectCurrentPlace() {
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails({
+                placeId: currentPlace,
+                fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components', 'types']
+            }, (details, status) => {
+                if (!isValidPlace(details, status, google)) {
+                    showAlertInvalidPlace();
+                    return;
+                }
+
+                if (!isSupportedType(details)) {
+                    setIsDialogVisible(true);
+                    setPendingPlaceDetails(details);
+                    return;
+                }
+
+                dispatch({type: ADD_PLACE, payload: details});
+            });
+        }
+    }
 
     return (
         <Container>
@@ -91,25 +150,26 @@ export default function Home() {
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
+            {isAlertVisible && (
+                <AlertDialog
+                    title={'Error'}
+                    message={'The place you selected is invalid and cannot be added, sorry.'}
+                    agree={'OK'}
+                    handleAgree={handleDialogAgree}
+                />
+            )}
+            {isDialogVisible && (
+                <AlertDialog
+                    title={'Warning'}
+                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
+                    agree={'Yes'}
+                    disagree={'No'}
+                    handleAgree={handleDialogAgree}
+                    handleDisagree={handleDialogDisagree}
+                />
+            )}
         </Container>
-    )
-
-    function refreshCenter() {
-        if (!loading && !location.error && location.lat && center === defaultLocation) {
-            setCenter({...location})
-        }
-    }
-
-    function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
-            const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    dispatch({type: ADD_PLACE, payload: details});
-                }
-            });
-        }
-    }
+    );
 }
 
 

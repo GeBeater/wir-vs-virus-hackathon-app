@@ -26,7 +26,8 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     width: 100%;
   }
-`
+`;
+
 const history = createBrowserHistory();
 
 function App() {
