@@ -13,7 +13,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         maxWidth: '100%',
         overflowY: 'auto',
-        padding: 3
+        padding: 3,
+        overflowX: 'hidden'
     },
     listitem: {
         borderBottom: '1px solid lightgrey',
