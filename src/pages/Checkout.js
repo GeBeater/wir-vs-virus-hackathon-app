@@ -41,6 +41,7 @@ export default function Checkout() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
     const [brainTreeReady, setBrainTreeReady] = useState(false);
+    const [paying, setPaying] = useState(false);
     const history = useHistory();
 
     const [{places}] = useAppContext();
@@ -69,6 +70,7 @@ export default function Checkout() {
     }
 
     async function pay() {
+        setPaying(true)
         const {nonce} = await instance.requestPaymentMethod();
         const request = places.reduce((acc, place) => {
             return {...acc, [place.place_id]: amount / places.length}
@@ -175,7 +177,7 @@ export default function Checkout() {
                                 variant="contained"
                                 color="primary"
                                 onClick={pay}
-                                disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
+                                disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
                                 Pay now
                             </Button>

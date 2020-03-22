@@ -118,7 +118,7 @@ export default function Home() {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({
                 placeId: currentPlace,
-                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos']
+                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos', 'formatted_address']
             }, (details, status) => {
                 if (!isValidPlace(details, status, google)) {
                     setIsAlertVisible(true);
