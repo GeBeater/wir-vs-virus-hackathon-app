@@ -60,7 +60,7 @@ export default function Home() {
                 <span className={classes.faq}>FAQ</span>
                 </Button>
                 <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                    <DialogContent dividers>
+                    <DialogContent dividers style={{overflowY: 'hidden'}}>
                         <b>FAQ</b>
                     </DialogContent>
                     <DialogContent dividers>
