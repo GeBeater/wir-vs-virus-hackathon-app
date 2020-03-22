@@ -92,6 +92,11 @@ const QuickSearch = styled.div`
     top: 60px;
     left: 80px;
     width: 25%;
+    @media (max-width: 768px) { 
+        left: 5px;
+        right: 5px;
+        width: 100%;
+    }
 `;
 
 const Result = styled.div`

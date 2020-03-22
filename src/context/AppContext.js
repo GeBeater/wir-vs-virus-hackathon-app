@@ -31,7 +31,7 @@ export const appReducer = (state, action) => {
         case SET_LOGGED_IN:
             return { ...state, loggedIn: action.payload };
         case SET_LOADING:
-            return { ...state, loading: true };
+            return { ...state, loading: action.payload };
         case SET_ERROR:
             return { ...state, error: action.payload };
         case SET_GOOGLE_INSTANCE:

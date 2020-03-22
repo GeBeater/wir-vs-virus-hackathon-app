@@ -1,21 +1,22 @@
 import {useState, useEffect} from "react";
+import {useAppContext, SET_LOADING} from "../context/AppContext";
 
 export const usePosition = () => {
     const [position, setPosition] = useState({});
     const [error, setError] = useState(null);
-    const [loaded, setLoaded] = useState(false);
+    const [_, dispatch] = useAppContext();
 
     const onChange = ({coords}) => {
         setPosition({
             lat: coords.latitude,
             lng: coords.longitude,
         });
-        setLoaded(true)
+        dispatch({type: SET_LOADING, payload: false});
     };
 
     const onError = (error) => {
         setError(error.message);
-        setLoaded(true)
+        dispatch({type: SET_LOADING, payload: false});
     };
 
     useEffect(() => {
@@ -26,5 +27,5 @@ export const usePosition = () => {
         }
         geo.getCurrentPosition(onChange, onError)
     }, []);
-    return {...position, error, loaded};
+    return {...position, error};
 }

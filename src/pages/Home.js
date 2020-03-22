@@ -9,6 +9,7 @@ import styled from "styled-components";
 import useMobileDetect from 'use-mobile-detect-hook';
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
+import Loading from "../assets/three-dots.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
@@ -43,7 +44,7 @@ export default function Home() {
     const [currentPlace, setCurrentPlace] = useState(null);
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
-    const [{google, places, map}, dispatch] = useAppContext();
+    const [{google, places, map, loading}, dispatch] = useAppContext();
 
     const events = {
         onClick: (data) => {
@@ -52,23 +53,8 @@ export default function Home() {
         }
     };
 
-    // selection changes
-    useEffect(() => {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
-            const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    dispatch({type: ADD_PLACE, payload: details});
-                }
-            });
-        }
-    }, [currentPlace])
-
-    useEffect(() => {
-        if (location.loaded && !location.error && center === defaultLocation) {
-            setCenter({...location})
-        }
-    }, [location, center]);
+    useEffect(selectCurrentPlace, [currentPlace])
+    useEffect(refreshCenter, [location, center]);
 
     return (
         <Container>
@@ -93,18 +79,38 @@ export default function Home() {
                 </Paper>
                 }
                 <BoxedMap>
+                    <img style={{position: "absolute", zIndex: -1, top: "50%", left: "50%", marginLeft: "-30px"}} alt="We are loading" width="60px" height="30px" src={Loading}></img>
                     <Map
                         zoom={16}
                         center={center}
                         events={events}
                         google={google}
+                        style={{opacity: loading ? 0 : 1}}
                     />
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
         </Container>
     )
+
+    function refreshCenter() {
+        if (!loading && !location.error && center === defaultLocation) {
+            setCenter({...location})
+        }
+    }
+
+    function selectCurrentPlace() {
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    dispatch({type: ADD_PLACE, payload: details});
+                }
+            });
+        }
+    }
 }
+
 
 function StartNow({className, amount}) {
     return (
@@ -138,4 +144,5 @@ const MapContainer = styled.div`
 const BoxedMap = styled.div`
     height: 100%;
     flex-grow: 1;
+    position: relative;
 `;

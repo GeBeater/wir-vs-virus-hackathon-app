@@ -7,7 +7,7 @@ const eventsMapping = {
 export default function useGoogleMap({zoom, center, events}) {
   const [mapState, setMapState] = useState({loading: true});
   const [_, dispatch] = useAppContext();
-  const [{loading, google}] = useAppContext();
+  const [{google}] = useAppContext();
   const mapRef = useRef();
 
   useEffect(() => {
