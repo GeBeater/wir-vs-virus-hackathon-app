@@ -11,6 +11,7 @@ import useMobileDetect from 'use-mobile-detect-hook';
 import Logo from "../assets/cofund.svg";
 import Loading from "../assets/three-dots.svg";
 import AlertDialog from "../components/AlertDialog";
+import LastFive from "../components/LastFive";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {isSupportedType, isValidPlace} from "../maps/placesUtils";
@@ -153,8 +154,9 @@ export default function Home() {
                         <h3><b>1/</b> {t('home.welcome.step1')}</h3>
                         <h3><b>2/</b> {t('home.welcome.step2')}</h3>
                         <h3><b>3/</b> {t('home.welcome.step3')}</h3>
+                        {places.length === 0 && <h3>{t('home.welcome.benext')}</h3>}
                     </header>
-                    <CompanyList />
+                    {places.length > 0 ? <CompanyList /> : <LastFive />}
                     <StartNow amount={places.length} />
                 </Paper>
                 }
