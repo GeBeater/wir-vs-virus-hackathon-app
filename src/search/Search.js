@@ -64,7 +64,6 @@ export default function Search({onSelected, location}) {
             predictions.forEach(function(prediction) {
                 geocoder.geocode({'placeId': prediction.place_id}, function (resultList, status) {
                     if (status === "OK" && resultList.length === 1) {
-                        console.log(resultList[0]);
                         results.push(resultList[0]);
                     }
                 });
@@ -86,6 +85,7 @@ export default function Search({onSelected, location}) {
                     name="search"
                     placeholder="Search for a business you want to support..."
                     autoFocus
+                    autoComplete="off"
                     classes={{root: classes.searchInput, input: classes.searchField}}
                 />
             </form>
@@ -94,6 +94,7 @@ export default function Search({onSelected, location}) {
                     <Paper className={classes.results}>
                         {
                             results.map((result) => {
+                                console.log(result);
                                 return <Result onClick={() => onSelect(result)}>{result.formatted_address}</Result>
                             })
                         }
