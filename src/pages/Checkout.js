@@ -5,18 +5,12 @@ import styled from "styled-components";
 import {useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
-import {Link} from 'react-router-dom';
 import {makeStyles} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Logo from "../assets/cofund.svg";
-import Help from "../assets/help-icon.svg";
-import Search from "../search/Search";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
@@ -125,7 +119,7 @@ export default function Checkout() {
                         <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
                             <form noValidate onSubmit={startPayment}>
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} style={{marginBottom: '25px'}}>
+                                    <Grid item xs={12}>
                                         <TextField
                                         variant="outlined"
                                         fullWidth
@@ -214,8 +208,12 @@ const Wrapper = styled.div`
     flex-direction: column;
     margin: 0 auto;
     padding-top: 120px;
+    padding-bottom: 60px;
     align-items: center;
     max-width: 1000px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
     @media (max-width: 1200px) { 
         margin: 0 15px;
         padding-top: 45px;

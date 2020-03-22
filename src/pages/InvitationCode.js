@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import Logo from "../assets/cofund.svg";
-import {SET_CODE, useCompanyContext, SET_PLACE} from '../context/CompanyContext';
+import {SET_CODE, SET_PLACE, useCompanyContext} from '../context/CompanyContext';
 
 function Copyright() {
     return (
@@ -53,17 +53,23 @@ export default function InvitationCode() {
 
     function login(event) {
         event.preventDefault();
-        fetch('/api/places').then(response => {
+        fetch('/api/entrepreneurs/invitationtokens', {
+            method: "POST", headers: {
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({invitationToken: inviteCode})
+        }).then(response => {
             return response.json()
-        }).then(places => {
-            const place = places[0];
+        }).then(place => {
             dispatch({type: SET_PLACE, payload: place});
             dispatch({type: SET_CODE, payload: inviteCode});
-            if (place.created) {
+            if (place.email) {
                 history.push('/showmethemoney')
             } else {
                 history.push('/signup')
             }
+        }).catch((error) => {
+            alert("something went wrong here");
         })
     }
 

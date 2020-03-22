@@ -56,9 +56,10 @@ function App() {
                             <Route path="/showmethemoney">
                                 <DonationOverview />
                             </Route>
-                            <Route path="/payoutdetails">
+                            {/* <Route path="/payoutdetails">
                                 <PayoutDetails />
                             </Route>
+                            </Route> */}
                             <Route path="/success">
                                 <Success />
                             </Route>

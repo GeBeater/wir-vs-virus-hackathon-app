@@ -26,6 +26,7 @@ import Typography from '@material-ui/core/Typography';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import { useTranslation } from 'react-i18next';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -58,10 +59,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Home() {
+    const {t} = useTranslation();
     const detectMobile = useMobileDetect();
     const classes = useStyles();
     const [currentPlace, setCurrentPlace] = useState(null);
-    const [center, setCenter] = useState(defaultLocation)
+    const [center, setCenter] = useState(defaultLocation);
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
     const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -76,7 +78,7 @@ export default function Home() {
         }
     };
 
-    useEffect(selectCurrentPlace, [currentPlace])
+    useEffect(selectCurrentPlace, [currentPlace]);
     useEffect(refreshCenter, [location, center]);
 
     const showSuccessNotification = () => {
@@ -150,7 +152,7 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter} />
+                        <Search onSelected={setCenter} location={location} />
                         <FAQ />
                     </Toolbar>
                 </AppBar>
@@ -158,11 +160,11 @@ export default function Home() {
             <MapContainer>
                 {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
-                        <h1><div>Hallo Unterstützer!</div></h1>
-                        <h3>Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:</h3>
-                        <h3><b>1/</b> Unternehmen auf der Karte wählen</h3>
-                        <h3><b>2/</b> Betrag festlegen</h3>
-                        <h3><b>3/</b> Mit PayPal spenden</h3>
+                        <h1>{t('home.welcome.headline')}</h1>
+                        <h3>{t('home.welcome.subline')}</h3>
+                        <h3><b>1/</b> {t('home.welcome.step1')}</h3>
+                        <h3><b>2/</b> {t('home.welcome.step2')}</h3>
+                        <h3><b>3/</b> {t('home.welcome.step3')}</h3>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />
@@ -239,8 +241,11 @@ const Container = styled.div`
     flex-direction: column;
 `;
 const MapContainer = styled.div`
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
 `;
 const BoxedMap = styled.div`

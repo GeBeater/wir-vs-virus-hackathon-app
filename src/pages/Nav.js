@@ -53,11 +53,6 @@ export default function Nav() {
                         Home
                     </Typography>
                 </Link>
-                <Link href="/list" variant="body2">
-                    <Typography component="h1" variant="h6">
-                        CompanyList
-                    </Typography>
-                </Link>
                 <Link href="/getit" variant="body2">
                     <Typography component="h1" variant="h6">
                         InvitationCode
@@ -73,16 +68,16 @@ export default function Nav() {
                         DonationOverview
                     </Typography>
                 </Link>
-                <Link href="/payoutdetails" variant="body2">
+                {/* <Link href="/payoutdetails" variant="body2">
                     <Typography component="h1" variant="h6">
                         PayoutDetails
                     </Typography>
-                </Link>
-                <Link href="/payment" variant="body2">
+                </Link> */}
+                {/* <Link href="/payment" variant="body2">
                     <Typography component="h1" variant="h6">
                         Payment
                     </Typography>
-                </Link>
+                </Link> */}
             </div>
             <Box mt={5}>
                 <Copyright />

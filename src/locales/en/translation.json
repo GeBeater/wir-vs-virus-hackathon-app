@@ -1,0 +1,11 @@
+{
+  "home": {
+    "welcome": {
+      "headline": "Hello supporter!",
+      "subline": "Together with CoFund.de we support companies in the Corona crisis quickly and easily:",
+      "step1": "Select company on the map",
+      "step2": "Set amount",
+      "step3": "Donate with PayPal"
+    }
+  }
+}
