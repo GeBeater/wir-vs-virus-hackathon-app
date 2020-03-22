@@ -72,7 +72,24 @@ export default function SignUp() {
 
     function register(event) {
         event.preventDefault();
-        console.log(form)
+        const requestData = {
+            invitationToken: invitationCode,
+            firstName: form.data.firstName,
+            lastName: form.data.lastName,
+            email: form.data.mail
+        }
+        fetch('/api/entrepreneurs', {
+            method: "POST", headers: {
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        }).then((response) => {
+            if(response.status === 200) {
+                history.push('/showmethemoney')
+            } else {
+                alert("Something went wrong here")
+            }
+        });
     }
 
     return (
