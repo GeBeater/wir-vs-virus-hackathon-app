@@ -44,7 +44,7 @@ export default function LiveTicket() {
     function fetchTicker() {
         fetch('/api/transactions/history').then(r => r.json()).then(data => {
             setTransactions(data.filter((a,i) => i < 3));
-        });
+        }).catch(()=>{});
     }
     return (
         <>
