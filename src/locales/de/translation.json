@@ -1,5 +1,6 @@
 {
   "close": "Schließen",
+  "next": "Weiter",
   "home": {
     "welcome": {
       "headline": "Hallo Unterstützer!",
@@ -112,5 +113,12 @@
     "travel_agency": "Reiseveranstalter",
     "veterinary_care": "Tierhandlung",
     "zoo": "Zoo"
+  },
+  "signup": {
+    "button": "Registrieren",
+    "slug": {
+      "label": "Dein Kürzel",
+      "description": "Verwende dieses Feld, um ein Kürzel für dein Unternehmen zu erstellen, wobei nur Buchstaben und keine Leerzeichen verwendet werden dürfen. Du kannst es später verwenden, um einen persönlichen Link mit Kunden, Freunden und Familie zu teilen, um aktiv für Spenden zu werben."
+    }
   }
 }

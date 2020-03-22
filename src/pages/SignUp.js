@@ -12,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import Logo from '../assets/cofund.svg';
 import {useCompanyContext} from '../context/CompanyContext';
+import {useTranslation} from "react-i18next";
 
 function Copyright() {
     return (
@@ -49,11 +50,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp() {
+    const {t} = useTranslation();
     const classes = useStyles();
 
     const [{invitationCode, place}] = useCompanyContext();
     const history = useHistory();
-    const [form, setForm] = useState({data: {firstName: null, lastName: null, mail: null}, valid: false});
+    const initialSlug = generateRandomSlug();
+    const [form, setForm] = useState({data: {firstName: null, lastName: null, mail: null, slug: initialSlug}, valid: false});
 
     useEffect(() => {
         if (!invitationCode || !place) {
@@ -76,7 +79,8 @@ export default function SignUp() {
             invitationToken: invitationCode,
             firstName: form.data.firstName,
             lastName: form.data.lastName,
-            email: form.data.mail
+            email: form.data.mail,
+            slug: form.data.slug
         }
         fetch('/api/entrepreneurs', {
             method: "POST", headers: {
@@ -90,6 +94,10 @@ export default function SignUp() {
                 alert("Something went wrong here")
             }
         });
+    }
+
+    function generateRandomSlug() {
+        return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
     }
 
     return (
@@ -114,7 +122,6 @@ export default function SignUp() {
                                     label="Unternehmen"
                                     type="company"
                                     id="company"
-                                    autoFocus
                                     value={place.company}
                                 />
                             </Grid>
@@ -127,7 +134,6 @@ export default function SignUp() {
                                     label="Addresse"
                                     type="address"
                                     id="address"
-                                    autoFocus
                                     value={place.address}
                                 />
                             </Grid>
@@ -166,7 +172,7 @@ export default function SignUp() {
                                     fullWidth
                                     id="firstName"
                                     label="Vorname"
-                                    autoComplete="fname"
+                                    autoComplete="given-name"
                                     onChange={(event) => setValue('firstName', event.target.value)}
                                 />
                             </Grid>
@@ -178,7 +184,7 @@ export default function SignUp() {
                                     id="lastName"
                                     label="Nachname"
                                     name="lastName"
-                                    autoComplete="lname"
+                                    autoComplete="family-name"
                                     onChange={(event) => setValue('lastName', event.target.value)}
                                 />
                             </Grid>
@@ -194,6 +200,19 @@ export default function SignUp() {
                                     onChange={(event) => setValue('mail', event.target.value)}
                                 />
                             </Grid>
+                            {t('signup.slug.description')}
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="slug"
+                                    label={t('signup.slug.label')}
+                                    name="slug"
+                                    defaultValue={initialSlug}
+                                    onChange={(event) => setValue('slug', event.target.value)}
+                                />
+                            </Grid>
                         </Grid>
                         <Button
                             type="submit"
@@ -203,7 +222,7 @@ export default function SignUp() {
                             className={classes.submit}
                             disabled={!form.valid}
                         >
-                            Weiter
+                            {t('signup.button')}
                         </Button>
                     </form>
                 </div>

@@ -14,7 +14,7 @@ export default function Success() {
             <img src={Logo} style={{width: 65, height: 65}} alt="CoFund Logo" />
             <ConatinerWrapper>
                 <Container>
-                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "20px", textAlign: 'center'}}>
+                    <header style={{gridArea: "header", marginBottom: "20px", textAlign: 'center'}}>
                         <h1>
                             Danke für deine Unterstützung!
                         </h1>
