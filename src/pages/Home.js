@@ -42,7 +42,7 @@ export default function Home() {
     const detectMobile = useMobileDetect();
     const classes = useStyles();
     const [currentPlace, setCurrentPlace] = useState(null);
-    const [center, setCenter] = useState(defaultLocation)
+    const [center, setCenter] = useState(defaultLocation);
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
 
@@ -53,7 +53,7 @@ export default function Home() {
         }
     };
 
-    useEffect(selectCurrentPlace, [currentPlace])
+    useEffect(selectCurrentPlace, [currentPlace]);
     useEffect(refreshCenter, [location, center]);
 
     return (
@@ -62,8 +62,8 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter} />
-                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
+                        <Search onSelected={setCenter} location={location} center={center}/>
+                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="Help Logo" />
                     </Toolbar>
                 </AppBar>
             </div>
@@ -92,7 +92,7 @@ export default function Home() {
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
         </Container>
-    )
+    );
 
     function refreshCenter() {
         if (!loading && !location.error && location.lat && center === defaultLocation) {

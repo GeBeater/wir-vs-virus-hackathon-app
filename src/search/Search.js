@@ -32,30 +32,46 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export default function Search({onSelected}) {
+export default function Search({onSelected, location}) {
     const classes = useStyles();
-    let geocoder;
+    let geocoder, autocompleteService;
     const [{_, google}] = useAppContext();
     const [results, setResults] = useState([]);
+    const radiusInMeters = 10000;
+    const types = ['establishment']; // we could also define the exact types of establishments, see https://developers.google.com/places/supported_types#table3
 
     function onSearch(event) {
         event.preventDefault();
         const searchTerm = event.target.search.value;
-        if (!geocoder) {
-            geocoder = new google.maps.Geocoder();
+        const searchRadius = new google.maps.Circle({center: location, radius: radiusInMeters});
+
+        if (!autocompleteService) {
+            autocompleteService = new google.maps.places.AutocompleteService();
         }
-        geocoder.geocode({'address': searchTerm}, function (results, status) {
-            if (status === "OK") {
-                if (results.length > 1) {
-                    setResults(results)
-                } else {
-                    onSelect(results[0])
-                }
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
+        const options = {input: searchTerm, types: types, bounds: searchRadius.getBounds(), strictBounds: true};
+        autocompleteService.getPlacePredictions(options, displaySuggestions);
     }
+
+    const displaySuggestions = function(predictions, status) {
+        if (status != google.maps.places.PlacesServiceStatus.OK) {
+            console.log('Search was not successful for the following reason: ' + status);
+            return;
+        } else {
+            if (!geocoder) {
+                geocoder = new google.maps.Geocoder();
+            }
+            let results = [];
+            predictions.forEach(function(prediction) {
+                geocoder.geocode({'placeId': prediction.place_id}, function (resultList, status) {
+                    if (status === "OK" && resultList.length === 1) {
+                        console.log(resultList[0]);
+                        results.push(resultList[0]);
+                    }
+                });
+            });
+            setResults(results);
+        }
+    };
 
     function onSelect(result) {
         const newCenter = {lat:result.geometry.location.lat(), lng: result.geometry.location.lng(), placeId: result.place_id};
@@ -80,7 +96,7 @@ export default function Search({onSelected}) {
                             results.map((result) => {
                                 return <Result onClick={() => onSelect(result)}>{result.formatted_address}</Result>
                             })
-                        }                        
+                        }
                     </Paper>
                 }
             </QuickSearch>
