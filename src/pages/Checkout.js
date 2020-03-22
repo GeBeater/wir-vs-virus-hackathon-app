@@ -48,6 +48,7 @@ export default function Checkout() {
     const [amount, setAmount] = useState(0);
     const [brainTreeReady, setBrainTreeReady] = useState(false);
     const [paying, setPaying] = useState(false);
+    const [isPayBtnEnabled, setIsPayBtnEnabled] = useState(false);
     const history = useHistory();
 
     const [{places}, dispatch] = useAppContext();
@@ -72,8 +73,13 @@ export default function Checkout() {
 
     useEffect(() => {
         let amount = 0;
-        places.forEach(p => amount += parseFloat(p.amount));
+        let allPlacesHaveAmount = true;
+        places.forEach(p => {
+            amount += parseFloat(p.amount);
+            allPlacesHaveAmount = allPlacesHaveAmount && (p.amount > 0)
+        });
         setAmount(Math.round(amount));
+        setIsPayBtnEnabled(!!places.length && allPlacesHaveAmount);
     }, [places]);
 
     function startPayment(event) {
@@ -167,6 +173,7 @@ export default function Checkout() {
                                             variant="contained"
                                             color="secondary"
                                             fullWidth
+                                            disabled={amount <= 0 || places.length === 0}
                                             onClick={handleDistributeAmount}
                                         >
                                             Gleichmäßig verteilen
@@ -179,7 +186,7 @@ export default function Checkout() {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    disabled={(amount > 0 && places.length > 0) ? false : true}
+                                    disabled={!isPayBtnEnabled}
                                     className={classes.submitBtn}
                                 >
                                     Weiter

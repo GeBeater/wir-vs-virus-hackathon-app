@@ -42,7 +42,9 @@ const useStyles = makeStyles(theme => ({
         height: 56
     },
     amountTf: {
-        maxWidth: 120
+        width: 100,
+        minWidth: 100,
+        maxWidth: 100,
     }
 }));
 
