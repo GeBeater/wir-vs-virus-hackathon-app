@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import styled from "styled-components";
 import useGoogleMap from "./useGoogleMaps";
 
-export default function Map({center, zoom, children, events, google, style}) {
+export default function Map({center, zoom, children, events, google}) {
     const {maps, map, mapRef, loading} = useGoogleMap({zoom, center, events, google});
 
     useEffect(setCenter, [center]);
@@ -19,19 +19,15 @@ export default function Map({center, zoom, children, events, google, style}) {
         }
     }
     return (
-        <MapContainer style={style}>
+        <>
             <MapRef ref={mapRef} />
             {!loading &&
                 React.Children.map(children, child => {
                     return React.cloneElement(child, {map, maps});
                 })}
-        </MapContainer>
+        </>
     );
 }
-
-const MapContainer = styled.div`
-    height: 100%;
-`;
 
 const MapRef = styled.div`
     height: 100%;

@@ -80,13 +80,14 @@ export default function Home() {
                 }
                 <BoxedMap>
                     <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-50px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
-                    <Map
-                        zoom={16}
-                        center={center}
-                        events={events}
-                        google={google}
-                        style={{opacity: loading ? 0 : 1}}
-                    />
+                    <MapWrapper style={{opacity: loading ? 0 : 1}}>
+                        <Map
+                            zoom={16}
+                            center={center}
+                            events={events}
+                            google={google}
+                        />
+                    </MapWrapper>
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
@@ -94,7 +95,7 @@ export default function Home() {
     )
 
     function refreshCenter() {
-        if (!loading && !location.error && center === defaultLocation) {
+        if (!loading && !location.error && location.lat && center === defaultLocation) {
             setCenter({...location})
         }
     }
@@ -121,6 +122,11 @@ function StartNow({className, amount}) {
         </div>
     )
 }
+
+
+const MapWrapper = styled.div`
+    height: 100%;
+`;
 
 const MobileStartNow = styled(StartNow)`
     position: fixed;
