@@ -51,8 +51,8 @@ export default function LiveTicket() {
             {(transactions && transactions.length > 0) &&
                 <>
                     <List className={classes.paper}>
-                        {transactions.map(transaction =>
-                            <ListItem className={classes.item}>
+                        {transactions.map((transaction, id) =>
+                            <ListItem key={`transaction-${id}`} className={classes.item}>
                                 <ListItemText
                                     secondary={`${transaction.amount}€ an ${transaction.company} in ${transaction.city}`}
                                 />
