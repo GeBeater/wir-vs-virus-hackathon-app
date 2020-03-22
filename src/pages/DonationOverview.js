@@ -1,13 +1,12 @@
-import React from 'react';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
+import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import Logo from "../assets/cofund.svg";
-import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 function Copyright() {
     return (
