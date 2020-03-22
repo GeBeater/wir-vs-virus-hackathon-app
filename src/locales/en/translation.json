@@ -12,8 +12,8 @@
     "warning": {
       "headline": "Warning",
       "text": "The place you selected seems to be of an unusual type. Do you want to add it anyway?",
-      "agree": "Yes add to list",
-      "disagree": "Close"
+      "agree": "Yes, add to list",
+      "disagree": "No"
     },
     "error": {
       "headline": "Sorry!",

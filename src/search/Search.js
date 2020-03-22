@@ -78,7 +78,7 @@ export default function Search({onSelected, location}) {
     return (
         <>
             <form onSubmit={onSearch} className={classes.search}>
-                <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
+                <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="Search Icon" />
                 <InputBase
                     name="search"
                     placeholder={t('search.address')}
@@ -106,7 +106,7 @@ const QuickSearch = styled.div`
     top: 60px;
     left: 80px;
     max-width: 50%;
-    @media (max-width: 768px) { 
+    @media (max-width: 768px) {
         left: 5px;
         right: 5px;
         width: 100%;

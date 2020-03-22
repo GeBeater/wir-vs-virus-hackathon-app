@@ -36,9 +36,9 @@ export default function Success() {
                             Motiviere andere.
                         </h1>
                         <div style={{paddingLeft: '20px'}}>
-                            <img src={Twitter} style={{width: 30, height: 30, marginRight: '30px'}} alt="Help Icon" />
-                            <img src={Instagram} style={{width: 30, height: 30, marginRight: '30px'}} alt="Help Icon" />
-                            <img src={Facebook} style={{width: 30, height: 30, marginRight: '30px'}} alt="Help Icon" />
+                            <img src={Twitter} style={{width: 30, height: 30, marginRight: '30px'}} alt="Twitter Icon" />
+                            <img src={Instagram} style={{width: 30, height: 30, marginRight: '30px'}} alt="Instagram Icon" />
+                            <img src={Facebook} style={{width: 30, height: 30, marginRight: '30px'}} alt="Facebook Icon" />
                         </div>
                     </div>
                 </Container>
@@ -64,17 +64,17 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     max-width: 1000px;
-    @media (max-width: 1200px) { 
+    @media (max-width: 1200px) {
         margin: 0 15px;
         padding-top: 45px;
     }
 `
 
-const Container = styled.div`   
+const Container = styled.div`
     padding: 0 20px;
     margin-top: 20px;
     width: 100%;
-    @media (max-width: 768px) { 
+    @media (max-width: 768px) {
         left: 5px;
         right: 5px;
         width: 100%;
