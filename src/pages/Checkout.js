@@ -96,7 +96,6 @@ export default function Checkout() {
 
     return (
         <Wrapper>
-               
                 <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
                     <AppBar position="static">
                         <Toolbar className={classes.toolbar}>
@@ -144,8 +143,7 @@ export default function Checkout() {
                                     />
                                 </Grid>
                             </Grid>
-
-                            <CompanyList></CompanyList>
+                            <CompanyList />
                             <Button
                                 type="submit"
                                 fullWidth
