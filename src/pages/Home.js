@@ -16,6 +16,7 @@ import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
+import {useTranslation} from 'react-i18next';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -45,6 +46,7 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
+    const {t} = useTranslation();
 
     const events = {
         onClick: (data) => {
@@ -70,9 +72,9 @@ export default function Home() {
             <MapContainer>
                 {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
-                        <h1>Hello!</h1>
-                        <h3>Let us together help our favourite stores</h3>
-                        <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
+                        <h1>{t('home.welcome.headline')}</h1>
+                        <h3>{t('home.welcome.subline')}</h3>
+                        <p>{t('home.welcome.text')}</p>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />
