@@ -12,6 +12,7 @@ import Logo from "../assets/cofund.svg";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,6 +41,7 @@ export default function Checkout() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
     const [brainTreeReady, setBrainTreeReady] = useState(false);
+    const history = useHistory();
 
     const [{places}] = useAppContext();
 
@@ -77,13 +79,17 @@ export default function Checkout() {
             placeIdAmounts: request,
             places
         }
-        await fetch('/api/payment/checkout', {
+        fetch('/api/payment/checkout', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify(data)
-        });
+        }).then(response => {
+            if (response.status === 200) {
+                history.push('/success');
+            }
+        })
     }
 
     return (
