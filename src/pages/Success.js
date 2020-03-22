@@ -2,7 +2,7 @@ import {Button} from '@material-ui/core';
 import React from 'react';
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
-import {colors, spacing} from "../theme/theme";
+import {colors} from "../theme/theme";
 import Twitter from "../assets/twitter.svg";
 import Facebook from "../assets/facebook.svg";
 import Instagram from "../assets/instagram.svg";
