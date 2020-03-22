@@ -11,6 +11,7 @@ import Help from "../assets/help-icon.svg";
 import Loading from "../assets/three-dots.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
+import FAQ from './FAQ';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
@@ -18,6 +19,13 @@ import CompanyList from "./CompanyList";
 import {isSupportedType, isValidPlace} from "../maps/placesUtils";
 import AlertDialog from "../components/AlertDialog";
 import Alert from "@material-ui/lab/Alert";
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -37,11 +45,6 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
-    },
-    faq: {
-        color: colors.grayA50,
-        fontFamily: 'Montserrat',
-        fontWeight: '600'
     },
     notificationWrapper: {
         position: 'absolute',
@@ -132,6 +135,15 @@ export default function Home() {
         }
     }
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     return (
         <Container>
             <div className={classes.root}>
@@ -139,18 +151,18 @@ export default function Home() {
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter} />
-                        <Button style={{marginLeft: spacing.s, padding: '10px 10px'}}>
-                            <img src={Help} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
-                            <span className={classes.faq}>FAQ</span>
-                        </Button>
+                        <FAQ />
                     </Toolbar>
                 </AppBar>
             </div>
             <MapContainer>
                 {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
-                        <h1><div>Hello!</div><div>Let us together help our favourite stores</div></h1>
-                        <h3>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</h3>
+                        <h1><div>Hallo Unterstützer!</div></h1>
+                        <h3>Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:</h3>
+                        <h3><b>1/</b> Unternehmen auf der Karte wählen</h3>
+                        <h3><b>2/</b> Betrag festlegen</h3>
+                        <h3><b>3/</b> Mit PayPal spenden</h3>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />

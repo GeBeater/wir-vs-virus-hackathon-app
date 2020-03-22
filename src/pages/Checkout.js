@@ -12,6 +12,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
 import Search from "../search/Search";
+import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -34,11 +35,6 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
-    },
-    faq: {
-        color: colors.grayA50,
-        fontFamily: 'Montserrat',
-        fontWeight: '600'
     }
 }));
 
@@ -96,99 +92,103 @@ export default function Checkout() {
 
     return (
         <Wrapper>
-                <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
-                    <AppBar position="static">
-                        <Toolbar className={classes.toolbar}>
-                            <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                            <div style={{width: '100%'}}></div>
-                            <Button style={{marginLeft: spacing.s, padding: '10px 10px'}}>
-                                <img src={Help} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
-                                <span className={classes.faq}>FAQ</span>
-                            </Button>
-                        </Toolbar>
-                    </AppBar>
-                </div>
-
-            <Container step={step}>
-                <Button href='/'>
-                    <span>Back</span>
-                </Button>
-                <header style={{gridArea: "header", textAlign: "left", marginBottom: "30px"}}>
-                    <Typography component="h1" variant="h4">
-                        Good Choice!
-                        </Typography>
-                    <Typography component="h1" variant="h4">
-                        Tell us how much money you would like to donate
-                        </Typography>
-                </header>
-                {step === 1 ?
-                    <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
-                        <form noValidate onSubmit={startPayment}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    required
-                                    label="Enter amount"
-                                    name="donation"
-                                    type="number"
-                                    id="donation"
-                                    autoFocus
-                                    onChange={(event) => setAmount(event.target.value)}
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">€</InputAdornment>,
-                                    }}
-                                    variant="outlined"
-                                    />
+            <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
+                <AppBar position="static">
+                    <Toolbar className={classes.toolbar}>
+                        <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
+                        <div style={{width: '100%'}}></div>
+                        <FAQ />
+                    </Toolbar>
+                </AppBar>
+            </div>
+            <ConatinerWrapper>
+                <TitleContainer>
+                    <Button href='/'>
+                        <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
+                        <span>Zurück</span>
+                    </Button>
+                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px"}}>
+                        <Typography component="h1" variant="h4">
+                            Klasse!
+                            </Typography>
+                        <Typography component="h1" variant="h4">
+                            Sag uns noch mit wie viel du unterstützen möchtest
+                            </Typography>
+                    </header>
+                </TitleContainer>
+            </ConatinerWrapper>
+            <ConatinerWrapper>
+                <Container>
+                    {step === 1 ?
+                        <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
+                            <form noValidate onSubmit={startPayment}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} style={{marginBottom: '25px'}}>
+                                        <TextField
+                                        variant="outlined"
+                                        fullWidth
+                                        required
+                                        label="Enter amount"
+                                        name="donation"
+                                        type="number"
+                                        id="donation"
+                                        autoFocus
+                                        onChange={(event) => setAmount(event.target.value)}
+                                        InputProps={{
+                                            endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                        }}
+                                        variant="outlined"
+                                        />
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <CompanyList />
+                                <CompanyList />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={(amount > 0 && places.length > 0) ? false : true}
+                                >
+                                    Continue
+                                </Button>
+                            </form>
+                        </Panel>
+                        :
+                        <Panel style={{width: "100%", gridArea: "right"}}>
+                            {token && amount && <DropIn
+                                options={{
+                                    authorization: token,
+                                    paypal: {
+                                        flow: 'checkout',
+                                        amount: amount,
+                                        currency: 'EUR',
+                                        commit: true
+                                    }
+                                }}
+                                onInstance={setInstance}
+                            />
+                            }
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                disabled={(amount > 0 && places.length > 0) ? false : true}
+                                onClick={pay}
+                                disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
-                                Continue
+                                Pay now
                             </Button>
-                        </form>
-                    </Panel>
-                    :
-                    <Panel style={{width: "100%", gridArea: "right"}}>
-                        {token && amount && <DropIn
-                            options={{
-                                authorization: token,
-                                paypal: {
-                                    flow: 'checkout',
-                                    amount: amount,
-                                    currency: 'EUR',
-                                    commit: true
-                                }
-                            }}
-                            onInstance={setInstance}
-                        />
-                        }
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={pay}
-                            disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
-                        >
-                            Pay now
-                        </Button>
-                    </Panel>
-                }
-            </Container>
-            <Container step={step}>
-                <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: colors.grayA50}}>
-                    <h1>Your donation arrives - How it works</h1>
-                    <h3><b>1/</b> Lorem ipsum dolor sit amet, conseteturtua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</h3>
-                    <h3><b>2/</b> Lorem ipsum dolor sit auptu amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </h3>
-                </div>
-            </Container>
+                        </Panel>
+                    }
+                </Container>
+                <Container step={step}>
+                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: colors.grayA50}}>
+                        <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
+                        <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
+                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
+                        <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
+                    </div>
+                </Container>
+            </ConatinerWrapper>
         </Wrapper>
     )
 }
@@ -197,28 +197,47 @@ const Panel = styled.div`
     padding: 20px;
 `
 
+const ConatinerWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    @media (max-width: 768px) { 
+        flex-direction: column;
+        justify-content: center;
+    }
+`
 const Wrapper = styled.div`
     display: flex;
-    justify-content: center;
-    height: 100%;
-    margin: 0 10%;
-`
-
-const Container = styled.div`
-    padding: 0 20px;
-    margin-top: 100px;
-    width: 60%;
-    @media (max-width: 768px) { 
-        left: 5px;
-        right: 5px;
-        width: 90%;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-top: 120px;
+    align-items: center;
+    max-width: 1000px;
+    @media (max-width: 1200px) { 
+        margin: 0 15px;
+        padding-top: 45px;
     }
 `
 
-const BackButton = styled.img`
-    width: 40px;
-    height: 40px;
-    &:hover{
-        opacity: 0.6;
+const Container = styled.div`    
+    padding: 0 20px;
+    margin-top: 20px;
+    width: 100%;
+    @media (max-width: 768px) { 
+        left: 5px;
+        right: 5px;
+        width: 100%;
+    }
+`
+
+const TitleContainer = styled.div`    
+    padding: 0 20px;
+    margin-top: 20px;
+    width: 50%;
+    @media (max-width: 1000px) { 
+        left: 5px;
+        right: 5px;
+        width: 100%;
     }
 `
