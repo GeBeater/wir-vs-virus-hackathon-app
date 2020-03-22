@@ -19,7 +19,7 @@ export const initialAppContextState = {
 };
 
 export const appReducer = (state, action) => {
-    console.log('appReducer', state, action);
+    console.debug('appReducer', state, action);
     switch (action.type) {
         case SET_MAP:
             return { ...state, map: action.payload };;

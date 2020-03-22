@@ -6,15 +6,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
+import useMobileDetect from 'use-mobile-detect-hook';
 import Logo from "../assets/cofund.svg";
 import Help from "../assets/help-icon.svg";
-import {ADD_PLACE, REMOVE_PLACE, useAppContext} from "../context/AppContext";
+import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
-import {PlaceTile} from "./PlaceTile";
-import List from "@material-ui/core/List";
 import CompanyList from "./CompanyList";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
@@ -39,12 +38,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Home() {
+    const detectMobile = useMobileDetect();
     const classes = useStyles();
     const [currentPlace, setCurrentPlace] = useState(null);
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
-    const [{loading, google, places, map}, dispatch] = useAppContext();
-    let geocoder;
+    const [{google, places, map}, dispatch] = useAppContext();
 
     const events = {
         onClick: (data) => {
@@ -55,8 +54,7 @@ export default function Home() {
 
     // selection changes
     useEffect(() => {
-        console.log(places)
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length == 0) {
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -72,35 +70,28 @@ export default function Home() {
         }
     }, [location, center]);
 
-    const handleDeleteTile = value => () => {
-        dispatch({type: REMOVE_PLACE, payload: value});
-    };
-
     return (
         <Container>
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter}/>
+                        <Search onSelected={setCenter} />
                         <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
                     </Toolbar>
                 </AppBar>
             </div>
             <MapContainer>
-                <Paper className={classes.paper}>
+                {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
                         <h1>Hello!</h1>
                         <h3>Let us together help our favourite stores</h3>
                         <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
                     </header>
-                    <CompanyList/>
-                    <footer>
-                        <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true} >
-                            Support your favorite branches
-                        </Button>
-                    </footer>
+                    <CompanyList />
+                    <StartNow amount={places.length} />
                 </Paper>
+                }
                 <BoxedMap>
                     <Map
                         zoom={16}
@@ -110,9 +101,28 @@ export default function Home() {
                     />
                 </BoxedMap>
             </MapContainer>
+            {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
         </Container>
     )
 }
+
+function StartNow({className, amount}) {
+    return (
+        <div className={className}>
+            {(amount > 0) &&
+                <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true}>Support your {amount} branches now</Button>
+            }
+        </div>
+    )
+}
+
+const MobileStartNow = styled(StartNow)`
+    position: fixed;
+    bottom: 10px;
+    z-index: 3;
+    width: 70%;
+    align-self: center;
+`
 
 const Container = styled.div`
     width: 100%;

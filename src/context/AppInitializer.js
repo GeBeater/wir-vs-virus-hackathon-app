@@ -1,7 +1,7 @@
-import {SET_ERROR, SET_GOOGLE_INSTANCE, SET_LOADING, useAppContext} from "./AppContext";
-import {useEffect} from "react";
 import GoogleMapsApiLoader from "google-maps-api-loader";
+import {useEffect} from "react";
 import {apiKey} from "../maps/apiKey";
+import {SET_GOOGLE_INSTANCE, SET_LOADING, useAppContext} from "./AppContext";
 
 export const AppInitializer = () => {
     const [_, dispatch] = useAppContext();
