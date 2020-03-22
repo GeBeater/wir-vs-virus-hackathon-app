@@ -11,12 +11,15 @@ import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles(theme => ({
     listitem: {
-        borderBottom: '1px solid lightgrey',
-        padding: '20px'
+        padding: '10px 20px',
+        boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
+        backgroundColor: 'white',
+        marginBottom: 10
     },
-    listheader: {
+    itemText: {
         color: 'grey',
-        fontSize: '15px'
+        fontSize: '15px',
+        paddingRight: 12
     },
     checkbox: {
         color : 'grey',
@@ -24,6 +27,10 @@ const useStyles = makeStyles(theme => ({
             cursor: 'pointer',
             backgroundColor: fade(theme.palette.common.black, 0.05),
         }
+    },
+    secondaryAction: {
+        top: 20,
+        right: 8
     }
 }));
 
@@ -33,7 +40,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
     const labelId = `checkbox-list-secondary-label-${place_id}`;
 
     return (
-        <ListItem button className={classes.listitem}>
+        <ListItem button className={classes.listitem} boxShadow={0}>
             <ListItemAvatar>
                 <Avatar
                     variant='rounded'
@@ -41,8 +48,8 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
                     src={icon}
                 />
             </ListItemAvatar>
-            <ListItemText id={labelId} primary={name} secondary={formatted_address} className={classes.listheader}/>
-            <ListItemSecondaryAction>
+            <ListItemText id={labelId} primary={name} secondary={formatted_address} className={classes.itemText}/>
+            <ListItemSecondaryAction className={classes.secondaryAction}>
                 {showDeleteBtn && (<IconButton edge="end" aria-label="delete" onClick={handleDelete(place_id)}>
                     <CloseIcon />
                 </IconButton>)}
