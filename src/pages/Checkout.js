@@ -2,7 +2,7 @@ import {Button, Grid, TextField, Typography} from '@material-ui/core';
 import DropIn from "braintree-web-drop-in-react";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
-import {useAppContext} from "../context/AppContext";
+import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
 import {makeStyles} from "@material-ui/core/styles";
@@ -32,6 +32,12 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    overallAmountField: {
+        marginBottom: 10
+    },
+    submitBtn: {
+        marginTop: 10
     }
 }));
 
@@ -44,7 +50,7 @@ export default function Checkout() {
     const [paying, setPaying] = useState(false);
     const history = useHistory();
 
-    const [{places}] = useAppContext();
+    const [{places}, dispatch] = useAppContext();
 
     const classes = useStyles();
 
@@ -55,14 +61,20 @@ export default function Checkout() {
             setToken(json.token);
         });
 
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (instance != null) {
             instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
             instance.on('noPaymentMethodRequestable', () => setBrainTreeReady(false))
         }
-    }, [instance])
+    }, [instance]);
+
+    useEffect(() => {
+        let amount = 0;
+        places.forEach(p => amount += parseFloat(p.amount));
+        setAmount(Math.round(amount));
+    }, [places]);
 
     function startPayment(event) {
         event.preventDefault();
@@ -72,13 +84,13 @@ export default function Checkout() {
     async function pay() {
         setPaying(true)
         const {nonce} = await instance.requestPaymentMethod();
-        const request = places.reduce((acc, place) => {
-            return {...acc, [place.place_id]: amount / places.length}
+        const placeAmounts = places.reduce((acc, place) => {
+            return {...acc, [place.details.place_id]: place.amount}
         }, {});
         const data = {
             nonce,
             amount: amount,
-            placeIdAmounts: request,
+            placeIdAmounts: placeAmounts,
             places
         }
         fetch('/api/payment/checkout', {
@@ -94,6 +106,12 @@ export default function Checkout() {
         })
     }
 
+    const handleDistributeAmount = () => {
+        const newAmount = Math.round(amount / places.length * 100) / 100 ;
+        const newPlaces = places.map(p => ({details: p.details, amount: newAmount}));
+        dispatch({type: UPDATE_PLACES, payload:  newPlaces});
+    };
+
     return (
         <Wrapper>
             <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
@@ -107,7 +125,7 @@ export default function Checkout() {
             </div>
             <ConatinerWrapper>
                 <TitleContainer>
-                    <Button component={Link} to="/" style={{marginBottom: spacing.m}}>
+                    <Button component={Link} to="/">
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
                         <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
@@ -126,33 +144,43 @@ export default function Checkout() {
                     {step === 1 ?
                         <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
                             <form noValidate onSubmit={startPayment}>
-                                <Grid container spacing={2}>
+                                <Grid container spacing={2} className={classes.overallAmountField}>
                                     <Grid item xs={12}>
                                         <TextField style={{marginBottom: spacing.m}}
                                         variant="outlined"
                                         fullWidth
-                                        required
-                                        label="Betrag eingeben"
+                                        label="Gesamtbetrag"
                                         name="donation"
                                         type="number"
                                         id="donation"
                                         autoFocus
                                         onChange={(event) => setAmount(event.target.value)}
+                                        value={parseFloat(amount)}
                                         InputProps={{
                                             inputProps: { min: 0, max: 99999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
-                                        variant="outlined"
                                         />
                                     </Grid>
+                                    <Grid item xs={12} className={classes.overallAmountField}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            fullWidth
+                                            onClick={handleDistributeAmount}
+                                        >
+                                            Gleichmäßig verteilen
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <CompanyList />
+                                <CompanyList showInputs={true} />
                                 <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     color="primary"
                                     disabled={(amount > 0 && places.length > 0) ? false : true}
+                                    className={classes.submitBtn}
                                 >
                                     Weiter
                                 </Button>

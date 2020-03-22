@@ -87,7 +87,7 @@ export default function Home() {
 
     const handleDialogAgree = () => {
         if (pendingPlaceDetails) {
-            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            dispatch({type: ADD_PLACE, payload: {details: pendingPlaceDetails, amount: 0}});
             showSuccessNotification();
             setPendingPlaceDetails(null);
         }
@@ -106,7 +106,7 @@ export default function Home() {
     }
 
     function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+        if (currentPlace && places.filter(place => place.details.place_id === currentPlace).length === 0) {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({
                 placeId: currentPlace,
@@ -123,7 +123,7 @@ export default function Home() {
                     return;
                 }
 
-                dispatch({type: ADD_PLACE, payload: details});
+                dispatch({type: ADD_PLACE, payload:  {details, amount: 0}});
                 showSuccessNotification();
             });
         }
