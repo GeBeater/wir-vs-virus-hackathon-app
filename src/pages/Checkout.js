@@ -168,7 +168,8 @@ export default function Checkout() {
                                         amount: amount,
                                         currency: 'EUR',
                                         commit: true
-                                    }
+                                    },
+                                    locale: 'de_DE'
                                 }}
                                 onInstance={setInstance}
                             />
