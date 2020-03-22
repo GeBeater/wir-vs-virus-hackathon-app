@@ -163,7 +163,9 @@ export default function Home() {
                 }
                 <BoxedMap>
                     <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-80px", marginTop: "-30px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
-                    <img style={{position: "absolute", zIndex: 1000, bottom: "25px", left: "0"}} src={WeVsVirusLogo} alt="We versus virus project" />
+                    <WeVsVirus style={{zIndex: 2}}>
+                        <img src={WeVsVirusLogo} alt="We versus virus project" />
+                    </WeVsVirus>
                     <MapWrapper style={{opacity: loading ? 0 : 1}}>
                         <Map
                             zoom={16}
@@ -245,4 +247,16 @@ const BoxedMap = styled.div`
     flex-grow: 1;
     position: relative;
     background-color: rgb(240,240,240);
+`;
+
+const WeVsVirus = styled.div`
+    position: absolute;
+    
+    left: 0;
+    @media (max-width: 768px) { 
+        bottom: 25px;
+    }
+    @media (min-width: 769px) { 
+        top: 25px;
+    }
 `;
