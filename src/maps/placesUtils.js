@@ -30,7 +30,7 @@ const placeTypeBlacklist = [
     'university'
 ];
 
-const placeTypeWhitelist = [
+export const placeTypeWhitelist = [
     'aquarium',
     'art_gallery',
     'bakery',

@@ -9,7 +9,9 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import {TextField} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import {UPDATE_PLACE, UPDATE_PLACES, useAppContext} from "../context/AppContext";
+import {UPDATE_PLACE, useAppContext} from "../context/AppContext";
+import {useTranslation} from "react-i18next";
+import {placeTypeWhitelist} from "../maps/placesUtils";
 
 const useStyles = makeStyles(theme => ({
     listitem: {
@@ -50,20 +52,23 @@ const useStyles = makeStyles(theme => ({
 
 export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, showInput = false}) => {
     const classes = useStyles();
-    const {name, place_id, icon, address_components, photos} = place.details;
+    const {name, place_id, icon, address_components, photos, types} = place.details;
     const labelId = `checkbox-list-secondary-label-${place_id}`;
     const imgSrc = photos && photos.length ? photos[0].getUrl({maxWidth: 100, maxHeight: 100}) : icon;
     const [_, dispatch] = useAppContext();
+    const {t} = useTranslation();
 
-    const getShortAddress = (comps) => {
+    const getShortAddress = (types, comps) => {
         const route = address_components
             .filter(cmp => cmp.types && cmp.types.indexOf('route') >= 0)
             .map(cmp => cmp.short_name);
         const streetNumber = address_components
             .filter(cmp => cmp.types && cmp.types.indexOf('street_number') >= 0)
             .map(cmp => cmp.short_name);
+        const filteredTypes = types.filter(t => placeTypeWhitelist.indexOf(t) >= 0);
+        const type = filteredTypes.length ? t(`place.${filteredTypes[0]}`) : null;
 
-        return `${route} ${streetNumber}`;
+        return `${type ? `${type} | ` : ''}${route} ${streetNumber}`;
     };
 
     const handleChangeAmount = (evt) => {
@@ -76,7 +81,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
             evt.preventDefault();
         }
     };
-    
+
     return (
         <ListItem button className={classes.listitem}>
             <ListItemAvatar className={classes.avatar}>
@@ -90,7 +95,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
             <ListItemText
                 id={labelId}
                 primary={name}
-                secondary={getShortAddress(address_components)}
+                secondary={getShortAddress(types, address_components)}
                 className={classes.itemText}
                 primaryTypographyProps={{variant: 'subtitle1', style: {marginBottom: '4px'}}}
                 secondaryTypographyProps={{variant: 'subtitle2'}}
