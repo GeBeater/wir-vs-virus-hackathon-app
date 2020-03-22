@@ -3,7 +3,6 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
-import {Typography} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -73,7 +72,7 @@ export default function CompanyList() {
             )}
             {!hasPlaces && (
                 <div style={{height: '100%', backgroundColor: '#f9f9f9', borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <span style={{color: '#ababab'}}>No shop selected yet</span>
+                    <span style={{color: '#ababab'}}>Kein Unternehmen ausgewählt</span>
                 </div>
             )}
         </List>

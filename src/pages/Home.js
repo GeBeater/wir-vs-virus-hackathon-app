@@ -213,7 +213,7 @@ function StartNow({className, amount}) {
     return (
         <div className={className}>
             {(amount > 0) &&
-                <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true}>Support your {amount} branches now</Button>
+                <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true}>Jetzt unterstützen ({amount})</Button>
             }
         </div>
     )

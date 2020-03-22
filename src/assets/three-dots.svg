@@ -33,5 +33,5 @@
                  values="1;.5;1" calcMode="linear"
                  repeatCount="indefinite" />
     </circle>
-    <text x="10" y="50" class="Rrrrr">Waiting for your address!</text>
+    <text x="52" y="50" class="Rrrrr">Lade Adresse...</text>
 </svg>

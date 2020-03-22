@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import InvitationCode from "./pages/InvitationCode";
 import Nav from "./pages/Nav";
 import SignUp from "./pages/SignUp";
+import Success from "./pages/Success";
 import {appTheme} from "./theme/theme";
 import {CompanyContextWrapper} from './context/CompanyContext';
 
@@ -57,6 +58,9 @@ function App() {
                             </Route>
                             <Route path="/payoutdetails">
                                 <PayoutDetails />
+                            </Route>
+                            <Route path="/success">
+                                <Success />
                             </Route>
                             <Route path="/">
                                 <Home />

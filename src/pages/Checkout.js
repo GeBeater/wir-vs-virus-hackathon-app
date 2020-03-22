@@ -24,6 +24,8 @@ const useStyles = makeStyles(theme => ({
         zIndex: 3
     },
     toolbar: {
+        maxWidth: '1000px',
+        width: '100%',
         backgroundColor: colors.white,
     },
     paper: {
@@ -93,7 +95,7 @@ export default function Checkout() {
     return (
         <Wrapper>
             <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
-                <AppBar position="static">
+                <AppBar position="static" style={{backgroundColor: 'white', display: 'flex', alignItems: 'center'}}>
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <div style={{width: '100%'}}></div>
@@ -103,9 +105,9 @@ export default function Checkout() {
             </div>
             <ConatinerWrapper>
                 <TitleContainer>
-                    <Button href='/'>
+                    <Button href='/' style={{marginBottom: spacing.m}}>
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
-                        <span>Zurück</span>
+                        <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
                     <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px"}}>
                         <Typography component="h1" variant="h4">
@@ -128,7 +130,7 @@ export default function Checkout() {
                                         variant="outlined"
                                         fullWidth
                                         required
-                                        label="Enter amount"
+                                        label="Betrag eingeben"
                                         name="donation"
                                         type="number"
                                         id="donation"
@@ -149,7 +151,7 @@ export default function Checkout() {
                                     color="primary"
                                     disabled={(amount > 0 && places.length > 0) ? false : true}
                                 >
-                                    Continue
+                                    PayPal
                                 </Button>
                             </form>
                         </Panel>
