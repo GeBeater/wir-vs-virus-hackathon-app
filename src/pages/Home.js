@@ -1,4 +1,3 @@
-
 import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
@@ -12,10 +11,21 @@ import Help from "../assets/help-icon.svg";
 import Loading from "../assets/three-dots.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
+import FAQ from './FAQ';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
+import {isSupportedType, isValidPlace} from "../maps/placesUtils";
+import AlertDialog from "../components/AlertDialog";
+import Alert from "@material-ui/lab/Alert";
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -35,6 +45,15 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    notificationWrapper: {
+        position: 'absolute',
+        width: '100%',
+        top: 0,
+        padding: 10
+    },
+    notification: {
+        boxShadow: '0px 0px 4px 0px rgba(0,0,0,0.1)',
     }
 }));
 
@@ -45,7 +64,11 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation);
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
-
+    const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
+    const [pendingPlaceDetails, setPendingPlaceDetails] = useState(null);
+    let hideNotificationTimeoutId;
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
@@ -56,23 +79,90 @@ export default function Home() {
     useEffect(selectCurrentPlace, [currentPlace]);
     useEffect(refreshCenter, [location, center]);
 
+    const showSuccessNotification = () => {
+        setIsNotificationVisible(true);
+        clearTimeout(hideNotificationTimeoutId);
+        hideNotificationTimeoutId = setTimeout(() => {
+            setIsNotificationVisible(false);
+        }, 2000);
+    };
+
+    const handleAlertAgree = () => {
+        setIsAlertVisible(false);
+    };
+
+    const handleDialogAgree = () => {
+        if (pendingPlaceDetails) {
+            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            showSuccessNotification();
+            setPendingPlaceDetails(null);
+        }
+        setIsDialogVisible(false);
+    };
+
+    const handleDialogDisagree = () => {
+        setPendingPlaceDetails(null);
+        setIsDialogVisible(false);
+    };
+
+    function refreshCenter() {
+        if (!loading && !location.error && location.lat && center === defaultLocation) {
+            setCenter({...location})
+        }
+    }
+
+    function selectCurrentPlace() {
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails({
+                placeId: currentPlace,
+                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos']
+            }, (details, status) => {
+                if (!isValidPlace(details, status, google)) {
+                    setIsAlertVisible(true);
+                    return;
+                }
+
+                if (!isSupportedType(details)) {
+                    setIsDialogVisible(true);
+                    setPendingPlaceDetails(details);
+                    return;
+                }
+
+                dispatch({type: ADD_PLACE, payload: details});
+                showSuccessNotification();
+            });
+        }
+    }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     return (
         <Container>
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter} location={location} center={center}/>
-                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="Help Logo" />
+                        <Search onSelected={setCenter} location={location} />
+                        <FAQ />
                     </Toolbar>
                 </AppBar>
             </div>
             <MapContainer>
                 {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
-                        <h1>Hello!</h1>
-                        <h3>Let us together help our favourite stores</h3>
-                        <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
+                        <h1><div>Hallo Unterstützer!</div></h1>
+                        <h3>Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:</h3>
+                        <h3><b>1/</b> Unternehmen auf der Karte wählen</h3>
+                        <h3><b>2/</b> Betrag festlegen</h3>
+                        <h3><b>3/</b> Mit PayPal spenden</h3>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />
@@ -88,28 +178,34 @@ export default function Home() {
                             google={google}
                         />
                     </MapWrapper>
+                    <div className={classes.notificationWrapper}>
+                        {isNotificationVisible && (
+                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                        )}
+                    </div>
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
+            {isAlertVisible && (
+                <AlertDialog
+                    title={'Error'}
+                    message={'The place you selected is invalid and cannot be added, sorry.'}
+                    agree={'OK'}
+                    handleAgree={handleAlertAgree}
+                />
+            )}
+            {isDialogVisible && (
+                <AlertDialog
+                    title={'Warning'}
+                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
+                    agree={'Yes'}
+                    disagree={'No'}
+                    handleAgree={handleDialogAgree}
+                    handleDisagree={handleDialogDisagree}
+                />
+            )}
         </Container>
     );
-
-    function refreshCenter() {
-        if (!loading && !location.error && location.lat && center === defaultLocation) {
-            setCenter({...location})
-        }
-    }
-
-    function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
-            const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    dispatch({type: ADD_PLACE, payload: details});
-                }
-            });
-        }
-    }
 }
 
 
@@ -143,8 +239,11 @@ const Container = styled.div`
     flex-direction: column;
 `;
 const MapContainer = styled.div`
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
 `;
 const BoxedMap = styled.div`

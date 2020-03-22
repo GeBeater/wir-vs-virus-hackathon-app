@@ -24,7 +24,7 @@ export const appReducer = (state, action) => {
         case SET_MAP:
             return { ...state, map: action.payload };;
         case ADD_PLACE:
-            return { ...state, places: [...state.places, action.payload] };
+            return { ...state, places: [action.payload, ...state.places] };
         case REMOVE_PLACE:
             const newPlaces = state.places.filter(p => p.place_id !== action.payload);
             return { ...state, places: newPlaces };

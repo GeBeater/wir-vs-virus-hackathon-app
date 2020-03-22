@@ -1,14 +1,16 @@
-import React from 'react';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import {makeStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import Logo from "../assets/cofund.svg";
+import {SET_CODE, useCompanyContext, SET_PLACE} from '../context/CompanyContext';
 
 function Copyright() {
     return (
@@ -44,6 +46,26 @@ const useStyles = makeStyles(theme => ({
 
 export default function InvitationCode() {
     const classes = useStyles();
+    const history = useHistory();
+    const [_, dispatch] = useCompanyContext();
+
+    const [inviteCode, setInviteCode] = useState(null);
+
+    function login(event) {
+        event.preventDefault();
+        fetch('/api/places').then(response => {
+            return response.json()
+        }).then(places => {
+            const place = places[0];
+            dispatch({type: SET_PLACE, payload: place});
+            dispatch({type: SET_CODE, payload: inviteCode});
+            if (place.created) {
+                history.push('/showmethemoney')
+            } else {
+                history.push('/signup')
+            }
+        })
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -55,24 +77,26 @@ export default function InvitationCode() {
                 <Typography component="h1" variant="h5">
                     Access your donations
                 </Typography>
-                <form className={classes.form} noValidate>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="invitationcode"
-                                label="Invitation Code"
-                                name="invitationcode"
-                                autofocus
-                            />
-                        </Grid>
+                <form className={classes.form} noValidate onSubmit={login}>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="invitationcode"
+                            label="Invitation Code"
+                            name="invitationcode"
+                            autoFocus
+                            onChange={(event) => setInviteCode(event.target.value)}
+                        />
+                    </Grid>
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        disabled={!inviteCode || inviteCode.length === 0}
                     >
                         Go get it
                     </Button>

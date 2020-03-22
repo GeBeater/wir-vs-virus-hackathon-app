@@ -83,7 +83,7 @@ export default function Search({onSelected, location}) {
                 <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
                 <InputBase
                     name="search"
-                    placeholder="Search for a business you want to support..."
+                    placeholder="Suche nach einer Adresse..."
                     autoFocus
                     autoComplete="off"
                     classes={{root: classes.searchInput, input: classes.searchField}}
