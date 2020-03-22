@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import Logo from "../assets/cofund.svg";
 import {useCompanyContext} from '../context/CompanyContext';
@@ -41,13 +41,23 @@ export default function DonationOverview() {
     const classes = useStyles();
     const [{invitationCode}] = useCompanyContext();
     const history = useHistory();
+    const [totalAmount, setTotal] = useState();
 
     useEffect(() => {
         if (!invitationCode) {
             history.push('/getit')
+        } else {
+            fetchAmount();
         }
     }, [invitationCode])
 
+    function fetchAmount() {
+        fetch(`/api/transactions/${invitationCode}/sum`).then((response) => {
+            return response.json();
+        }).then(data => {
+            setTotal(data.amount);
+        }).catch(()=>{})
+    }
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -56,13 +66,13 @@ export default function DonationOverview() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Access your donations
+                    Deine Gesammtsumme
                 </Typography>
                 <Typography component="h1" variant="h1" className={classes.paper}>
-                    100€
+                    {totalAmount}€
                 </Typography>
                 <Typography component="h1" variant="h6">
-                    from 198 donors
+                    von XXX Spendern
                 </Typography>
                 {/* <form className={classes.form} noValidate>
                     <Button
