@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from "../assets/search.svg";
 import {useAppContext} from '../context/AppContext';
 import {colors, spacing} from '../theme/theme';
-
+import {useTranslation} from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
     search: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Search({onSelected, location}) {
+    const {t} = useTranslation();
     const classes = useStyles();
     let geocoder, autocompleteService;
     const [{_, google}] = useAppContext();
@@ -80,7 +81,7 @@ export default function Search({onSelected, location}) {
                 <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
                 <InputBase
                     name="search"
-                    placeholder="Suche nach einer Adresse..."
+                    placeholder={t('search.address')}
                     autoFocus
                     autoComplete="off"
                     classes={{root: classes.searchInput, input: classes.searchField}}
@@ -104,18 +105,17 @@ const QuickSearch = styled.div`
     position: absolute;
     top: 60px;
     left: 80px;
-    width: 25%;
+    max-width: 50%;
     @media (max-width: 768px) { 
         left: 5px;
         right: 5px;
         width: 100%;
+        max-width: 100%;
     }
 `;
 
 const Result = styled.div`
-    cursor:pointer;
-    margin-top: 0;
-    line-height: 20px;
+    line-height: 3em;
     padding: ${spacing.s} ${spacing.m};
     margin-left: -${spacing.m};
     margin-right: -${spacing.m};
