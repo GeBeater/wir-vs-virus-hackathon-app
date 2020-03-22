@@ -70,7 +70,7 @@ export default function CompanyList({showInputs = false}) {
     const hasPlaces = !!places.length;
 
     return (
-        <List dense className={classes.list} style={{height: '100%', 'overflow-y': 'unset'}}>
+        <List dense className={classes.list} style={{height: '100%'}}>
             {hasPlaces && places.map(place =>
                 <PlaceTile
                     key={place.details.id}

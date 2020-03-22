@@ -1,4 +1,10 @@
 const placeTypeBlacklist = [
+    'accounting',
+    'airport',
+    'amusement_park',
+    'atm',
+    'bank',
+    'bus_station',
     'hospital',
     'insurance_agency',
     'lawyer',
@@ -25,6 +31,18 @@ const placeTypeBlacklist = [
 ];
 
 const placeTypeWhitelist = [
+    'aquarium',
+    'art_gallery',
+    'bakery',
+    'bar',
+    'beauty_salon',
+    'bicycle_store',
+    'book_store',
+    'bowling_alley',
+    'cafe',
+    'campground',
+    'car_dealer',
+    'car_rental',
     'car_repair',
     'car_wash',
     'clothing_store',
