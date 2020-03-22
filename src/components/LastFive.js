@@ -22,8 +22,11 @@ const useStyles = makeStyles(theme => ({
         margin: "5px"
     },
     paper: {
-        padding: 0,
-        height: "100%"
+        padding: 3,
+        height: "100%",
+        maxWidth: "100%",
+        width: '100%',
+        overflowY: 'auto',
     },
     item: {
         padding: '10px 30px 10px 10px',
@@ -43,7 +46,7 @@ export default function LiveTicket() {
 
     function fetchTicker() {
         fetch('/api/transactions/history').then(r => r.json()).then(data => {
-            setTransactions(data.filter((a,i) => i < 3));
+            setTransactions(data.filter((a,i) => i < 7));
         }).catch(()=>{});
     }
     return (
