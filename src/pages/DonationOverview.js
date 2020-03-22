@@ -41,7 +41,7 @@ export default function DonationOverview() {
     const classes = useStyles();
     const [{invitationCode}] = useCompanyContext();
     const history = useHistory();
-    const [totalAmount, setTotal] = useState();
+    const [totalAmount, setTotal] = useState({});
 
     useEffect(() => {
         if (!invitationCode) {
@@ -55,7 +55,7 @@ export default function DonationOverview() {
         fetch(`/api/transactions/${invitationCode}/sum`).then((response) => {
             return response.json();
         }).then(data => {
-            setTotal(data.amount);
+            setTotal(data);
         }).catch(()=>{})
     }
     return (
@@ -69,22 +69,11 @@ export default function DonationOverview() {
                     Deine Gesammtsumme
                 </Typography>
                 <Typography component="h1" variant="h1" className={classes.paper}>
-                    {totalAmount}€
+                    {totalAmount.amount}€
                 </Typography>
                 <Typography component="h1" variant="h6">
-                    von XXX Spendern
+                    von {totalAmount.transactionQuantity} Spendern
                 </Typography>
-                {/* <form className={classes.form} noValidate>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Pay out
-                    </Button>
-                </form> */}
             </div>
             <Box mt={5}>
                 <Copyright />
