@@ -79,7 +79,7 @@ export default function Home() {
                 </Paper>
                 }
                 <BoxedMap>
-                    <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-50px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
+                    <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-80px", marginTop: "-30px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
                     <MapWrapper style={{opacity: loading ? 0 : 1}}>
                         <Map
                             zoom={16}

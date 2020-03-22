@@ -145,6 +145,11 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
     width: 60%;
+    @media (max-width: 768px) { 
+        left: 5px;
+        right: 5px;
+        width: 90%;
+    }
 `
 
 const BackButton = styled.img`
