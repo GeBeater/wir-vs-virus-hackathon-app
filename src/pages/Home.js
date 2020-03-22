@@ -1,4 +1,3 @@
-
 import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
@@ -12,11 +11,22 @@ import Help from "../assets/help-icon.svg";
 import Loading from "../assets/three-dots.svg";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
+import FAQ from './FAQ';
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
-import {useTranslation} from 'react-i18next';
+import {isSupportedType, isValidPlace} from "../maps/placesUtils";
+import AlertDialog from "../components/AlertDialog";
+import Alert from "@material-ui/lab/Alert";
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import { useTranslation } from 'react-i18next';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -36,18 +46,31 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    notificationWrapper: {
+        position: 'absolute',
+        width: '100%',
+        top: 0,
+        padding: 10
+    },
+    notification: {
+        boxShadow: '0px 0px 4px 0px rgba(0,0,0,0.1)',
     }
 }));
 
 export default function Home() {
+    const {t} = useTranslation();
     const detectMobile = useMobileDetect();
     const classes = useStyles();
     const [currentPlace, setCurrentPlace] = useState(null);
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
-    const {t} = useTranslation();
-
+    const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
+    const [pendingPlaceDetails, setPendingPlaceDetails] = useState(null);
+    let hideNotificationTimeoutId;
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
@@ -58,6 +81,71 @@ export default function Home() {
     useEffect(selectCurrentPlace, [currentPlace])
     useEffect(refreshCenter, [location, center]);
 
+    const showSuccessNotification = () => {
+        setIsNotificationVisible(true);
+        clearTimeout(hideNotificationTimeoutId);
+        hideNotificationTimeoutId = setTimeout(() => {
+            setIsNotificationVisible(false);
+        }, 2000);
+    };
+
+    const handleAlertAgree = () => {
+        setIsAlertVisible(false);
+    };
+
+    const handleDialogAgree = () => {
+        if (pendingPlaceDetails) {
+            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            showSuccessNotification();
+            setPendingPlaceDetails(null);
+        }
+        setIsDialogVisible(false);
+    };
+
+    const handleDialogDisagree = () => {
+        setPendingPlaceDetails(null);
+        setIsDialogVisible(false);
+    };
+
+    function refreshCenter() {
+        if (!loading && !location.error && location.lat && center === defaultLocation) {
+            setCenter({...location})
+        }
+    }
+
+    function selectCurrentPlace() {
+        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails({
+                placeId: currentPlace,
+                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos']
+            }, (details, status) => {
+                if (!isValidPlace(details, status, google)) {
+                    setIsAlertVisible(true);
+                    return;
+                }
+
+                if (!isSupportedType(details)) {
+                    setIsDialogVisible(true);
+                    setPendingPlaceDetails(details);
+                    return;
+                }
+
+                dispatch({type: ADD_PLACE, payload: details});
+                showSuccessNotification();
+            });
+        }
+    }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     return (
         <Container>
             <div className={classes.root}>
@@ -65,7 +153,7 @@ export default function Home() {
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter} />
-                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
+                        <FAQ />
                     </Toolbar>
                 </AppBar>
             </div>
@@ -74,7 +162,9 @@ export default function Home() {
                     <header style={{flexGrow: 1}}>
                         <h1>{t('home.welcome.headline')}</h1>
                         <h3>{t('home.welcome.subline')}</h3>
-                        <p>{t('home.welcome.text')}</p>
+                        <h3><b>1/</b> {t('home.welcome.step1')}</h3>
+                        <h3><b>2/</b> {t('home.welcome.step2')}</h3>
+                        <h3><b>3/</b> {t('home.welcome.step3')}</h3>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />
@@ -90,28 +180,34 @@ export default function Home() {
                             google={google}
                         />
                     </MapWrapper>
+                    <div className={classes.notificationWrapper}>
+                        {isNotificationVisible && (
+                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                        )}
+                    </div>
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
+            {isAlertVisible && (
+                <AlertDialog
+                    title={'Error'}
+                    message={'The place you selected is invalid and cannot be added, sorry.'}
+                    agree={'OK'}
+                    handleAgree={handleAlertAgree}
+                />
+            )}
+            {isDialogVisible && (
+                <AlertDialog
+                    title={'Warning'}
+                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
+                    agree={'Yes'}
+                    disagree={'No'}
+                    handleAgree={handleDialogAgree}
+                    handleDisagree={handleDialogDisagree}
+                />
+            )}
         </Container>
-    )
-
-    function refreshCenter() {
-        if (!loading && !location.error && location.lat && center === defaultLocation) {
-            setCenter({...location})
-        }
-    }
-
-    function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
-            const service = new google.maps.places.PlacesService(map);
-            service.getDetails({placeId: currentPlace, fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components']}, (details, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    dispatch({type: ADD_PLACE, payload: details});
-                }
-            });
-        }
-    }
+    );
 }
 
 
@@ -145,8 +241,11 @@ const Container = styled.div`
     flex-direction: column;
 `;
 const MapContainer = styled.div`
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
 `;
 const BoxedMap = styled.div`

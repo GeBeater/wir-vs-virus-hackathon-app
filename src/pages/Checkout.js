@@ -5,7 +5,32 @@ import styled from "styled-components";
 import {useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
-import {Link} from 'react-router-dom';
+import {makeStyles} from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Logo from "../assets/cofund.svg";
+import FAQ from "./FAQ";
+import {colors, spacing} from "../theme/theme";
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        zIndex: 3
+    },
+    toolbar: {
+        backgroundColor: colors.white,
+    },
+    paper: {
+        width: "25%",
+        padding: spacing.l,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    },
+    list: {
+        width: '100%',
+    }
+}));
 
 export default function Checkout() {
     const [token, setToken] = useState(null);
@@ -15,6 +40,8 @@ export default function Checkout() {
     const [brainTreeReady, setBrainTreeReady] = useState(false);
 
     const [{places}] = useAppContext();
+
+    const classes = useStyles();
 
     useEffect(() => {
         fetch("/api/payment/token", {method: 'POST'}).then(resp => {
@@ -45,7 +72,8 @@ export default function Checkout() {
         const data = {
             nonce,
             amount: amount,
-            placeIdAmounts: request
+            placeIdAmounts: request,
+            places
         }
         await fetch('/api/payment/checkout', {
             method: "POST",
@@ -58,76 +86,103 @@ export default function Checkout() {
 
     return (
         <Wrapper>
-            <Link to="/" style={{position: "fixed", top: 20, left: 20}}>
-                <BackButton src={Back} alt="Back to map" />
-            </Link>
-            <Container step={step}>
-                <header style={{gridArea: "header", textAlign: "center", marginBottom: "30px"}}>
-                    <Typography component="h1" variant="h4">
-                        Good Choice!
-                        </Typography>
-                    <Typography component="h1" variant="h4">
-                        Tell us how much money you would like to donate
-                        </Typography>
-                </header>
-                {step === 1 ?
-                    <Panel style={{width: "100%", gridArea: "left"}}>
-                        <form noValidate onSubmit={startPayment}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
+            <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
+                <AppBar position="static">
+                    <Toolbar className={classes.toolbar}>
+                        <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
+                        <div style={{width: '100%'}}></div>
+                        <FAQ />
+                    </Toolbar>
+                </AppBar>
+            </div>
+            <ConatinerWrapper>
+                <TitleContainer>
+                    <Button href='/'>
+                        <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
+                        <span>Zurück</span>
+                    </Button>
+                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px"}}>
+                        <Typography component="h1" variant="h4">
+                            Klasse!
+                            </Typography>
+                        <Typography component="h1" variant="h4">
+                            Sag uns noch mit wie viel du unterstützen möchtest
+                            </Typography>
+                    </header>
+                </TitleContainer>
+            </ConatinerWrapper>
+            <ConatinerWrapper>
+                <Container>
+                    {step === 1 ?
+                        <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
+                            <form noValidate onSubmit={startPayment}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <TextField
                                         variant="outlined"
-                                        required
                                         fullWidth
+                                        required
+                                        label="Enter amount"
                                         name="donation"
-                                        label="Your Amount"
                                         type="number"
                                         id="donation"
-                                        onChange={(event) => setAmount(event.target.value)}
                                         autoFocus
-                                    />
+                                        onChange={(event) => setAmount(event.target.value)}
+                                        InputProps={{
+                                            endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                        }}
+                                        variant="outlined"
+                                        />
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-
-                            <CompanyList></CompanyList>
+                                <CompanyList />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={(amount > 0 && places.length > 0) ? false : true}
+                                >
+                                    Continue
+                                </Button>
+                            </form>
+                        </Panel>
+                        :
+                        <Panel style={{width: "100%", gridArea: "right"}}>
+                            {token && amount && <DropIn
+                                options={{
+                                    authorization: token,
+                                    paypal: {
+                                        flow: 'checkout',
+                                        amount: amount,
+                                        currency: 'EUR',
+                                        commit: true
+                                    }
+                                }}
+                                onInstance={setInstance}
+                            />
+                            }
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                disabled={(amount > 0 && places.length > 0) ? false : true}
+                                onClick={pay}
+                                disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
-                                Continue
+                                Pay now
                             </Button>
-                        </form>
-                    </Panel>
-                    :
-                    <Panel style={{width: "100%", gridArea: "right"}}>
-                        {token && amount && <DropIn
-                            options={{
-                                authorization: token,
-                                paypal: {
-                                    flow: 'checkout',
-                                    amount: amount,
-                                    currency: 'EUR',
-                                    commit: true
-                                }
-                            }}
-                            onInstance={setInstance}
-                        />
-                        }
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={pay}
-                            disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
-                        >
-                            Pay now
-                        </Button>
-                    </Panel>
-                }
-            </Container>
+                        </Panel>
+                    }
+                </Container>
+                <Container step={step}>
+                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: colors.grayA50}}>
+                        <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
+                        <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
+                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
+                        <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
+                    </div>
+                </Container>
+            </ConatinerWrapper>
         </Wrapper>
     )
 }
@@ -136,26 +191,51 @@ const Panel = styled.div`
     padding: 20px;
 `
 
+const ConatinerWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    @media (max-width: 768px) { 
+        flex-direction: column;
+        justify-content: center;
+    }
+`
 const Wrapper = styled.div`
     display: flex;
-    margin-top: 10%;
-    justify-content: center;
-    height: 100%;
-`
+    flex-direction: column;
+    margin: 0 auto;
+    padding-top: 120px;
+    padding-bottom: 60px;
+    align-items: center;
+    max-width: 1000px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 
-const Container = styled.div`
-    width: 60%;
-    @media (max-width: 768px) { 
-        left: 5px;
-        right: 5px;
-        width: 90%;
+    @media (max-width: 1200px) { 
+        margin: 0 15px;
+        padding-top: 45px;
     }
 `
 
-const BackButton = styled.img`
-    width: 40px;
-    height: 40px;
-    &:hover{
-        opacity: 0.6;
+const Container = styled.div`    
+    padding: 0 20px;
+    margin-top: 20px;
+    width: 100%;
+    @media (max-width: 768px) { 
+        left: 5px;
+        right: 5px;
+        width: 100%;
+    }
+`
+
+const TitleContainer = styled.div`    
+    padding: 0 20px;
+    margin-top: 20px;
+    width: 50%;
+    @media (max-width: 1000px) { 
+        left: 5px;
+        right: 5px;
+        width: 100%;
     }
 `

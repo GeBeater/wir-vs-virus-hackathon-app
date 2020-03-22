@@ -1,12 +1,13 @@
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import Logo from "../assets/cofund.svg";
+import {useCompanyContext} from '../context/CompanyContext';
 
 function Copyright() {
     return (
@@ -38,6 +39,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function DonationOverview() {
     const classes = useStyles();
+    const [{invitationCode}] = useCompanyContext();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (!invitationCode) {
+            history.push('/getit')
+        }
+    }, [invitationCode])
 
     return (
         <Container component="main" maxWidth="xs">
@@ -55,7 +64,7 @@ export default function DonationOverview() {
                 <Typography component="h1" variant="h6">
                     from 198 donors
                 </Typography>
-                <form className={classes.form} noValidate>
+                {/* <form className={classes.form} noValidate>
                     <Button
                         type="submit"
                         fullWidth
@@ -65,7 +74,7 @@ export default function DonationOverview() {
                     >
                         Pay out
                     </Button>
-                </form>
+                </form> */}
             </div>
             <Box mt={5}>
                 <Copyright />

@@ -1,9 +1,11 @@
 {
   "home": {
     "welcome": {
-      "headline": "Hello!",
-      "subline": "Let us together help our favourite stores",
-      "text": "Start and click on your favorite store on the map. If you do not want to choose just one, choose several."
+      "headline": "Hallo Unterstützer!",
+      "subline": "Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:",
+      "step1": "Unternehmen auf der Karte wählen",
+      "step2": "Betrag festlegen",
+      "step3": "Mit PayPal spenden"
     }
   }
 }

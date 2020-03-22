@@ -6,10 +6,14 @@ export const colors = {
 	red: '#D63541',
 	green: '#22aa77',
 	blue: '#27A1F8',
+	turquoise: '#8EE5C0',
+	purple: '#362F64',
+	purpleA80: '#272148',
 	blueA80: '#3682CE',
 	blueA50: '#81B1E0',
 	blueA20: '#CEE1F3',
 	grayA80: '#5C5C5C',
+	/* Standard gray: */
 	grayA50: '#687688',
 	grayA20: '#CCCCCC',
 	grayA10: '#E7E7E7',
@@ -24,9 +28,9 @@ export const spacing = {
 
 export const appTheme = createMuiTheme({
 	palette: {
-		primary: {main: colors.blue, contrastText: colors.white},
+		primary: {main: colors.purple, contrastText: colors.white},
 		secondary: {
-			main: colors.blue,
+			main: colors.purple,
 			light: colors.blueA50,
 			contrastText: colors.white
 		},
@@ -34,6 +38,9 @@ export const appTheme = createMuiTheme({
 	},
 	typography: {
 		button: {
+			fontFamily: 'Montserrat',
+			fontWeight: '600',
+			height: '45px',
 			textTransform: 'initial'
 		},
 	}

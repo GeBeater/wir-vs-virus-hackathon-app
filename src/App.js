@@ -14,6 +14,7 @@ import InvitationCode from "./pages/InvitationCode";
 import Nav from "./pages/Nav";
 import SignUp from "./pages/SignUp";
 import {appTheme} from "./theme/theme";
+import {CompanyContextWrapper} from './context/CompanyContext';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -26,43 +27,46 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     width: 100%;
   }
-`
+`;
+
 const history = createBrowserHistory();
 
 function App() {
-  return (
-      <ThemeProvider theme={appTheme}>
-          <AppContextWrapper>
-              <AppInitializer />
-              <GlobalStyle />
-              <Router history={history}>
-                  <Switch>
-                      <Route path="/nav">
-                          <Nav />
-                      </Route>
-                      <Route path="/checkout">
-                          <Checkout />
-                      </Route>
-                      <Route path="/getit">
-                          <InvitationCode />
-                      </Route>
-                      <Route path="/signup">
-                          <SignUp />
-                      </Route>
-                      <Route path="/showmethemoney">
-                          <DonationOverview />
-                      </Route>
-                      <Route path="/payoutdetails">
-                          <PayoutDetails />
-                      </Route>
-                      <Route path="/">
-                          <Home />
-                      </Route>
-                  </Switch>
-              </Router>
-          </AppContextWrapper>
-      </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={appTheme}>
+            <AppContextWrapper>
+                <CompanyContextWrapper>
+                    <AppInitializer />
+                    <GlobalStyle />
+                    <Router history={history}>
+                        <Switch>
+                            <Route path="/nav">
+                                <Nav />
+                            </Route>
+                            <Route path="/checkout">
+                                <Checkout />
+                            </Route>
+                            <Route path="/getit">
+                                <InvitationCode />
+                            </Route>
+                            <Route path="/signup">
+                                <SignUp />
+                            </Route>
+                            <Route path="/showmethemoney">
+                                <DonationOverview />
+                            </Route>
+                            <Route path="/payoutdetails">
+                                <PayoutDetails />
+                            </Route>
+                            <Route path="/">
+                                <Home />
+                            </Route>
+                        </Switch>
+                    </Router>
+                </CompanyContextWrapper>
+            </AppContextWrapper>
+        </ThemeProvider>
+    );
 }
 
 export default App;
