@@ -56,7 +56,7 @@ export default function Home() {
     return (
         <Container>
             <Button style={{marginLeft: spacing.s, padding: '10px 15px', width: '100%'}} onClick={handleClickOpen}>
-                <img src={Help} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
+                <img src={Help} style={{marginRight: '8px'}} alt="Help Icon" />
                 <span className={classes.faq}>FAQ</span>
                 </Button>
                 <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>

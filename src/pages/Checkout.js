@@ -111,11 +111,11 @@ export default function Checkout() {
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
                         <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
-                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px"}}>
+                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
                         <Typography component="h1" variant="h4">
                             Klasse!
                             </Typography>
-                        <Typography component="h1" variant="h4">
+                        <Typography component="h1" variant="h4" style={{color: '#3E4650'}}>
                             Sag uns noch mit wie viel du unterstützen möchtest
                             </Typography>
                     </header>
@@ -153,12 +153,12 @@ export default function Checkout() {
                                     color="primary"
                                     disabled={(amount > 0 && places.length > 0) ? false : true}
                                 >
-                                    PayPal
+                                    Weiter
                                 </Button>
                             </form>
                         </Panel>
                         :
-                        <Panel style={{width: "100%", gridArea: "right"}}>
+                        <Panel style={{width: "100%", gridArea: "right", padding: '20px 0'}}>
                             {token && amount && <DropIn
                                 options={{
                                     authorization: token,
@@ -179,13 +179,13 @@ export default function Checkout() {
                                 onClick={pay}
                                 disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
-                                Pay now
+                                Bezahlen
                             </Button>
                         </Panel>
                     }
                 </Container>
                 <Container step={step}>
-                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: colors.grayA50}}>
+                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: '#3E4650'}}>
                         <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
                         <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>

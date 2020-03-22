@@ -101,7 +101,7 @@ export default function SignUp() {
                         <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                     </Link>
                     <Typography component="h1" variant="h5">
-                        Sign up to collect donations
+                        Gib bitte deine Daten an
                 </Typography>
                     <form className={classes.form} noValidate onSubmit={register}>
                         <Grid container spacing={2}>
@@ -111,7 +111,7 @@ export default function SignUp() {
                                     disabled
                                     fullWidth
                                     name="company"
-                                    label="Company"
+                                    label="Unternehmen"
                                     type="company"
                                     id="company"
                                     autoFocus
@@ -124,7 +124,7 @@ export default function SignUp() {
                                     disabled
                                     fullWidth
                                     name="address"
-                                    label="Address"
+                                    label="Addresse"
                                     type="address"
                                     id="address"
                                     autoFocus
@@ -139,7 +139,7 @@ export default function SignUp() {
                                     disabled
                                     fullWidth
                                     id="zipCode"
-                                    label="Zip Code"
+                                    label="Postleitzahl"
                                     autoComplete="zipCode"
                                     value={place.zip}
                                 />
@@ -151,7 +151,7 @@ export default function SignUp() {
                                     disabled
                                     fullWidth
                                     id="city"
-                                    label="City"
+                                    label="Stadt"
                                     name="city"
                                     autoComplete="city"
                                     value={place.city}
@@ -165,7 +165,7 @@ export default function SignUp() {
                                     required
                                     fullWidth
                                     id="firstName"
-                                    label="First Name"
+                                    label="Vorname"
                                     autoComplete="fname"
                                     onChange={(event) => setValue('firstName', event.target.value)}
                                 />
@@ -176,7 +176,7 @@ export default function SignUp() {
                                     required
                                     fullWidth
                                     id="lastName"
-                                    label="Last Name"
+                                    label="Nachname"
                                     name="lastName"
                                     autoComplete="lname"
                                     onChange={(event) => setValue('lastName', event.target.value)}
@@ -188,7 +188,7 @@ export default function SignUp() {
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Paypal Email"
+                                    label="Email"
                                     name="email"
                                     autoComplete="email"
                                     onChange={(event) => setValue('mail', event.target.value)}
@@ -203,7 +203,7 @@ export default function SignUp() {
                             className={classes.submit}
                             disabled={!form.valid}
                         >
-                            Sign Up
+                            Weiter
                         </Button>
                     </form>
                 </div>

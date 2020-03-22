@@ -81,7 +81,7 @@ export default function InvitationCode() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Access your donations
+                    Greife auf deine Spenden zu
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={login}>
                     <Grid item xs={12}>
@@ -90,7 +90,7 @@ export default function InvitationCode() {
                             required
                             fullWidth
                             id="invitationcode"
-                            label="Invitation Code"
+                            label="Einladungscode"
                             name="invitationcode"
                             autoFocus
                             onChange={(event) => setInviteCode(event.target.value)}
@@ -104,7 +104,7 @@ export default function InvitationCode() {
                         className={classes.submit}
                         disabled={!inviteCode || inviteCode.length === 0}
                     >
-                        Go get it
+                        Weiter
                     </Button>
                 </form>
             </div>
