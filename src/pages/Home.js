@@ -87,7 +87,7 @@ export default function Home() {
 
     const handleDialogAgree = () => {
         if (pendingPlaceDetails) {
-            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            dispatch({type: ADD_PLACE, payload: {details: pendingPlaceDetails, amount: 0}});
             showSuccessNotification();
             setPendingPlaceDetails(null);
         }
@@ -106,7 +106,7 @@ export default function Home() {
     }
 
     function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+        if (currentPlace && places.filter(place => place.details.place_id === currentPlace).length === 0) {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({
                 placeId: currentPlace,
@@ -123,7 +123,7 @@ export default function Home() {
                     return;
                 }
 
-                dispatch({type: ADD_PLACE, payload: details});
+                dispatch({type: ADD_PLACE, payload:  {details, amount: 0}});
                 showSuccessNotification();
             });
         }
@@ -170,7 +170,7 @@ export default function Home() {
                     </MapWrapper>
                     <div className={classes.notificationWrapper}>
                         {isNotificationVisible && (
-                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                            <Alert severity="success" className={classes.notification}>{t('home.success.text')}</Alert>
                         )}
                     </div>
                 </BoxedMap>
@@ -178,18 +178,18 @@ export default function Home() {
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
             {isAlertVisible && (
                 <AlertDialog
-                    title={'Error'}
-                    message={'The place you selected is invalid and cannot be added, sorry.'}
-                    agree={'OK'}
+                    title={t('home.error.headline')}
+                    message={t('home.error.text')}
+                    agree={t('home.error.agree')}
                     handleAgree={handleAlertAgree}
                 />
             )}
             {isDialogVisible && (
                 <AlertDialog
-                    title={'Warning'}
-                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
-                    agree={'Yes'}
-                    disagree={'No'}
+                    title={t('home.warning.headline')}
+                    message={t('home.warning.text')}
+                    agree={t('home.warning.agree')}
+                    disagree={t('home.warning.disagree')}
                     handleAgree={handleDialogAgree}
                     handleDisagree={handleDialogDisagree}
                 />

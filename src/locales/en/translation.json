@@ -1,4 +1,5 @@
 {
+  "close": "Close",
   "home": {
     "welcome": {
       "headline": "Hello supporter!",
@@ -6,6 +7,49 @@
       "step1": "Select company on the map",
       "step2": "Set amount",
       "step3": "Donate with PayPal"
+    },
+    "warning": {
+      "headline": "Warning",
+      "text": "The place you selected seems to be of an unusual type. Do you want to add it anyway?",
+      "agree": "Yes add to list",
+      "disagree": "Close"
+    },
+    "error": {
+      "headline": "Sorry!",
+      "text": "The place you selected is invalid and cannot be added.",
+      "agree": "OK"
+    },
+    "success": {
+      "text": "Branch successfully added"
+    }
+  },
+  "search": {
+    "address": "Search for an address"
+  },
+  "faq": {
+    "who": {
+      "headline": "Who are we?",
+      "text": "This project has evolved from the WirVsVirus Hackathon of the German government. The project team consists of volunteers who want to help and contribute in the current situation."
+    },
+    "what": {
+      "headline": "What is the goal?",
+      "text": "In difficult times like these, we as a society must stick together and help those who are affected the most. At the moment, these are mainly small companies and shops next door, which are struggling with massive drops in sales and even forced closures. That's why our goal is to help small businesses next door (our 'favourite shops') by quickly providing them with financial resources - from the very people who depend on them. Because without the cafés, pubs, small shops and other businesses, our communities, towns and neighbourhoods would no longer be what they are. So together we can overcome the current crisis and jobs will be preserved."
+    },
+    "how": {
+      "headline": "How does the system work?",
+      "text": "It's very simple: You select the companies and shops on the map to which you want to provide immediate assistance. You can then choose the amount of money you would like to contribute personally. The amount will be transferred to us via PayPal or Credit Card and we will make sure that the money gets to the companies that need it as soon as possible."
+    },
+    "decline": {
+      "headline": "What happens if the companies do not accept the aid?",
+      "text": "In the unlikely case that the companies do not want or cannot accept the help, we will of course refund your money immediately via PayPal or credit card. We keep internal records of all transactions and you will receive an immediate confirmation and receipt by email after your donation or purchase of a voucher."
+    },
+    "goodie": {
+      "headline": "How are the amounts used? Do I receive any consideration?",
+      "text": "The companies themselves decide that. But please assume that especially restaurants, bars, cafés or other shops, which are currently closed by force, will not be able to offer their services and goods again until the crisis is over."
+    },
+    "help": {
+      "headline": "How can I help?",
+      "text": "Currently, the most important thing for small businesses is to maintain the necessary liquidity to survive. You can help by informing your family, friends and acquaintances about our project and asking them to participate as well."
     }
   }
 }

@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function CompanyList() {
+export default function CompanyList({showInputs = false}) {
     const [{_, places}, dispatch] = useAppContext();
 
     const classes = useStyles();
@@ -72,12 +72,13 @@ export default function CompanyList() {
         <List dense className={classes.list} style={{height: '100%', 'overflow-y': 'unset'}}>
             {hasPlaces && places.map(place =>
                 <PlaceTile
-                    key={place.id}
+                    key={place.details.id}
                     place={place}
                     showCheckbox={true}
                     isChecked={checked.indexOf(place.place_id) !== -1}
                     handleToggle={handleToggle}
                     showDeleteBtn={true}
+                    showInput={showInputs}
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (
