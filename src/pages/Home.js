@@ -2,31 +2,23 @@ import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
+import Alert from "@material-ui/lab/Alert";
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import useMobileDetect from 'use-mobile-detect-hook';
 import Logo from "../assets/cofund.svg";
-import Help from "../assets/help-icon.svg";
 import Loading from "../assets/three-dots.svg";
+import AlertDialog from "../components/AlertDialog";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
-import FAQ from './FAQ';
+import {isSupportedType, isValidPlace} from "../maps/placesUtils";
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
-import {isSupportedType, isValidPlace} from "../maps/placesUtils";
-import AlertDialog from "../components/AlertDialog";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import { useTranslation } from 'react-i18next';
+import FAQ from './FAQ';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -137,14 +129,10 @@ export default function Home() {
         }
     }
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-    const handleClose = () => {
-      setOpen(false);
-    };
+    function selectSearch(result) {
+        setCenter(result);
+        setCurrentPlace(result.placeId);
+    }
 
     return (
         <Container>
@@ -152,7 +140,7 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter} location={location} />
+                        <Search onSelected={selectSearch} location={location} />
                         <FAQ />
                     </Toolbar>
                 </AppBar>
