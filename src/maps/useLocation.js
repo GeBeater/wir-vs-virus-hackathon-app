@@ -11,12 +11,16 @@ export const usePosition = () => {
             lat: coords.latitude,
             lng: coords.longitude,
         });
-        dispatch({type: SET_LOADING, payload: false});
+        setTimeout(() => {
+            dispatch({type: SET_LOADING, payload: false});
+        }, 1000)
     };
 
     const onError = (error) => {
         setError(error.message);
-        dispatch({type: SET_LOADING, payload: false});
+        setTimeout(() => {
+            dispatch({type: SET_LOADING, payload: false});
+        }, 1000)
     };
 
     useEffect(() => {
