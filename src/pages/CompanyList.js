@@ -58,7 +58,7 @@ export default function CompanyList() {
     const hasPlaces = !!places.length;
 
     return (
-        <List dense className={classes.list}>
+        <List dense className={classes.list} style={{height: '100%'}}>
             {hasPlaces && places.map(place =>
                 <PlaceTile
                     key={place.id}
@@ -70,9 +70,9 @@ export default function CompanyList() {
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (
-                <Typography component="h6" variant="h6">
-                    No places selected
-                </Typography>
+                <div style={{height: '100%', backgroundColor: '#f9f9f9', borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <span style={{color: '#ababab'}}>No shop selected yet</span>
+                </div>
             )}
         </List>
     );

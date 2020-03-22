@@ -35,6 +35,11 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    faq: {
+        color: colors.grayA50,
+        fontFamily: 'Montserrat',
+        fontWeight: '600'
     }
 }));
 
@@ -63,16 +68,18 @@ export default function Home() {
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <Search onSelected={setCenter} />
-                        <img src={Help} style={{width: 40, height: 40, marginLeft: spacing.m}} alt="CoFund Logo" />
+                        <Button style={{marginLeft: spacing.s, padding: '10px 10px'}}>
+                            <img src={Help} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
+                            <span className={classes.faq}>FAQ</span>
+                        </Button>
                     </Toolbar>
                 </AppBar>
             </div>
             <MapContainer>
                 {!detectMobile.isMobile() && <Paper className={classes.paper}>
                     <header style={{flexGrow: 1}}>
-                        <h1>Hello!</h1>
-                        <h3>Let us together help our favourite stores</h3>
-                        <p>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</p>
+                        <h1><div>Hello!</div><div>Let us together help our favourite stores</div></h1>
+                        <h3>Start and click on your favorite store on the map. If you do not want to choose just one, choose several.</h3>
                     </header>
                     <CompanyList />
                     <StartNow amount={places.length} />
