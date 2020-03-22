@@ -11,7 +11,8 @@ export default function Map({center, zoom, children, events, google}) {
         map && map.panTo(center);
         if (center.placeId) {
             let infoWindow = new google.maps.InfoWindow();
-            infoWindow.setContent('<b>Dein Ort!</b><br>Wir haben deinen Ort hinzugefügt so weit möglich.');
+            let contentString = '<b>Gefunden!</b><br>Und zu deiner Liste hinzugefügt. 👏';
+            infoWindow.setContent(contentString);
             var location = {lat: center.lat, lng: center.lng};
             location.lat = location.lat + 0.00002;
             infoWindow.setPosition(location);
