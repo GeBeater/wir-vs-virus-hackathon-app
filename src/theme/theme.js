@@ -43,5 +43,15 @@ export const appTheme = createMuiTheme({
 			height: '45px',
 			textTransform: 'initial'
 		},
+		subtitle1: {
+			fontSize: 16,
+			lineHeight: '20px',
+			color: '#3E4650'
+		},
+		subtitle2: {
+			fontSize: 13,
+			lineHeight: '16px',
+			color: '#566270'
+		},
 	}
 });

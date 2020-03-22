@@ -111,10 +111,17 @@ export default function Checkout() {
         })
     }
 
-    const handleDistributeAmount = () => {
-        const newAmount = Math.round(amount / places.length * 100) / 100 ;
+    const handleDistributeAmount = (evt) => {
+        const newAmount = Math.round(evt.target.value / places.length * 100) / 100;
         const newPlaces = places.map(p => ({details: p.details, amount: newAmount}));
         dispatch({type: UPDATE_PLACES, payload:  newPlaces});
+    };
+
+    const handleKeyPressEnter = (evt) => {
+        if (evt.key === 'Enter') {
+            evt.target.blur();
+            evt.preventDefault();
+        }
     };
 
     return (
@@ -159,24 +166,14 @@ export default function Checkout() {
                                         type="number"
                                         id="donation"
                                         autoFocus
-                                        onChange={(event) => setAmount(event.target.value)}
+                                        onChange={handleDistributeAmount}
                                         value={parseFloat(amount)}
+                                        onKeyPress={handleKeyPressEnter}
                                         InputProps={{
                                             inputProps: { min: 0, max: 99999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} className={classes.overallAmountField}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            fullWidth
-                                            disabled={amount <= 0 || places.length === 0}
-                                            onClick={handleDistributeAmount}
-                                        >
-                                            Gleichmäßig verteilen
-                                        </Button>
                                     </Grid>
                                 </Grid>
                                 <CompanyList showInputs={true} />

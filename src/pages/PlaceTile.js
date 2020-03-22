@@ -70,6 +70,13 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
         dispatch({type: UPDATE_PLACE, payload: {details: place.details, amount: evt.target.value}});
     };
 
+    const handleKeyPressEnter = (evt) => {
+        if (evt.key === 'Enter') {
+            evt.target.blur();
+            evt.preventDefault();
+        }
+    };
+    
     return (
         <ListItem button className={classes.listitem}>
             <ListItemAvatar className={classes.avatar}>
@@ -80,7 +87,14 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
                     className={classes.avatarImg}
                 />
             </ListItemAvatar>
-            <ListItemText id={labelId} primary={name} secondary={getShortAddress(address_components)} className={classes.itemText}/>
+            <ListItemText
+                id={labelId}
+                primary={name}
+                secondary={getShortAddress(address_components)}
+                className={classes.itemText}
+                primaryTypographyProps={{variant: 'subtitle1', style: {marginBottom: '4px'}}}
+                secondaryTypographyProps={{variant: 'subtitle2'}}
+            />
             {showInput && (
                 <TextField
                     variant="outlined"
@@ -88,6 +102,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
                     type="number"
                     value={parseFloat(place.amount)}
                     onChange={handleChangeAmount}
+                    onKeyPress={handleKeyPressEnter}
                     className={classes.amountTf}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">€</InputAdornment>,
