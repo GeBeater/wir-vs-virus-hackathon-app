@@ -131,7 +131,7 @@ export default function Checkout() {
             <ConatinerWrapper>
                 <TitleContainer>
                     <Button component={Link} to="/">
-                        <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
+                        <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Back Icon" />
                         <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
                     <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
@@ -242,13 +242,13 @@ const ConatinerWrapper = styled.div`
     flex-direction: row;
     width: 100%;
     align-items: flex-start;
-    @media (max-width: 768px) { 
+    @media (max-width: 768px) {
         flex-direction: column;
         justify-content: center;
     }
-    
+
     max-width: 1000px;
-    @media (max-width: 1200px) { 
+    @media (max-width: 1200px) {
         margin: 0 15px;
         padding-top: 45px;
     }
@@ -257,7 +257,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    @media (min-width: 768px) { 
+    @media (min-width: 768px) {
       padding-top: 120px;
       padding-bottom: 60px;
     }
@@ -266,22 +266,22 @@ const Wrapper = styled.div`
     -webkit-overflow-scrolling: touch;
 `
 
-const Container = styled.div`    
+const Container = styled.div`
     padding: 0 20px;
     margin-top: 20px;
     width: 100%;
-    @media (max-width: 768px) { 
+    @media (max-width: 768px) {
         left: 5px;
         right: 5px;
         width: 100%;
     }
 `
 
-const TitleContainer = styled.div`    
+const TitleContainer = styled.div`
     padding: 0 20px;
     margin-top: 20px;
     width: 50%;
-    @media (max-width: 1000px) { 
+    @media (max-width: 1000px) {
         left: 5px;
         right: 5px;
         width: 100%;

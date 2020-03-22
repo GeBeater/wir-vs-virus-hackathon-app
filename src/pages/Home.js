@@ -20,6 +20,7 @@ import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
 import FAQ from './FAQ';
+import WeVsVirusLogo from "../assets/wvv.png";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -162,6 +163,9 @@ export default function Home() {
                 }
                 <BoxedMap>
                     <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-80px", marginTop: "-30px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
+                    <WeVsVirus style={{zIndex: 2}}>
+                        <img src={WeVsVirusLogo} alt="We versus virus project" />
+                    </WeVsVirus>
                     <MapWrapper style={{opacity: loading ? 0 : 1}}>
                         <Map
                             zoom={16}
@@ -243,4 +247,16 @@ const BoxedMap = styled.div`
     flex-grow: 1;
     position: relative;
     background-color: rgb(240,240,240);
+`;
+
+const WeVsVirus = styled.div`
+    position: absolute;
+    
+    left: 0;
+    @media (max-width: 768px) { 
+        bottom: 25px;
+    }
+    @media (min-width: 769px) { 
+        top: 25px;
+    }
 `;
