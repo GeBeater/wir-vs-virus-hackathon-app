@@ -13,14 +13,13 @@ import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useHistory, Link } from 'react-router-dom';
+import Search from "../search/Search";
 
 const useStyles = makeStyles(theme => ({
     root: {
         zIndex: 3
     },
     toolbar: {
-        maxWidth: '1000px',
-        width: '100%',
         backgroundColor: colors.white,
     },
     paper: {
@@ -121,7 +120,7 @@ export default function Checkout() {
     return (
         <Wrapper>
             <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
-                <AppBar position="static" style={{backgroundColor: 'white', display: 'flex', alignItems: 'center'}}>
+                <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                         <div style={{width: '100%'}}></div>
@@ -247,22 +246,24 @@ const ConatinerWrapper = styled.div`
         flex-direction: column;
         justify-content: center;
     }
+    
+    max-width: 1000px;
+    @media (max-width: 1200px) { 
+        margin: 0 15px;
+        padding-top: 45px;
+    }
 `
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    padding-top: 120px;
-    padding-bottom: 60px;
+    @media (min-width: 768px) { 
+      padding-top: 120px;
+      padding-bottom: 60px;
+    }
     align-items: center;
-    max-width: 1000px;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-
-    @media (max-width: 1200px) { 
-        margin: 0 15px;
-        padding-top: 45px;
-    }
 `
 
 const Container = styled.div`    
