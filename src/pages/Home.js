@@ -2,31 +2,24 @@ import {Button, Paper} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
+import Alert from "@material-ui/lab/Alert";
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import useMobileDetect from 'use-mobile-detect-hook';
 import Logo from "../assets/cofund.svg";
-import Help from "../assets/help-icon.svg";
 import Loading from "../assets/three-dots.svg";
+import AlertDialog from "../components/AlertDialog";
+import LastFive from "../components/LastFive";
 import {ADD_PLACE, useAppContext} from "../context/AppContext";
 import Map from '../maps/Map';
-import FAQ from './FAQ';
+import {isSupportedType, isValidPlace} from "../maps/placesUtils";
 import {usePosition} from '../maps/useLocation';
 import Search from "../search/Search";
 import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
-import {isSupportedType, isValidPlace} from "../maps/placesUtils";
-import AlertDialog from "../components/AlertDialog";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import { useTranslation } from 'react-i18next';
+import FAQ from './FAQ';
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -63,7 +56,7 @@ export default function Home() {
     const detectMobile = useMobileDetect();
     const classes = useStyles();
     const [currentPlace, setCurrentPlace] = useState(null);
-    const [center, setCenter] = useState(defaultLocation)
+    const [center, setCenter] = useState(defaultLocation);
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
     const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -78,7 +71,7 @@ export default function Home() {
         }
     };
 
-    useEffect(selectCurrentPlace, [currentPlace])
+    useEffect(selectCurrentPlace, [currentPlace]);
     useEffect(refreshCenter, [location, center]);
 
     const showSuccessNotification = () => {
@@ -95,7 +88,7 @@ export default function Home() {
 
     const handleDialogAgree = () => {
         if (pendingPlaceDetails) {
-            dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            dispatch({type: ADD_PLACE, payload: {details: pendingPlaceDetails, amount: 0}});
             showSuccessNotification();
             setPendingPlaceDetails(null);
         }
@@ -114,11 +107,11 @@ export default function Home() {
     }
 
     function selectCurrentPlace() {
-        if (currentPlace && places.filter(place => place.place_id === currentPlace).length === 0) {
+        if (currentPlace && places.filter(place => place.details.place_id === currentPlace).length === 0) {
             const service = new google.maps.places.PlacesService(map);
             service.getDetails({
                 placeId: currentPlace,
-                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos']
+                fields: ['id', 'name', 'place_id', 'icon', 'address_components', 'types', 'photos', 'formatted_address']
             }, (details, status) => {
                 if (!isValidPlace(details, status, google)) {
                     setIsAlertVisible(true);
@@ -131,20 +124,16 @@ export default function Home() {
                     return;
                 }
 
-                dispatch({type: ADD_PLACE, payload: details});
+                dispatch({type: ADD_PLACE, payload:  {details, amount: 0}});
                 showSuccessNotification();
             });
         }
     }
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-    const handleClose = () => {
-      setOpen(false);
-    };
+    function selectSearch(result) {
+        setCenter(result);
+        setCurrentPlace(result.placeId);
+    }
 
     return (
         <Container>
@@ -152,7 +141,7 @@ export default function Home() {
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        <Search onSelected={setCenter} />
+                        <Search onSelected={selectSearch} location={location} />
                         <FAQ />
                     </Toolbar>
                 </AppBar>
@@ -165,8 +154,9 @@ export default function Home() {
                         <h3><b>1/</b> {t('home.welcome.step1')}</h3>
                         <h3><b>2/</b> {t('home.welcome.step2')}</h3>
                         <h3><b>3/</b> {t('home.welcome.step3')}</h3>
+                        {places.length === 0 && <h3>{t('home.welcome.benext')}</h3>}
                     </header>
-                    <CompanyList />
+                    {places.length > 0 ? <CompanyList /> : <LastFive />}
                     <StartNow amount={places.length} />
                 </Paper>
                 }
@@ -182,7 +172,7 @@ export default function Home() {
                     </MapWrapper>
                     <div className={classes.notificationWrapper}>
                         {isNotificationVisible && (
-                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                            <Alert severity="success" className={classes.notification}>{t('home.success.text')}</Alert>
                         )}
                     </div>
                 </BoxedMap>
@@ -190,18 +180,18 @@ export default function Home() {
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
             {isAlertVisible && (
                 <AlertDialog
-                    title={'Error'}
-                    message={'The place you selected is invalid and cannot be added, sorry.'}
-                    agree={'OK'}
+                    title={t('home.error.headline')}
+                    message={t('home.error.text')}
+                    agree={t('home.error.agree')}
                     handleAgree={handleAlertAgree}
                 />
             )}
             {isDialogVisible && (
                 <AlertDialog
-                    title={'Warning'}
-                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
-                    agree={'Yes'}
-                    disagree={'No'}
+                    title={t('home.warning.headline')}
+                    message={t('home.warning.text')}
+                    agree={t('home.warning.agree')}
+                    disagree={t('home.warning.disagree')}
                     handleAgree={handleDialogAgree}
                     handleDisagree={handleDialogDisagree}
                 />
@@ -215,7 +205,7 @@ function StartNow({className, amount}) {
     return (
         <div className={className}>
             {(amount > 0) &&
-                <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true}>Support your {amount} branches now</Button>
+                <Button component={Link} to="/checkout" variant="contained" color="primary" disableElevation fullWidth={true}>Jetzt unterstützen ({amount})</Button>
             }
         </div>
     )

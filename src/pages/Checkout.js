@@ -2,7 +2,7 @@ import {Button, Grid, TextField, Typography} from '@material-ui/core';
 import DropIn from "braintree-web-drop-in-react";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
-import {useAppContext} from "../context/AppContext";
+import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
 import {makeStyles} from "@material-ui/core/styles";
@@ -12,6 +12,8 @@ import Logo from "../assets/cofund.svg";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useHistory, Link } from 'react-router-dom';
+import Search from "../search/Search";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,6 +31,12 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
+    },
+    overallAmountField: {
+        marginBottom: 10
+    },
+    submitBtn: {
+        marginTop: 10
     }
 }));
 
@@ -38,8 +46,11 @@ export default function Checkout() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
     const [brainTreeReady, setBrainTreeReady] = useState(false);
+    const [paying, setPaying] = useState(false);
+    const [isPayBtnEnabled, setIsPayBtnEnabled] = useState(false);
+    const history = useHistory();
 
-    const [{places}] = useAppContext();
+    const [{places}, dispatch] = useAppContext();
 
     const classes = useStyles();
 
@@ -50,14 +61,25 @@ export default function Checkout() {
             setToken(json.token);
         });
 
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (instance != null) {
             instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
             instance.on('noPaymentMethodRequestable', () => setBrainTreeReady(false))
         }
-    }, [instance])
+    }, [instance]);
+
+    useEffect(() => {
+        let amount = 0;
+        let allPlacesHaveAmount = true;
+        places.forEach(p => {
+            amount += parseFloat(p.amount);
+            allPlacesHaveAmount = allPlacesHaveAmount && (p.amount > 0)
+        });
+        setAmount(Math.round(amount));
+        setIsPayBtnEnabled(!!places.length && allPlacesHaveAmount);
+    }, [places]);
 
     function startPayment(event) {
         event.preventDefault();
@@ -65,24 +87,35 @@ export default function Checkout() {
     }
 
     async function pay() {
+        setPaying(true)
         const {nonce} = await instance.requestPaymentMethod();
-        const request = places.reduce((acc, place) => {
-            return {...acc, [place.place_id]: amount / places.length}
+        const placeAmounts = places.reduce((acc, place) => {
+            return {...acc, [place.details.place_id]: place.amount}
         }, {});
         const data = {
             nonce,
             amount: amount,
-            placeIdAmounts: request,
+            placeIdAmounts: placeAmounts,
             places
         }
-        await fetch('/api/payment/checkout', {
+        fetch('/api/payment/checkout', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify(data)
-        });
+        }).then(response => {
+            if (response.status === 200) {
+                history.push('/success');
+            }
+        })
     }
+
+    const handleDistributeAmount = () => {
+        const newAmount = Math.round(amount / places.length * 100) / 100 ;
+        const newPlaces = places.map(p => ({details: p.details, amount: newAmount}));
+        dispatch({type: UPDATE_PLACES, payload:  newPlaces});
+    };
 
     return (
         <Wrapper>
@@ -97,15 +130,15 @@ export default function Checkout() {
             </div>
             <ConatinerWrapper>
                 <TitleContainer>
-                    <Button href='/'>
+                    <Button component={Link} to="/">
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
-                        <span>Zurück</span>
+                        <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
-                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px"}}>
+                    <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
                         <Typography component="h1" variant="h4">
                             Klasse!
                             </Typography>
-                        <Typography component="h1" variant="h4">
+                        <Typography component="h1" variant="h4" style={{color: '#3E4650'}}>
                             Sag uns noch mit wie viel du unterstützen möchtest
                             </Typography>
                     </header>
@@ -116,39 +149,51 @@ export default function Checkout() {
                     {step === 1 ?
                         <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
                             <form noValidate onSubmit={startPayment}>
-                                <Grid container spacing={2}>
+                                <Grid container spacing={2} className={classes.overallAmountField}>
                                     <Grid item xs={12}>
-                                        <TextField
+                                        <TextField style={{marginBottom: spacing.m}}
                                         variant="outlined"
                                         fullWidth
-                                        required
-                                        label="Enter amount"
+                                        label="Gesamtbetrag"
                                         name="donation"
                                         type="number"
                                         id="donation"
                                         autoFocus
                                         onChange={(event) => setAmount(event.target.value)}
+                                        value={parseFloat(amount)}
                                         InputProps={{
+                                            inputProps: { min: 0, max: 99999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
-                                        variant="outlined"
                                         />
                                     </Grid>
+                                    <Grid item xs={12} className={classes.overallAmountField}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            fullWidth
+                                            disabled={amount <= 0 || places.length === 0}
+                                            onClick={handleDistributeAmount}
+                                        >
+                                            Gleichmäßig verteilen
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <CompanyList />
+                                <CompanyList showInputs={true} />
                                 <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    disabled={(amount > 0 && places.length > 0) ? false : true}
+                                    disabled={!isPayBtnEnabled}
+                                    className={classes.submitBtn}
                                 >
-                                    Continue
+                                    Weiter
                                 </Button>
                             </form>
                         </Panel>
                         :
-                        <Panel style={{width: "100%", gridArea: "right"}}>
+                        <Panel style={{width: "100%", gridArea: "right", padding: '20px 0'}}>
                             {token && amount && <DropIn
                                 options={{
                                     authorization: token,
@@ -157,7 +202,8 @@ export default function Checkout() {
                                         amount: amount,
                                         currency: 'EUR',
                                         commit: true
-                                    }
+                                    },
+                                    locale: 'de_DE'
                                 }}
                                 onInstance={setInstance}
                             />
@@ -167,15 +213,15 @@ export default function Checkout() {
                                 variant="contained"
                                 color="primary"
                                 onClick={pay}
-                                disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
+                                disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
-                                Pay now
+                                Bezahlen
                             </Button>
                         </Panel>
                     }
                 </Container>
                 <Container step={step}>
-                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: colors.grayA50}}>
+                    <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: '#3E4650'}}>
                         <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
                         <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
@@ -200,22 +246,24 @@ const ConatinerWrapper = styled.div`
         flex-direction: column;
         justify-content: center;
     }
+    
+    max-width: 1000px;
+    @media (max-width: 1200px) { 
+        margin: 0 15px;
+        padding-top: 45px;
+    }
 `
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    padding-top: 120px;
-    padding-bottom: 60px;
+    @media (min-width: 768px) { 
+      padding-top: 120px;
+      padding-bottom: 60px;
+    }
     align-items: center;
-    max-width: 1000px;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-
-    @media (max-width: 1200px) { 
-        margin: 0 15px;
-        padding-top: 45px;
-    }
 `
 
 const Container = styled.div`    

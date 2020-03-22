@@ -3,7 +3,6 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
-import {Typography} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -14,7 +13,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         maxWidth: '100%',
         overflowY: 'auto',
-        padding: 3
+        padding: 3,
+        overflowX: 'hidden'
     },
     listitem: {
         borderBottom: '1px solid lightgrey',
@@ -39,11 +39,11 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         padding: '10px 0',
-        margin: 10
+        margin: '10px 0',
     }
 }));
 
-export default function CompanyList() {
+export default function CompanyList({showInputs = false}) {
     const [{_, places}, dispatch] = useAppContext();
 
     const classes = useStyles();
@@ -73,17 +73,18 @@ export default function CompanyList() {
         <List dense className={classes.list} style={{height: '100%'}}>
             {hasPlaces && places.map(place =>
                 <PlaceTile
-                    key={place.id}
+                    key={place.details.id}
                     place={place}
                     showCheckbox={true}
                     isChecked={checked.indexOf(place.place_id) !== -1}
                     handleToggle={handleToggle}
                     showDeleteBtn={true}
+                    showInput={showInputs}
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (
                 <div className={classes.placeholder}>
-                    <span style={{color: '#ababab'}}>No shop selected yet</span>
+                    <span style={{color: '#ababab'}}>Kein Unternehmen ausgewählt</span>
                 </div>
             )}
         </List>
