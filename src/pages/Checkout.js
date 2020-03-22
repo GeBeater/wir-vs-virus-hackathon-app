@@ -82,7 +82,7 @@ export default function Checkout() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                disabled={amount > 0 ? false : true}
+                                disabled={(amount > 0 && places.length > 0) ? false : true}
                             >
                                 Continue
                             </Button>
