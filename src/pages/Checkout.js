@@ -9,7 +9,8 @@ export default function Checkout() {
     const [token, setToken] = useState(null);
     const [instance, setInstance] = useState(null);
     const [step, setStep] = useState(1);
-    const [amount, setAmount] = useState(null);
+    const [amount, setAmount] = useState(0);
+    const [brainTreeReady, setBrainTreeReady] = useState(false);
 
     const [{places}] = useAppContext();
 
@@ -21,6 +22,13 @@ export default function Checkout() {
         });
 
     }, [])
+
+    useEffect(() => {
+        if (instance != null) {
+            instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
+            instance.on('noPaymentMethodRequestable', ()=> setBrainTreeReady(false))
+        }
+    }, [instance])
 
     function startPayment(event) {
         event.preventDefault();
@@ -108,6 +116,7 @@ export default function Checkout() {
                             variant="contained"
                             color="primary"
                             onClick={pay}
+                            disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
                         >
                             Pay now
                         </Button>
