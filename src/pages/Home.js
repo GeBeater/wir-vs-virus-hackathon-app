@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: colors.white,
     },
     paper: {
-        width: "25%",
+        width: "30%",
         padding: spacing.l,
         display: "flex",
         flexDirection: "column",

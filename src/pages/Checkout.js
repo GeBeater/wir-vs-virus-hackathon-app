@@ -111,10 +111,17 @@ export default function Checkout() {
         })
     }
 
-    const handleDistributeAmount = () => {
-        const newAmount = Math.round(amount / places.length * 100) / 100 ;
+    const handleDistributeAmount = (evt) => {
+        const newAmount = Math.round(evt.target.value / places.length * 100) / 100;
         const newPlaces = places.map(p => ({details: p.details, amount: newAmount}));
         dispatch({type: UPDATE_PLACES, payload:  newPlaces});
+    };
+
+    const handleKeyPressEnter = (evt) => {
+        if (evt.key === 'Enter') {
+            evt.target.blur();
+            evt.preventDefault();
+        }
     };
 
     return (
@@ -159,24 +166,14 @@ export default function Checkout() {
                                         type="number"
                                         id="donation"
                                         autoFocus
-                                        onChange={(event) => setAmount(event.target.value)}
+                                        onChange={handleDistributeAmount}
                                         value={parseFloat(amount)}
+                                        onKeyPress={handleKeyPressEnter}
                                         InputProps={{
                                             inputProps: { min: 0, max: 99999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} className={classes.overallAmountField}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            fullWidth
-                                            disabled={amount <= 0 || places.length === 0}
-                                            onClick={handleDistributeAmount}
-                                        >
-                                            Gleichmäßig verteilen
-                                        </Button>
                                     </Grid>
                                 </Grid>
                                 <CompanyList showInputs={true} />
@@ -197,12 +194,6 @@ export default function Checkout() {
                             {token && amount && <DropIn
                                 options={{
                                     authorization: token,
-                                    paypal: {
-                                        flow: 'checkout',
-                                        amount: amount,
-                                        currency: 'EUR',
-                                        commit: true
-                                    },
                                     locale: 'de_DE'
                                 }}
                                 onInstance={setInstance}
@@ -226,6 +217,7 @@ export default function Checkout() {
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
                         <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
                         <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
+                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Mastercard Nummer und ein Ablaufdatum in der Zukunft: 5555555555554444</h3>
                     </div>
                 </Container>
             </ConatinerWrapper>
