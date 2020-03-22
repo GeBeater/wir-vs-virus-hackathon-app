@@ -12,7 +12,7 @@ import Logo from "../assets/cofund.svg";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -107,7 +107,7 @@ export default function Checkout() {
             </div>
             <ConatinerWrapper>
                 <TitleContainer>
-                    <Button href='/' style={{marginBottom: spacing.m}}>
+                    <Button component={Link} to="/" style={{marginBottom: spacing.m}}>
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
                         <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
