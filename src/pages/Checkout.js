@@ -4,6 +4,8 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
+import Back from "../assets/back.svg";
+import {Link} from 'react-router-dom';
 
 export default function Checkout() {
     const [token, setToken] = useState(null);
@@ -26,7 +28,7 @@ export default function Checkout() {
     useEffect(() => {
         if (instance != null) {
             instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
-            instance.on('noPaymentMethodRequestable', ()=> setBrainTreeReady(false))
+            instance.on('noPaymentMethodRequestable', () => setBrainTreeReady(false))
         }
     }, [instance])
 
@@ -56,6 +58,9 @@ export default function Checkout() {
 
     return (
         <Wrapper>
+            <Link to="/" style={{position: "fixed", top: 20, left: 20}}>
+                <BackButton src={Back} alt="Back to map" />
+            </Link>
             <Container step={step}>
                 <header style={{gridArea: "header", textAlign: "center", marginBottom: "30px"}}>
                     <Typography component="h1" variant="h4">
@@ -140,4 +145,12 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
     width: 60%;
+`
+
+const BackButton = styled.img`
+    width: 40px;
+    height: 40px;
+    &:hover{
+        opacity: 0.6;
+    }
 `
