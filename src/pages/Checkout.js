@@ -9,9 +9,9 @@ export default function Checkout() {
     const [token, setToken] = useState(null);
     const [instance, setInstance] = useState(null);
     const [step, setStep] = useState(1);
-    const [amount, setAmount] = useState(10);
+    const [amount, setAmount] = useState(null);
 
-    const [{_, places}] = useAppContext();
+    const [{places}] = useAppContext();
 
     useEffect(() => {
         fetch("/api/payment/token", {method: 'POST'}).then(resp => {
@@ -24,8 +24,6 @@ export default function Checkout() {
 
     function startPayment(event) {
         event.preventDefault();
-        const payAmount = +event.target.donation.value ;
-        setAmount(payAmount)
         setStep(2)
     }
 
@@ -72,6 +70,7 @@ export default function Checkout() {
                                         label="Your Amount"
                                         type="number"
                                         id="donation"
+                                        onChange={(event) => setAmount(event.target.value)}
                                         autoFocus
                                     />
                                 </Grid>
@@ -83,6 +82,7 @@ export default function Checkout() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
+                                disabled={amount > 0 ? false : true}
                             >
                                 Continue
                             </Button>
