@@ -1,6 +1,9 @@
 <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
-<svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#27A1F8">
-    <circle cx="15" cy="15" r="15">
+<svg width="210" height="60" viewBox="0 0 210 60" xmlns="http://www.w3.org/2000/svg" fill="#27A1F8">
+    <style>
+        .Rrrrr { font: 20px; fill: gray; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; }
+    </style>
+    <circle cx="55" cy="15" r="15">
         <animate attributeName="r" from="15" to="15"
                  begin="0s" dur="0.8s"
                  values="15;9;15" calcMode="linear"
@@ -10,7 +13,7 @@
                  values="1;.5;1" calcMode="linear"
                  repeatCount="indefinite" />
     </circle>
-    <circle cx="60" cy="15" r="9" fill-opacity="0.3">
+    <circle cx="100" cy="15" r="9" fill-opacity="0.3">
         <animate attributeName="r" from="9" to="9"
                  begin="0s" dur="0.8s"
                  values="9;15;9" calcMode="linear"
@@ -20,7 +23,7 @@
                  values=".5;1;.5" calcMode="linear"
                  repeatCount="indefinite" />
     </circle>
-    <circle cx="105" cy="15" r="15">
+    <circle cx="145" cy="15" r="15">
         <animate attributeName="r" from="15" to="15"
                  begin="0s" dur="0.8s"
                  values="15;9;15" calcMode="linear"
@@ -30,4 +33,5 @@
                  values="1;.5;1" calcMode="linear"
                  repeatCount="indefinite" />
     </circle>
+    <text x="10" y="50" class="Rrrrr">Waiting for your address!</text>
 </svg>

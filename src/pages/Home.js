@@ -79,7 +79,7 @@ export default function Home() {
                 </Paper>
                 }
                 <BoxedMap>
-                    <img style={{position: "absolute", zIndex: -1, top: "50%", left: "50%", marginLeft: "-30px"}} alt="We are loading" width="60px" height="30px" src={Loading}></img>
+                    <img style={{position: "absolute", zIndex: 0, top: "50%", left: "50%", marginLeft: "-50px"}} alt="We are loading" width="180px" height="60px" src={Loading}></img>
                     <Map
                         zoom={16}
                         center={center}
@@ -145,4 +145,5 @@ const BoxedMap = styled.div`
     height: 100%;
     flex-grow: 1;
     position: relative;
+    background-color: rgb(240,240,240);
 `;
