@@ -52,30 +52,27 @@ export default function Search({onSelected, location}) {
         autocompleteService.getPlacePredictions(options, displaySuggestions);
     }
 
-    const displaySuggestions = function(predictions, status) {
+    const displaySuggestions = function (predictions, status) {
         if (status != google.maps.places.PlacesServiceStatus.OK) {
             console.log('Search was not successful for the following reason: ' + status);
             return;
         } else {
-            if (!geocoder) {
-                geocoder = new google.maps.Geocoder();
-            }
-            let results = [];
-            predictions.forEach(function(prediction) {
-                geocoder.geocode({'placeId': prediction.place_id}, function (resultList, status) {
-                    if (status === "OK" && resultList.length === 1) {
-                        results.push(resultList[0]);
-                    }
-                });
-            });
-            setResults(results);
+            setResults(predictions);
         }
     };
 
     function onSelect(result) {
-        const newCenter = {lat:result.geometry.location.lat(), lng: result.geometry.location.lng(), placeId: result.place_id};
-        onSelected(newCenter);
-        setResults([])
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        geocoder.geocode({'placeId': result.place_id}, function (resultList, status) {
+            if (status === "OK" && resultList.length === 1) {
+                const result = resultList[0];
+                const newCenter = {lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), placeId: result.place_id};
+                onSelected(newCenter);
+                setResults([])
+            }
+        });
     }
     return (
         <>
@@ -95,7 +92,7 @@ export default function Search({onSelected, location}) {
                         {
                             results.map((result) => {
                                 console.log(result);
-                                return <Result onClick={() => onSelect(result)}>{result.formatted_address}</Result>
+                                return <Result onClick={() => onSelect(result)}>{result.description}</Result>
                             })
                         }
                     </Paper>
