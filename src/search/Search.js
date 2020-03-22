@@ -105,18 +105,17 @@ const QuickSearch = styled.div`
     position: absolute;
     top: 60px;
     left: 80px;
-    width: 25%;
+    max-width: 50%;
     @media (max-width: 768px) { 
         left: 5px;
         right: 5px;
         width: 100%;
+        max-width: 100%;
     }
 `;
 
 const Result = styled.div`
-    cursor:pointer;
-    margin-top: 0;
-    line-height: 20px;
+    line-height: 3em;
     padding: ${spacing.s} ${spacing.m};
     margin-left: -${spacing.m};
     margin-right: -${spacing.m};
