@@ -12,6 +12,7 @@ import Logo from "../assets/cofund.svg";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useHistory, Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,6 +41,8 @@ export default function Checkout() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
     const [brainTreeReady, setBrainTreeReady] = useState(false);
+    const [paying, setPaying] = useState(false);
+    const history = useHistory();
 
     const [{places}] = useAppContext();
 
@@ -67,6 +70,7 @@ export default function Checkout() {
     }
 
     async function pay() {
+        setPaying(true)
         const {nonce} = await instance.requestPaymentMethod();
         const request = places.reduce((acc, place) => {
             return {...acc, [place.place_id]: amount / places.length}
@@ -77,13 +81,17 @@ export default function Checkout() {
             placeIdAmounts: request,
             places
         }
-        await fetch('/api/payment/checkout', {
+        fetch('/api/payment/checkout', {
             method: "POST",
             headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify(data)
-        });
+        }).then(response => {
+            if (response.status === 200) {
+                history.push('/success');
+            }
+        })
     }
 
     return (
@@ -99,7 +107,7 @@ export default function Checkout() {
             </div>
             <ConatinerWrapper>
                 <TitleContainer>
-                    <Button href='/' style={{marginBottom: spacing.m}}>
+                    <Button component={Link} to="/" style={{marginBottom: spacing.m}}>
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Help Icon" />
                         <span style={{color: colors.grayA50}}>Zurück</span>
                     </Button>
@@ -169,7 +177,7 @@ export default function Checkout() {
                                 variant="contained"
                                 color="primary"
                                 onClick={pay}
-                                disabled={(!brainTreeReady || places.length === 0 || !(amount > 0))}
+                                disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
                             >
                                 Pay now
                             </Button>

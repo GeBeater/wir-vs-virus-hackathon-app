@@ -91,8 +91,7 @@ export default function Search({onSelected, location}) {
                     <Paper className={classes.results}>
                         {
                             results.map((result) => {
-                                console.log(result);
-                                return <Result onClick={() => onSelect(result)}>{result.description}</Result>
+                                return <Result key={result.place_id} onClick={() => onSelect(result)}>{result.description}</Result>
                             })
                         }
                     </Paper>
