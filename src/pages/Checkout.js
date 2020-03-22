@@ -59,7 +59,7 @@ export default function Checkout() {
 
     return (
         <Wrapper>
-            <Link to="/" style={{position: "fixed", top: 20, left: 20}}>
+            <Link to="/" style={{position: "absolute", top: 20, left: 20}}>
                 <BackButton src={Back} alt="Back to map" />
             </Link>
             <Container step={step}>
@@ -89,8 +89,7 @@ export default function Checkout() {
                                     />
                                 </Grid>
                             </Grid>
-
-                            <CompanyList></CompanyList>
+                            <CompanyList />
                             <Button
                                 type="submit"
                                 fullWidth
@@ -139,9 +138,10 @@ const Panel = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
-    margin-top: 10%;
+    padding-top: 10%;
     justify-content: center;
     height: 100%;
+    max-height: 100%;
 `
 
 const Container = styled.div`

@@ -12,7 +12,9 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '100%',
-        maxWidth: 1000,
+        maxWidth: '100%',
+        overflowY: 'scroll',
+        padding: 3
     },
     listitem: {
         borderBottom: '1px solid lightgrey',

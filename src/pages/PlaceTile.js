@@ -12,7 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const useStyles = makeStyles(theme => ({
     listitem: {
         padding: '10px 20px',
-        boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
+        boxShadow: '0px 0px 4px 0px rgba(0,0,0,0.1)',
         backgroundColor: 'white',
         marginBottom: 10
     },

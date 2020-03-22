@@ -17,6 +17,7 @@ import {colors, spacing} from "../theme/theme";
 import CompanyList from "./CompanyList";
 import {isSupportedType, isValidPlace} from "../maps/placesUtils";
 import AlertDialog from "../components/AlertDialog";
+import Alert from "@material-ui/lab/Alert";
 
 const defaultLocation = {lat: 53.551086, lng: 9.993682};
 
@@ -37,10 +38,14 @@ const useStyles = makeStyles(theme => ({
     list: {
         width: '100%',
     },
-    alertWrapper: {
+    notificationWrapper: {
         position: 'absolute',
         width: '100%',
-        top: 0
+        top: 0,
+        padding: 10
+    },
+    notification: {
+        boxShadow: '0px 0px 4px 0px rgba(0,0,0,0.1)',
     }
 }));
 
@@ -51,10 +56,11 @@ export default function Home() {
     const [center, setCenter] = useState(defaultLocation)
     const location = usePosition();
     const [{google, places, map, loading}, dispatch] = useAppContext();
+    const [isNotificationVisible, setIsNotificationVisible] = useState(false);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
     const [isDialogVisible, setIsDialogVisible] = useState(false);
     const [pendingPlaceDetails, setPendingPlaceDetails] = useState(null);
-    let hideAlertTimeoutId;
+    let hideNotificationTimeoutId;
     const events = {
         onClick: (data) => {
             const placeId = data.event.placeId;
@@ -65,17 +71,22 @@ export default function Home() {
     useEffect(selectCurrentPlace, [currentPlace])
     useEffect(refreshCenter, [location, center]);
 
-    const showAlertInvalidPlace = () => {
-        setIsAlertVisible(true);
-        clearTimeout(hideAlertTimeoutId);
-        hideAlertTimeoutId = setTimeout(() => {
-            setIsAlertVisible(false);
+    const showSuccessNotification = () => {
+        setIsNotificationVisible(true);
+        clearTimeout(hideNotificationTimeoutId);
+        hideNotificationTimeoutId = setTimeout(() => {
+            setIsNotificationVisible(false);
         }, 2000);
+    };
+
+    const handleAlertAgree = () => {
+        setIsAlertVisible(false);
     };
 
     const handleDialogAgree = () => {
         if (pendingPlaceDetails) {
             dispatch({type: ADD_PLACE, payload: pendingPlaceDetails});
+            showSuccessNotification();
             setPendingPlaceDetails(null);
         }
         setIsDialogVisible(false);
@@ -100,7 +111,7 @@ export default function Home() {
                 fields: ['id', 'name', 'place_id', 'icon', 'formatted_address', 'address_components', 'types']
             }, (details, status) => {
                 if (!isValidPlace(details, status, google)) {
-                    showAlertInvalidPlace();
+                    setIsAlertVisible(true);
                     return;
                 }
 
@@ -111,6 +122,7 @@ export default function Home() {
                 }
 
                 dispatch({type: ADD_PLACE, payload: details});
+                showSuccessNotification();
             });
         }
     }
@@ -147,6 +159,11 @@ export default function Home() {
                             google={google}
                         />
                     </MapWrapper>
+                    <div className={classes.notificationWrapper}>
+                        {isNotificationVisible && (
+                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                        )}
+                    </div>
                 </BoxedMap>
             </MapContainer>
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
@@ -155,7 +172,7 @@ export default function Home() {
                     title={'Error'}
                     message={'The place you selected is invalid and cannot be added, sorry.'}
                     agree={'OK'}
-                    handleAgree={handleDialogAgree}
+                    handleAgree={handleAlertAgree}
                 />
             )}
             {isDialogVisible && (
