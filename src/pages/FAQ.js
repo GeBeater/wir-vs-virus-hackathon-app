@@ -7,6 +7,7 @@ import {colors, spacing} from "../theme/theme";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import {useTranslation} from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Home() {
+    const {t} = useTranslation();
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
@@ -65,48 +67,56 @@ export default function Home() {
                     </DialogContent>
                     <DialogContent dividers>
                         <div style={{lineHeight: '22px'}}>
-                            <b>Was ist das Ziel?</b>
+                            <b>{t('faq.who.headline')}</b>
                             <br/>
                             <div>
-                                In schweren Zeiten, wie diesen müssen wir als Gesellschaft zusammenhalten und denen helfen, die es besonders hart trifft. Das sind derzeit vor allem kleine Unternehmen und Geschäfte von nebenan, die mit massiven Umsatzeinbrüchen bis hin zu zwangsweisen Schließungen zu kämpfen haben. Deshalb ist es unser Ziel, kleinen Unternehmen von nebenan (unseren „Lieblingsläden“) zu helfen, indem wir ihnen schnelle Liquidität bereitstellen. Dadurch können sie die jetzige Krise überstehen und Arbeitsplätze bleiben erhalten.
+                                {t('faq.who.text')}
                             </div>
                         </div>
                         <br/>
                         <div style={{lineHeight: '22px'}}>
-                            <b>Wie funktioniert das System?</b>
+                            <b>{t('faq.what.headline')}</b>
                             <br/>
                             <div>
-                            Ganz einfach: Ihr sucht auf der Karte die Unternehmen und Läden aus, denen ihr sofortige Hilfe zukommen lassen wollt. Ihr könnt entweder einen Geldbetrag spenden oder Gutscheine erwerben, die zu einem späteren Zeitpunkt eingelöst werden können. Der Betrag wird per PayPal an uns überwiesen und wir sorgen dafür, dass das Geld schnellstmöglich bei den Unternehmen ankommt, die es jetzt so dringend benötigen.
+                                {t('faq.what.text')}
                             </div>
                         </div>
                         <br/>
                         <div style={{lineHeight: '22px'}}>
-                            <b>Was passiert, wenn die Unternehmen die Hilfe nicht annehmen?</b>
+                            <b>{t('faq.how.headline')}</b>
                             <br/>
                             <div>
-                            Für den unwahrscheinlichen Fall, dass die Unternehmen die Hilfe nicht annehmen möchten oder können, werden wir euch selbstverständlich eure Geldbeträge sofort per PayPal zurückerstatten. Wir führen intern über alle Transaktionen Buch und ihr erhaltet nach eurer Spende oder dem Erwerb eines Gutscheins sofort eine Bestätigung mit Beleg per E-Mail.
+                                {t('faq.how.text')}
                             </div>
                         </div>
                         <br/>
                         <div style={{lineHeight: '22px'}}>
-                            <b>Wann kann ich die Gutscheine einlösen?</b>
+                            <b>{t('faq.decline.headline')}</b>
                             <br/>
                             <div>
-                            Das entscheiden die Unternehmen selbst. Aber bitte geht davon aus, dass insbesondere Restaurants, Bars, Cafés oder andere Geschäfte, die derzeit zwangsweise geschlossen sind, erst nach überstandener Krise wieder ihre Leistungen und Waren anbieten können. 
+                                {t('faq.decline.text')}
                             </div>
                         </div>
                         <br/>
                         <div style={{lineHeight: '22px'}}>
-                            <b>Wie kann ich helfen?</b>
+                            <b>{t('faq.goodie.headline')}</b>
                             <br/>
                             <div>
-                            Derzeit ist es für die kleinen Unternehmen am wichtigsten, die nötige Liquidität zu erhalten, um zu überleben. Ihr könnt mithelfen, indem ihr eure Familie, Freunde und Bekannte auf unser Projekt aufmerksam macht und bittet, ebenfalls teilzunehmen.
+                                {t('faq.goodie.text')}
+                            </div>
+                        </div>
+                        <br/>
+                        <div style={{lineHeight: '22px'}}>
+                            <b>{t('faq.help.headline')}</b>
+                            <br/>
+                            <div>
+                                {t('faq.help.text')}
                             </div>
                         </div>
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose} color="primary">
-                            Close
+                        {t('close')}
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -1,4 +1,5 @@
 {
+  "close": "Schließen",
   "home": {
     "welcome": {
       "headline": "Hallo Unterstützer!",
@@ -6,6 +7,49 @@
       "step1": "Unternehmen auf der Karte wählen",
       "step2": "Betrag festlegen",
       "step3": "Mit PayPal spenden"
+    },
+    "warning": {
+      "headline": "Achtung",
+      "text": "Deine Auswahl scheint uns ungewöhnlich für ein Unternehmen. Möchtest du es trotzdem hinzufügen?",
+      "agree": "Ja, zur Liste hinzufügen",
+      "disagree": "Schließen"
+    },
+    "error": {
+      "headline": "Sorry!",
+      "text": "Der von dir ausgewählte Ort ist ungültig und kann nicht hinzugefügt werden.",
+      "agree": "OK"
+    },
+    "success": {
+      "text": "Unternehmen erfolgreich hinzugefügt"
+    }
+  },
+  "search": {
+    "address": "Suche nach einer Adresse..."
+  },
+  "faq": {
+    "who": {
+      "headline": "Wer sind wir?",
+      "text": "Dieses Projekt ist aus dem WirVsVirus Hackathon der Bundesregierung entstanden. Das Projektteam besteht aus ehrenamtlichen Helfern, die in der jetzigen Situation helfen und einen Beitrag leisten wollen."
+    },
+    "what": {
+      "headline": "Was ist das Ziel?",
+      "text": "In schweren Zeiten, wie diesen müssen wir als Gesellschaft zusammenhalten und denen helfen, die es besonders hart trifft. Das sind derzeit vor allem kleine Unternehmen und Geschäfte von nebenan, die mit massiven Umsatzeinbrüchen bis hin zu zwangsweisen Schließungen zu kämpfen haben. Deshalb ist es unser Ziel, kleinen Unternehmen von nebenan (unseren „Lieblingsläden“) zu helfen, indem wir ihnen schnell finanzielle Mittel zur Verfügung stellen - von genau den Menschen die auf sie angewiesen sind. Denn ohne die Cafés, Kneipen, kleinen Geschäfte und andere Betriebe wären unsere Gemeinden, Städte und Viertel nicht mehr das was sie sind. So können wir gemeinsam die jetzige Krise überstehen und Arbeitsplätze bleiben erhalten."
+    },
+    "how": {
+      "headline": "Wie funktioniert das System?",
+      "text": "Ganz einfach: Ihr sucht auf der Karte die Unternehmen und Läden aus, denen ihr sofortige Hilfe zukommen lassen wollt. Ihr könnt anschließend einen Geldbetrag festlegen, den ihr persönlich beitragen möchtet. Der Betrag wird per PayPal oder Kreditkarte an uns überwiesen und wir sorgen dafür, dass das Geld schnellstmöglich bei den Unternehmen ankommt, die es jetzt so dringend benötigen."
+    },
+    "decline": {
+      "headline": "Was passiert, wenn die Unternehmen die Hilfe nicht annehmen?",
+      "text": "Für den unwahrscheinlichen Fall, dass die Unternehmen die Hilfe nicht annehmen möchten oder können, werden wir euch selbstverständlich eure Geldbeträge sofort per  oder Kreditkarte zurückerstatten. Wir führen intern über alle Transaktionenen Buch und ihr erhaltet nach eurer Spende oder dem Erwerb eines Gutscheins sofort eine Bestätigung mit Beleg per E-Mail."
+    },
+    "goodie": {
+      "headline": "Wie werden die Beträge verwendet? Erhalte ich eine Gegenleistung?",
+      "text": "Das entscheiden die Unternehmen selbst. Aber bitte geht davon aus, dass insbesondere Restaurants, Bars, Cafés oder andere Geschäfte, die derzeit zwangsweise geschlossen sind, erst nach überstandener Krise wieder ihre Leistungen und Waren anbieten können."
+    },
+    "help": {
+      "headline": "Wie kann ich helfen?",
+      "text": "Derzeit ist es für die kleinen Unternehmen am wichtigsten, die nötige Liquidität zu erhalten, um zu überleben. Ihr könnt mithelfen, indem ihr eure Familie, Freunde und Bekannte auf unser Projekt aufmerksam macht und bittet, ebenfalls teilzunehmen."
     }
   }
 }

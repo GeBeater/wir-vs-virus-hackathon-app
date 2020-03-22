@@ -170,7 +170,7 @@ export default function Home() {
                     </MapWrapper>
                     <div className={classes.notificationWrapper}>
                         {isNotificationVisible && (
-                            <Alert severity="success" className={classes.notification}>Branch successfully added</Alert>
+                            <Alert severity="success" className={classes.notification}>{t('home.success.text')}</Alert>
                         )}
                     </div>
                 </BoxedMap>
@@ -178,18 +178,18 @@ export default function Home() {
             {detectMobile.isMobile() && <MobileStartNow amount={places.length} />}
             {isAlertVisible && (
                 <AlertDialog
-                    title={'Error'}
-                    message={'The place you selected is invalid and cannot be added, sorry.'}
-                    agree={'OK'}
+                    title={t('home.error.headline')}
+                    message={t('home.error.text')}
+                    agree={t('home.error.agree')}
                     handleAgree={handleAlertAgree}
                 />
             )}
             {isDialogVisible && (
                 <AlertDialog
-                    title={'Warning'}
-                    message={'The place you selected seems to be of an unusual type. Do you want to add it anyway?'}
-                    agree={'Yes'}
-                    disagree={'No'}
+                    title={t('home.warning.headline')}
+                    message={t('home.warning.text')}
+                    agree={t('home.warning.agree')}
+                    disagree={t('home.warning.disagree')}
                     handleAgree={handleDialogAgree}
                     handleDisagree={handleDialogDisagree}
                 />
