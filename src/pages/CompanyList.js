@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     list: {
         width: '100%',
         maxWidth: '100%',
-        overflowY: 'scroll',
+        overflowY: 'auto',
         padding: 3
     },
     listitem: {
@@ -30,6 +30,16 @@ const useStyles = makeStyles(theme => ({
             cursor: 'pointer',
             backgroundColor: fade(theme.palette.common.black, 0.05),
         }
+    },
+    placeholder: {
+        height: '100%',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '5px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '10px 0',
+        margin: 10
     }
 }));
 
@@ -72,7 +82,7 @@ export default function CompanyList() {
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (
-                <div style={{height: '100%', backgroundColor: '#f9f9f9', borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <div className={classes.placeholder}>
                     <span style={{color: '#ababab'}}>No shop selected yet</span>
                 </div>
             )}
