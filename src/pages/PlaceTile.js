@@ -68,7 +68,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
         const filteredTypes = types.filter(t => placeTypeWhitelist.indexOf(t) >= 0);
         const type = filteredTypes.length ? t(`place.${filteredTypes[0]}`) : null;
 
-        return `${type}${type ? ' | ' : ''}${route} ${streetNumber}`;
+        return `${type ? `${type} | ` : ''}${route} ${streetNumber}`;
     };
 
     const handleChangeAmount = (evt) => {
