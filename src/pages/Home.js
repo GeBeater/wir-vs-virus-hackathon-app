@@ -155,7 +155,6 @@ export default function Home() {
                         <h3><b>1/</b> {t('home.welcome.step1')}</h3>
                         <h3><b>2/</b> {t('home.welcome.step2')}</h3>
                         <h3><b>3/</b> {t('home.welcome.step3')}</h3>
-                        {places.length === 0 && <h3>{t('home.welcome.benext')}</h3>}
                     </header>
                     {places.length > 0 ? <CompanyList /> : <LastFive />}
                     <StartNow amount={places.length} />

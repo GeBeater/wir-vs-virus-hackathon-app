@@ -1,6 +1,7 @@
 
 import {List, ListItem, ListItemText, makeStyles, Paper, Typography} from '@material-ui/core';
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     placeholder: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "100%",
         width: '100%',
         overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end'
     },
     item: {
         padding: '10px 30px 10px 10px',
@@ -38,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function LiveTicket() {
+    const {t} = useTranslation();
     const classes = useStyles();
     const [transactions, setTransactions] = useState([]);
     useEffect(() => {
@@ -53,6 +58,7 @@ export default function LiveTicket() {
         <>
             {(transactions && transactions.length > 0) &&
                 <>
+                    <h3>{t('home.welcome.benext')}</h3>
                     <List className={classes.paper}>
                         {transactions.map((transaction, id) =>
                             <ListItem key={`transaction-${id}`} className={classes.item}>

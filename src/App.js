@@ -6,7 +6,6 @@ import {createGlobalStyle} from 'styled-components';
 import './App.css';
 import {AppContextWrapper} from "./context/AppContext";
 import {AppInitializer} from "./context/AppInitializer";
-import PayoutDetails from "./pages/BankingDetails";
 import Checkout from './pages/Checkout';
 import DonationOverview from "./pages/DonationOverview";
 import Home from './pages/Home';
@@ -56,10 +55,11 @@ function App() {
                             <Route path="/showmethemoney">
                                 <DonationOverview />
                             </Route>
-                            {/* <Route path="/payoutdetails">
+                            {/*
+                            <Route path="/payoutdetails">
                                 <PayoutDetails />
                             </Route>
-                            </Route> */}
+                            */}
                             <Route path="/success">
                                 <Success />
                             </Route>

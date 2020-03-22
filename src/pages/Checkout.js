@@ -129,7 +129,9 @@ export default function Checkout() {
             <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
                 <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
-                        <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
+                        <Button component={Link} to="/">
+                            <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
+                        </Button>
                         <div style={{width: '100%'}}></div>
                         <FAQ />
                     </Toolbar>
@@ -170,7 +172,7 @@ export default function Checkout() {
                                         value={parseFloat(amount)}
                                         onKeyPress={handleKeyPressEnter}
                                         InputProps={{
-                                            inputProps: { min: 0, max: 99999 },
+                                            inputProps: { min: 0, max: 9999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
                                         />

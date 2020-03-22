@@ -110,6 +110,7 @@ export const PlaceTile = ({place, showDeleteBtn = false, handleDelete = null, sh
                     onKeyPress={handleKeyPressEnter}
                     className={classes.amountTf}
                     InputProps={{
+                        inputProps: { min: 0, max: 9999 },
                         endAdornment: <InputAdornment position="end">€</InputAdornment>,
                     }}
                 />)

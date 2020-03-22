@@ -3,6 +3,7 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
+import styled from "styled-components";
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -14,7 +15,10 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '100%',
         overflowY: 'auto',
         padding: 3,
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end'
     },
     listitem: {
         borderBottom: '1px solid lightgrey',
