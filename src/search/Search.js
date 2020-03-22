@@ -1,11 +1,12 @@
 import {makeStyles, Paper} from '@material-ui/core';
 import InputBase from "@material-ui/core/InputBase";
-import React, {useState} from 'react';
+import {debounce} from "lodash";
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import SearchIcon from "../assets/search.svg";
 import {useAppContext} from '../context/AppContext';
 import {colors, spacing} from '../theme/theme';
-import {useTranslation} from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
     search: {
@@ -39,18 +40,28 @@ export default function Search({onSelected, location}) {
     const [{_, google}] = useAppContext();
     const [results, setResults] = useState([]);
     const radiusInMeters = 10000;
+    const [searchTerm, setSearchTem] = useState(null);
     const types = ['establishment']; // we could also define the exact types of establishments, see https://developers.google.com/places/supported_types#table3
+    const debouncedSearch = debounce((value) => setSearchTem(value), 500);
 
-    function onSearch(event) {
-        event.preventDefault();
-        const searchTerm = event.target.search.value;
+    function search(term) {
         const searchRadius = new google.maps.Circle({center: location, radius: radiusInMeters});
 
         if (!autocompleteService) {
             autocompleteService = new google.maps.places.AutocompleteService();
         }
-        const options = {input: searchTerm, types: types, bounds: searchRadius.getBounds(), strictBounds: true};
+        const options = {input: term, types: types, bounds: searchRadius.getBounds(), strictBounds: true};
         autocompleteService.getPlacePredictions(options, displaySuggestions);
+    }
+
+    useEffect(() => {
+        if (searchTerm) {
+            search(searchTerm)
+        }
+    }, [searchTerm])
+
+    function onSearchChange(event) {
+        debouncedSearch(event.target.value)
     }
 
     const displaySuggestions = function (predictions, status) {
@@ -77,13 +88,14 @@ export default function Search({onSelected, location}) {
     }
     return (
         <>
-            <form onSubmit={onSearch} className={classes.search}>
+            <form onSubmit={(e) => e.preventDefault()} className={classes.search}>
                 <img src={SearchIcon} style={{width: 30, height: 30, color: colors.grayA50}} alt="CoFund Logo" />
                 <InputBase
                     name="search"
                     placeholder={t('search.address')}
                     autoFocus
                     autoComplete="off"
+                    onChange={onSearchChange}
                     classes={{root: classes.searchInput, input: classes.searchField}}
                 />
             </form>
