@@ -128,7 +128,7 @@ export default function Checkout() {
                             <form noValidate onSubmit={startPayment}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                        <TextField
+                                        <TextField style={{marginBottom: spacing.m}}
                                         variant="outlined"
                                         fullWidth
                                         required
@@ -139,6 +139,7 @@ export default function Checkout() {
                                         autoFocus
                                         onChange={(event) => setAmount(event.target.value)}
                                         InputProps={{
+                                            inputProps: { min: 0, max: 99999 },
                                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                                         }}
                                         variant="outlined"

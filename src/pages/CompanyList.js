@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         padding: '10px 0',
+        margin: '10px 0',
     }
 }));
 
@@ -68,7 +69,7 @@ export default function CompanyList() {
     const hasPlaces = !!places.length;
 
     return (
-        <List dense className={classes.list} style={{height: '100%'}}>
+        <List dense className={classes.list} style={{height: '100%', 'overflow-y': 'unset'}}>
             {hasPlaces && places.map(place =>
                 <PlaceTile
                     key={place.id}
