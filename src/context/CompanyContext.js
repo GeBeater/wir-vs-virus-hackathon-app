@@ -1,9 +1,11 @@
 import React, {useContext, useReducer} from "react";
 
 export const SET_CODE = 'SET_CODE';
+export const SET_PLACE = 'SET_PLACE';
 
 export const initialCompanyContextState = {
-    invitationCode: null
+    invitationCode: null,
+    place:null
 };
 
 export const companyReducer = (state, action) => {
@@ -11,6 +13,8 @@ export const companyReducer = (state, action) => {
     switch (action.type) {
         case SET_CODE:
             return {...state, invitationCode: action.payload}
+        case SET_PLACE:
+            return {...state, place: action.payload}
         default:
             return state;
     }

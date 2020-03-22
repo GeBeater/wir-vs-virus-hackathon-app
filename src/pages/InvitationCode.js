@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import {makeStyles} from '@material-ui/core/styles';
-import Logo from "../assets/cofund.svg";
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {SET_CODE, useCompanyContext} from '../context/CompanyContext';
+import Logo from "../assets/cofund.svg";
+import {SET_CODE, useCompanyContext, SET_PLACE} from '../context/CompanyContext';
 
 function Copyright() {
     return (
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 export default function InvitationCode() {
     const classes = useStyles();
     const history = useHistory();
-    const [{invitationCode}, dispatch] = useCompanyContext();
+    const [_, dispatch] = useCompanyContext();
 
     const [inviteCode, setInviteCode] = useState(null);
 
@@ -57,9 +57,12 @@ export default function InvitationCode() {
             return response.json()
         }).then(places => {
             const place = places[0];
-            if (place.zip) {
-                dispatch({type: SET_CODE, payload: inviteCode});
+            dispatch({type: SET_PLACE, payload: place});
+            dispatch({type: SET_CODE, payload: inviteCode});
+            if (place.created) {
                 history.push('/showmethemoney')
+            } else {
+                history.push('/signup')
             }
         })
     }
