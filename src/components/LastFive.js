@@ -1,6 +1,6 @@
 
-import {List, ListItem, ListItemText, makeStyles, Paper, Typography} from '@material-ui/core';
-import React, {useEffect, useState} from 'react';
+import {List, ListItem, ListItemText, makeStyles} from '@material-ui/core';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
@@ -29,8 +29,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         overflowY: 'auto',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end'
+        flexDirection: 'column-reverse'
     },
     item: {
         padding: '10px 30px 10px 10px',
@@ -44,16 +43,37 @@ const useStyles = makeStyles(theme => ({
 export default function LiveTicket() {
     const {t} = useTranslation();
     const classes = useStyles();
-    const [transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState(null);
+    const transactionsRef = useRef(transactions);
+
     useEffect(() => {
         fetchTicker()
     }, []);
 
-    function fetchTicker() {
-        fetch('/api/transactions/history').then(r => r.json()).then(data => {
-            setTransactions(data.filter((a,i) => i < 7));
-        }).catch(()=>{});
+    useEffect(() => {
+        let eventSource = new EventSource("/api/transactions/feed");
+        eventSource.onmessage = (e) => addTicker(JSON.parse(e.data))
+        return () => {
+            eventSource.close();
+        }
+    }, []);
+
+    function addTicker(response) {
+        updateTransactions([response, ...transactionsRef.current])
     }
+
+    function fetchTicker() {
+        return fetch('/api/transactions/history').then(r => r.json()).then(data => {
+            updateTransactions(data.filter((a, i) => i < 7))
+        }).catch(() => {});
+    }
+
+    function updateTransactions(data) {
+        const filterDown = data.filter((a, i) => i < 20)
+        transactionsRef.current = filterDown;
+        setTransactions(filterDown);
+    }
+
     return (
         <>
             {(transactions && transactions.length > 0) &&
