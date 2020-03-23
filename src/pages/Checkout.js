@@ -9,6 +9,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Logo from "../assets/cofund.svg";
+import Google from "../assets/google.png";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -223,6 +224,7 @@ export default function Checkout() {
                     </div>
                 </Container>
             </ConatinerWrapper>
+            <img src={Google} style={{position: "absolute", bottom: 10, left: 10}}></img>
         </Wrapper>
     )
 }
