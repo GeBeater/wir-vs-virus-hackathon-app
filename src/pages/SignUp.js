@@ -68,8 +68,8 @@ export default function SignUp() {
         return Object.keys(data).filter((key) => !data[key] || data[key].length === 0).length === 0;
     }
 
-    function setValue(name, value) {
-        const newData = {...form.data, [name]: value};
+    function setValue(name, value, valid = true) {
+        const newData = {...form.data, [name]: (valid ? value: null)};
         setForm({valid: isValid(newData), data: newData});
     }
 
@@ -196,8 +196,9 @@ export default function SignUp() {
                                     id="email"
                                     label="Email"
                                     name="email"
+                                    type="email"
                                     autoComplete="email"
-                                    onChange={(event) => setValue('mail', event.target.value)}
+                                    onChange={(event) => setValue('mail', event.target.value, event.target.validity.valid)}
                                 />
                             </Grid>
                             {t('signup.slug.description')}
