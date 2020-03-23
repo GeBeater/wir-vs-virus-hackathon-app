@@ -27,8 +27,10 @@ export default function Success() {
 
     return (
         <Wrapper>
-            <img src={Logo} style={{width: 65, height: 65}} alt="CoFund Logo" />
-            <ConatinerWrapper>
+            <a href='/'>
+                <img src={Logo} style={{width: 65, height: 65}} alt="CoFund Logo" />
+            </a>
+            <ContainerWrapper>
                 <Container>
                     <header style={{gridArea: "header", marginBottom: "20px", textAlign: 'center'}}>
                         <h1>
@@ -67,12 +69,12 @@ export default function Success() {
                         </div>
                     </div>
                 </Container>
-            </ConatinerWrapper>
+            </ContainerWrapper>
         </Wrapper>
     )
 }
 
-const ConatinerWrapper = styled.div`
+const ContainerWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 425px;

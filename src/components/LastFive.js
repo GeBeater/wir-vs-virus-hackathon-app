@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function LiveTicket() {
+export default function LiveTicker() {
     const {t} = useTranslation();
     const classes = useStyles();
     const [transactions, setTransactions] = useState(null);
