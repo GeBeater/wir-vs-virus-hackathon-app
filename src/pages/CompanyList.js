@@ -83,7 +83,7 @@ export default function CompanyList({showInputs = false}) {
                     isChecked={checked.indexOf(place.place_id) !== -1}
                     handleToggle={handleToggle}
                     showDeleteBtn={true}
-                    showInput={showInputs}
+                    showInput={showInputs && places.length > 1}
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (
