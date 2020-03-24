@@ -1,30 +1,23 @@
 body {
   margin: 0;
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Montserrat', 'DejaVu Sans', 'Verdana', 'Helvetica Neue', 'Roboto', 'Ubuntu', sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 button {
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Montserrat', 'DejaVu Sans', 'Verdana', 'Helvetica Neue', 'Roboto', 'Ubuntu', sans-serif;
 }
 
 h1 {
-  font-family: 'Montserrat' !important;
-}
-
-h1 {
-  font-weight: 400 !important;
+  font-weight: 400;
   font-size: 24px;
   line-height: 30px;
 }
 
 h3 {
-  font-weight: 400 !important;
+  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
 }
@@ -49,7 +42,7 @@ code {
 .gm-style .gm-style-iw,
 .poi-info-window div,
 .poi-info-window a {
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Montserrat', 'DejaVu Sans', 'Verdana', 'Helvetica Neue', 'Roboto', 'Ubuntu', sans-serif;
   font-size: 13px;
   line-height: 1.4;
 }
