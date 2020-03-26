@@ -106,7 +106,7 @@ export default function SignUp() {
         }).then((response) => {
             if(response.status === 200) {
                 place.slug = slug;
-                setForm({valid: false, data: form.data, invalidSlug: false});
+                setForm({valid: true, data: form.data, invalidSlug: false});
             } else {
                 setForm({valid: false, data: form.data, invalidSlug: true});
             }
