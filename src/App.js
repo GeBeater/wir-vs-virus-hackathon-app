@@ -40,7 +40,7 @@ function App() {
                     <GlobalStyle />
                     <Router history={history}>
                         <Switch>
-                            <Route path="/:placeIdOrSlug">
+                            <Route path="/donate/:placeIdOrSlug/:amount?">
                                 <PlaceResolver/>
                             </Route>
                             <Route path="/checkout">
