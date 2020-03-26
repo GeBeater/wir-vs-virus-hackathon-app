@@ -13,6 +13,7 @@ import {useHistory} from 'react-router-dom';
 import Logo from '../assets/cofund.svg';
 import {useCompanyContext} from '../context/CompanyContext';
 import {useTranslation} from "react-i18next";
+import {debounce} from "lodash";
 
 function Copyright() {
     return (
@@ -55,8 +56,8 @@ export default function SignUp() {
 
     const [{invitationCode, place}] = useCompanyContext();
     const history = useHistory();
-    const initialSlug = generateRandomSlug();
-    const [form, setForm] = useState({data: {firstName: null, lastName: null, mail: null, slug: initialSlug}, valid: false});
+    const [form, setForm] = useState({data: {firstName: null, lastName: null, mail: null, slug: null}, valid: false, invalidSlug: false});
+    const debouncedSlugValidation = debounce((value) => validateSlug(value), 500);
 
     useEffect(() => {
         if (!invitationCode || !place) {
@@ -96,8 +97,21 @@ export default function SignUp() {
         });
     }
 
-    function generateRandomSlug() {
-        return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
+    function validateSlug(slug) {
+        fetch('/api/slug/validate', {
+            method: "POST", headers: {
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({slug: slug})
+        }).then((response) => {
+            if(response.status === 200) {
+                place.slug = slug;
+                setForm({valid: false, data: form.data, invalidSlug: false});
+            } else {
+                setForm({valid: false, data: form.data, invalidSlug: true});
+            }
+        });
+        setValue('slug', slug);
     }
 
     return (
@@ -209,8 +223,9 @@ export default function SignUp() {
                                     id="slug"
                                     label={t('signup.slug.label')}
                                     name="slug"
-                                    defaultValue={initialSlug}
-                                    onChange={(event) => setValue('slug', event.target.value)}
+                                    error={form.invalidSlug}
+                                    defaultValue={place.slug}
+                                    onChange={(event) => debouncedSlugValidation(event.target.value)}
                                 />
                             </Grid>
                         </Grid>

@@ -1,6 +1,7 @@
 {
   "close": "Schließen",
   "next": "Weiter",
+  "payout": "Auszahlen",
   "home": {
     "welcome": {
       "headline": "Hallo Unterstützer!",
@@ -118,7 +119,7 @@
     "button": "Registrieren",
     "slug": {
       "label": "Dein Kürzel",
-      "description": "Verwende dieses Feld, um ein Kürzel für dein Unternehmen zu erstellen, wobei nur Buchstaben und keine Leerzeichen verwendet werden dürfen. Du kannst es später verwenden, um einen persönlichen Link mit Kunden, Freunden und Familie zu teilen, um aktiv für Spenden zu werben."
+      "description": "Verwende dieses Feld, um ein Kürzel für dein Unternehmen zu erstellen, wobei nur Kleinbuchstaben und Bindestriche verwendet werden dürfen. Du kannst es später verwenden, um einen persönlichen Link mit Kunden, Freunden und Familie zu teilen, um aktiv für Spenden zu werben."
     }
   }
 }

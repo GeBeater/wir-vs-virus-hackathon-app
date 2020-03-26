@@ -3,7 +3,6 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
-import styled from "styled-components";
 
 const useStyles = makeStyles(theme => ({
     avatar: {
