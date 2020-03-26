@@ -98,7 +98,7 @@ export default function SignUp() {
     }
 
     function validateSlug(slug) {
-        fetch('/api/slug/validate', {
+        fetch('/api/entrepreneurs/slug/validate', {
             method: "POST", headers: {
                 "Content-Type": 'application/json',
             },
