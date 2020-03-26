@@ -61,7 +61,7 @@ export default function SignUp() {
 
     useEffect(() => {
         if (!invitationCode || !place) {
-            history.push('/getit')
+            history.push('/anmeldung')
         }
     }, [invitationCode, place])
 

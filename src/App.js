@@ -40,13 +40,13 @@ function App() {
                     <GlobalStyle />
                     <Router history={history}>
                         <Switch>
-                            <Route path="/donate/:placeIdOrSlug/:amount?">
+                            <Route path="/spende/:placeIdOrSlug/:amount?">
                                 <PlaceResolver/>
                             </Route>
                             <Route path="/checkout">
                                 <Checkout />
                             </Route>
-                            <Route path="/getit">
+                            <Route path="/anmeldung">
                                 <InvitationCode />
                             </Route>
                             <Route path="/signup">
