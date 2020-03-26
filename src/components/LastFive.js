@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function LiveTicket() {
+export default function LiveTicker() {
     const {t} = useTranslation();
     const classes = useStyles();
     const [transactions, setTransactions] = useState(null);
@@ -83,7 +83,10 @@ export default function LiveTicket() {
                         {transactions.map((transaction, id) =>
                             <ListItem key={`transaction-${id}`} className={classes.item}>
                                 <ListItemText
-                                    secondary={`${transaction.amount}€ an ${transaction.company} in ${transaction.city}`}
+                                    secondary={
+                                        (transaction.amount ? transaction.amount + '€ ' : '') +
+                                        (transaction.company ? ' an ' + transaction.company : '') +
+                                        (transaction.city ? ' in ' + transaction.city : '')}
                                 />
                             </ListItem>,
                         )}

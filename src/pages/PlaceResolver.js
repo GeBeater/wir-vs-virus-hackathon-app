@@ -7,20 +7,37 @@ export default function PlaceResolver() {
     const [{google}, dispatch] = useAppContext();
     const params = useParams();
     const history = useHistory();
+
     useEffect(() => {
         if (google) {
-            const placeIdOrSlug = "ChIJgYimH4aFsUcRu8NLjRdqwQ4" || params.placeIdOrSlug;
+            const placeIdOrSlug = params.placeIdOrSlug;
             if (!placeIdOrSlug) {
                 history.push('/');
             }
-            getPlaceDetails(placeIdOrSlug).then((details) => {
-                dispatch({type: ADD_PLACE, payload: {details, amount: 0}});
-                history.push('/checkout');
-            }).catch(error => {
-                history.push('/');
-            });
+            fetch('/api/entrepreneurs/slug/resolve', {
+                method: "POST", headers: {
+                    "Content-Type": 'application/json',
+                },
+                body: JSON.stringify({slug: placeIdOrSlug})
+            }).then(response => {
+                return response.json()
+            }).then(entrepreneur => {
+                performPlaceRequest(entrepreneur.placeId);
+            }).catch((error) => {
+                performPlaceRequest(placeIdOrSlug)
+            })
         }
     }, [params, google])
+
+    function performPlaceRequest(placeId) {
+        getPlaceDetails(placeId).then((details) => {
+            dispatch({type: ADD_PLACE, payload: {details, amount: params.amount ? params.amount : 0}});
+            history.push('/checkout');
+        }).catch(error => {
+            history.push('/');
+        });
+    }
+
     return (
         <div></div>
     )

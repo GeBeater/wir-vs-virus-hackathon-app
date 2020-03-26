@@ -3,16 +3,34 @@ import React from 'react';
 import styled from "styled-components";
 import Logo from "../assets/cofund.svg";
 import {colors} from "../theme/theme";
-import Twitter from "../assets/twitter.svg";
-import Facebook from "../assets/facebook.svg";
 import Instagram from "../assets/instagram.svg";
+import {
+    FacebookIcon,
+    FacebookShareButton,
+    LinkedinIcon,
+    LinkedinShareButton,
+    TwitterIcon,
+    TwitterShareButton
+} from "react-share";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+    icons: {
+        margin: '0 8px'
+    }
+}));
 
 export default function Success() {
+    const shareUrl = 'https://cofund.de';
+    const instagramUrl = 'https://instagram.com/cofund.de';
+    const classes = useStyles();
 
     return (
         <Wrapper>
-            <img src={Logo} style={{width: 65, height: 65}} alt="CoFund Logo" />
-            <ConatinerWrapper>
+            <a href='/'>
+                <img src={Logo} style={{width: 65, height: 65}} alt="CoFund Logo" />
+            </a>
+            <ContainerWrapper>
                 <Container>
                     <header style={{gridArea: "header", marginBottom: "20px", textAlign: 'center'}}>
                         <h1>
@@ -35,19 +53,28 @@ export default function Success() {
                         <h1>
                             Motiviere andere.
                         </h1>
-                        <div style={{paddingLeft: '20px'}}>
-                            <img src={Twitter} style={{width: 30, height: 30, marginRight: '30px'}} alt="Twitter Icon" />
-                            <img src={Instagram} style={{width: 30, height: 30, marginRight: '30px'}} alt="Instagram Icon" />
-                            <img src={Facebook} style={{width: 30, height: 30, marginRight: '30px'}} alt="Facebook Icon" />
+                        <div>
+                            <TwitterShareButton key={'tw'} className={'btn'} url={shareUrl} className={classes.icons}>
+                                <TwitterIcon round size={32} />
+                            </TwitterShareButton>
+                            <FacebookShareButton key={'tw'} className={'btn'} url={shareUrl} className={classes.icons}>
+                                <FacebookIcon round size={32} />
+                            </FacebookShareButton>
+                            <LinkedinShareButton key={'tw'} className={'btn'} url={shareUrl} className={classes.icons}>
+                                <LinkedinIcon round size={32} />
+                            </LinkedinShareButton>
+                            <a href={instagramUrl} target="_blank">
+                                <img src={Instagram} className={classes.icons} style={{width: 30, height: 30}} alt="Instagram Icon" />
+                            </a>
                         </div>
                     </div>
                 </Container>
-            </ConatinerWrapper>
+            </ContainerWrapper>
         </Wrapper>
     )
 }
 
-const ConatinerWrapper = styled.div`
+const ContainerWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 425px;

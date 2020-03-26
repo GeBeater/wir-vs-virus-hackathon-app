@@ -10,7 +10,6 @@ import Checkout from './pages/Checkout';
 import DonationOverview from "./pages/DonationOverview";
 import Home from './pages/Home';
 import InvitationCode from "./pages/InvitationCode";
-import Nav from "./pages/Nav";
 import SignUp from "./pages/SignUp";
 import Success from "./pages/Success";
 import {appTheme} from "./theme/theme";
@@ -41,10 +40,7 @@ function App() {
                     <GlobalStyle />
                     <Router history={history}>
                         <Switch>
-                            <Route path="/nav">
-                                <Nav />
-                            </Route>
-                            <Route path="/donate/:placeIdOrSlug">
+                            <Route path="/donate/:placeIdOrSlug/:amount?">
                                 <PlaceResolver/>
                             </Route>
                             <Route path="/checkout">

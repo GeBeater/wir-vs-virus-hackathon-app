@@ -3,7 +3,6 @@ import {fade, makeStyles} from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import {useAppContext, REMOVE_PLACE} from "../context/AppContext";
 import {PlaceTile} from "./PlaceTile";
-import styled from "styled-components";
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -83,7 +82,7 @@ export default function CompanyList({showInputs = false}) {
                     isChecked={checked.indexOf(place.place_id) !== -1}
                     handleToggle={handleToggle}
                     showDeleteBtn={true}
-                    showInput={showInputs}
+                    showInput={showInputs && places.length > 1}
                     handleDelete={handleDeleteTile} />
             )}
             {!hasPlaces && (

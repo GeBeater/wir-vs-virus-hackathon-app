@@ -8,6 +8,8 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import Logo from "../assets/cofund.svg";
 import {useCompanyContext} from '../context/CompanyContext';
+import Button from "@material-ui/core/Button";
+import {useTranslation} from "react-i18next";
 
 function Copyright() {
     return (
@@ -38,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DonationOverview() {
+    const {t} = useTranslation();
     const classes = useStyles();
     const [{invitationCode}] = useCompanyContext();
     const history = useHistory();
@@ -66,7 +69,7 @@ export default function DonationOverview() {
                     <img src={Logo} style={{width: 128, height: 128}} alt="CoFund Logo" />
                 </Link>
                 <Typography component="h1" variant="h5">
-                    Deine Gesammtsumme
+                    Deine Gesamtsumme
                 </Typography>
                 <Typography component="h1" variant="h1" className={classes.paper}>
                     {totalAmount.amount}€
@@ -75,6 +78,15 @@ export default function DonationOverview() {
                     von {totalAmount.transactionQuantity} Spendern
                 </Typography>
             </div>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+            >
+                {t('payout')}
+            </Button>
             <Box mt={5}>
                 <Copyright />
             </Box>

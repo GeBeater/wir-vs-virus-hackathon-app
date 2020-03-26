@@ -23,7 +23,7 @@ export const colors = {
 export const spacing = {
 	s: '6px',
 	m: '18px',
-	l: '24px',
+	l: '24px'
 }
 
 export const appTheme = createMuiTheme({
@@ -34,9 +34,30 @@ export const appTheme = createMuiTheme({
 			light: colors.blueA50,
 			contrastText: colors.white
 		},
+		text: {
+			primary: colors.black,
+			secondary: colors.purple
+		},
 		error: {main: colors.red, contrastText: colors.white}
 	},
 	typography: {
+		fontFamily: [
+			'Montserrat',
+			'DejaVu Sans',
+			'Verdana',
+			'Helvetica Neue',
+			'Roboto',
+			'Ubuntu',
+			'sans-serif'
+		].join(','),
+		color: {
+			secondary: '#fab400',
+			textSecondary: '#fab400',
+			text: {
+				secondary: '#fab400',
+				textSecondary: '#fab400'
+			},
+		},
 		button: {
 			fontFamily: 'Montserrat',
 			fontWeight: '600',
