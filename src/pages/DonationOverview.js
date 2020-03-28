@@ -48,7 +48,7 @@ export default function DonationOverview() {
 
     useEffect(() => {
         if (!invitationCode) {
-            history.push('/getit')
+            history.push('/anmeldung')
         } else {
             fetchAmount();
         }
