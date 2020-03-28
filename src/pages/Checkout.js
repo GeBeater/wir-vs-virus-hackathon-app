@@ -14,7 +14,6 @@ import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useHistory, Link } from 'react-router-dom';
-import Search from "../search/Search";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -147,10 +146,10 @@ export default function Checkout() {
                     <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
                         <Typography component="h1" variant="h4">
                             Klasse!
-                            </Typography>
+                        </Typography>
                         <Typography component="h1" variant="h4" style={{color: '#3E4650'}}>
                             Sag uns noch mit wie viel du unterstützen möchtest
-                            </Typography>
+                        </Typography>
                     </header>
                 </TitleContainer>
             </ConatinerWrapper>

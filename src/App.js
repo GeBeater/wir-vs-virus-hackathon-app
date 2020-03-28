@@ -15,6 +15,7 @@ import Success from "./pages/Success";
 import {appTheme} from "./theme/theme";
 import {CompanyContextWrapper} from './context/CompanyContext';
 import PlaceResolver from './pages/PlaceResolver';
+import Payout from "./pages/Payout";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -49,14 +50,17 @@ function App() {
                             <Route path="/anmeldung">
                                 <InvitationCode />
                             </Route>
+                            <Route path="/success">
+                                <Success />
+                            </Route>
                             <Route path="/signup">
                                 <SignUp />
                             </Route>
                             <Route path="/showmethemoney">
                                 <DonationOverview />
                             </Route>
-                            <Route path="/success">
-                                <Success />
+                            <Route path="/payout">
+                                <Payout />
                             </Route>
                             <Route path="/">
                                 <Home />

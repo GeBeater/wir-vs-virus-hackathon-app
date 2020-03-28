@@ -79,6 +79,7 @@ export default function DonationOverview() {
                 </Typography>
             </div>
             <Button
+                href='/payout'
                 type="submit"
                 fullWidth
                 variant="contained"

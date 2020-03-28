@@ -41,14 +41,14 @@ export default function Success() {
                         </div>
                     </header>
                     <Button
-                                href='/'
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                            >
-                                Weiter unterstützen
-                            </Button>
+                        href='/'
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                    >
+                        Weiter unterstützen
+                    </Button>
                     <div style={{marginTop: '100px'}}>
                         <h1>
                             Motiviere andere.
