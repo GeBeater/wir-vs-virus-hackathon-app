@@ -62,6 +62,8 @@ export default function SignUp() {
     useEffect(() => {
         if (!invitationCode || !place) {
             history.push('/anmeldung')
+        } else {
+            validateSlug(place.slug);
         }
     }, [invitationCode, place])
 
@@ -77,14 +79,15 @@ export default function SignUp() {
     function register(event) {
         event.preventDefault();
         const requestData = {
+            id: place.id,
             invitationToken: invitationCode,
             firstName: form.data.firstName,
             lastName: form.data.lastName,
             email: form.data.mail,
             slug: form.data.slug
         }
-        fetch('/api/entrepreneurs', {
-            method: "POST", headers: {
+        fetch(`/api/entrepreneurs/${place.id}`, {
+            method: "PUT", headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify(requestData)
@@ -98,6 +101,11 @@ export default function SignUp() {
     }
 
     function validateSlug(slug) {
+        if (slug === place.slug) {
+            const newData = {...form.data, slug};
+            setForm({valid: isValid(newData), data: newData});
+            return;
+        }
         fetch('/api/entrepreneurs/slug/validate', {
             method: "POST", headers: {
                 "Content-Type": 'application/json',
@@ -105,10 +113,11 @@ export default function SignUp() {
             body: JSON.stringify({slug: slug})
         }).then((response) => {
             if(response.status === 200) {
-                place.slug = slug;
-                setForm({valid: true, data: form.data, invalidSlug: false});
+                const newData = {...form.data, slug};
+                setForm({valid: isValid(newData), data: newData});
             } else {
-                setForm({valid: false, data: form.data, invalidSlug: true});
+                const newData = {...form.data, slug: null};
+                setForm({valid: isValid(newData), data: newData});
             }
         });
         setValue('slug', slug);
