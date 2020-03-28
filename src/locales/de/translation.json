@@ -1,7 +1,9 @@
 {
+  "goback": "Gehe zurück",
   "close": "Schließen",
   "next": "Weiter",
   "payout": "Auszahlen",
+  "requestpayout": "Auszahlung anfordern",
   "home": {
     "welcome": {
       "headline": "Hallo Unterstützer!",

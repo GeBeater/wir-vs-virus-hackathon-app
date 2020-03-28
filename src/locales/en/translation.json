@@ -1,7 +1,9 @@
 {
+  "goback": "Go back",
   "close": "Close",
   "next": "Next",
   "payout": "Pay out",
+  "requestpayout": "Request pay out",
   "home": {
     "welcome": {
       "headline": "Hello supporter!",

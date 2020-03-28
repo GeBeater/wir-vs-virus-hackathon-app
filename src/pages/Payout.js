@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,12 +7,12 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import withStyles from "@material-ui/core/styles/withStyles";
 import Container from '@material-ui/core/Container';
 import Logo from '../assets/cofund.svg';
 import {fade} from "@material-ui/core";
-import Switch from "@material-ui/core/Switch";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {useTranslation} from "react-i18next";
+import {useHistory} from "react-router-dom";
 
 function Copyright() {
     return (
@@ -50,13 +50,68 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Payout() {
+    const {t} = useTranslation()
     const classes = useStyles();
+    const history = useHistory();
+
+    const [form, setForm] = useState({data: {paypalEmail: null, bankAccountName: null, bankAccountIban: null, bankAccountBic: null}, valid: false});
     const [state, setState] = React.useState({
         usePaypal: true
     });
-    const toggleButtons = () => {
-        setState({ ...state, usePaypal: !state.usePaypal });
+
+    const toggleState = () => {
+        setState({usePaypal: !state.usePaypal});
+        if (!state.usePaypal) {
+            setValue('bankAccountName', '');
+            setValue('bankAccountIban', '');
+            setValue('bankAccountBic', '');
+        } else {
+            setValue('bankAccountBic', '');
+        }
+        setForm({...form, valid: false});
     };
+
+    function isValid(data) {
+        return state.usePaypal ? isValidPayPal(data) : isValidBank(data);
+    }
+
+    function isValidPayPal(data) {
+        return data.paypalEmail && data.paypalEmail.length > 0;
+    }
+
+    function isValidBank(data) {
+        return data.bankAccountName && data.bankAccountName.length > 0
+                && data.bankAccountIban && data.bankAccountIban.length > 0
+                && data.bankAccountBic && data.bankAccountBic.length > 0;
+    }
+
+    function setValue(name, value) {
+        const newData = {...form.data, [name]: value};
+        setForm({valid: isValid(newData), data: newData});
+    }
+
+    function requestPayout(event) {
+        event.preventDefault();
+        const requestData = state.usePaypal ? {
+            paypalEmail: form.data.paypalEmail
+        } : {
+            bankAccountName: form.data.bankAccountName,
+            bankAccountIban: form.data.bankAccountIban,
+            bankAccountBic: form.data.bankAccountBic
+        };
+        fetch('/api/payout/process', {
+            method: "POST", headers: {
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        }).then((response) => {
+            if(response.status === 200) {
+                history.push('/success')
+            } else {
+                alert("Something went wrong here")
+            }
+        });
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -71,15 +126,13 @@ export default function Payout() {
 
                 <Typography component="div" className={classes.paper}>
                     <ButtonGroup color="primary" aria-label="contained primary button group">
-                        <Button variant={state.usePaypal ? "contained" : "outlined"} onClick={toggleButtons}>PayPal</Button>
-                        <Button variant={!state.usePaypal ? "contained" : "outlined"} onClick={toggleButtons}>Bank</Button>
+                        <Button variant={state.usePaypal ? "contained" : "outlined"} onClick={toggleState}>PayPal</Button>
+                        <Button variant={!state.usePaypal ? "contained" : "outlined"} onClick={toggleState}>Bank</Button>
                     </ButtonGroup>
                 </Typography>
 
-                <form className={classes.form} noValidate>
-
+                <form className={classes.form} onSubmit={requestPayout}>
                     {state.usePaypal ? (
-
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -89,7 +142,8 @@ export default function Payout() {
                                     id="paypalEmail"
                                     label="Paypal Email Address"
                                     name="paypalEmail"
-                                    autoComplete="paypalEmail"
+                                    autoComplete="off"
+                                    onChange={(event) => setValue('paypalEmail', event.target.value)}
                                 />
                             </Grid>
                         </Grid>
@@ -103,7 +157,8 @@ export default function Payout() {
                                     id="bankAccountName"
                                     label="Name"
                                     name="bankAccountName"
-                                    autoComplete="bankAccountName"
+                                    autoComplete="off"
+                                    onChange={(event) => setValue('bankAccountName', event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -114,7 +169,8 @@ export default function Payout() {
                                     id="bankAccountIban"
                                     label="IBAN"
                                     name="bankAccountIban"
-                                    autoComplete="bankAccountIban"
+                                    autoComplete="off"
+                                    onChange={(event) => setValue('bankAccountIban', event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -125,7 +181,8 @@ export default function Payout() {
                                     id="bankAccountBic"
                                     label="BIC"
                                     name="bankAccountBic"
-                                    autoComplete="bankAccountBic"
+                                    autoComplete="off"
+                                    onChange={(event) => setValue('bankAccountBic', event.target.value)}
                                 />
                             </Grid>
                         </Grid>
@@ -136,13 +193,14 @@ export default function Payout() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        disabled={!form.valid}
                     >
-                        Submit
+                        {t('requestpayout')}
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Link href="/showmethemoney" variant="body2">
-                                Go back
+                                {t('goback')}
                             </Link>
                         </Grid>
                     </Grid>
@@ -154,36 +212,3 @@ export default function Payout() {
         </Container>
     );
 }
-
-const AntSwitch = withStyles(theme => ({
-    root: {
-        width: 36,
-        height: 20,
-        padding: 0,
-        display: 'flex',
-    },
-    switchBase: {
-        padding: 2,
-        '&$checked': {
-            transform: 'translateX(16px)',
-            color: theme.palette.common.white,
-            '& + $track': {
-                opacity: 1,
-                backgroundColor: theme.palette.primary.main,
-                borderColor: theme.palette.primary.main,
-            },
-        },
-    },
-    thumb: {
-        width: 16,
-        height: 16,
-        boxShadow: 'none',
-    },
-    track: {
-        borderRadius: 20 / 2,
-        opacity: 1,
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main
-    },
-    checked: {},
-}))(Switch);
