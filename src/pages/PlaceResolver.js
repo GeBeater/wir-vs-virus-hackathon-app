@@ -14,15 +14,10 @@ export default function PlaceResolver() {
             if (!placeIdOrSlug) {
                 history.push('/');
             }
-            fetch('/api/entrepreneurs/slug/resolve', {
-                method: "POST", headers: {
-                    "Content-Type": 'application/json',
-                },
-                body: JSON.stringify({slug: placeIdOrSlug})
-            }).then(response => {
+            fetch(`/api/places/resolve/${placeIdOrSlug}`).then(response => {
                 return response.json()
             }).then(entrepreneur => {
-                performPlaceRequest(entrepreneur.placeId);
+                performPlaceRequest(entrepreneur.googlePlaceId);
             }).catch((error) => {
                 performPlaceRequest(placeIdOrSlug)
             })
