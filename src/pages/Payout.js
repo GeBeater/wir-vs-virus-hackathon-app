@@ -142,7 +142,8 @@ export default function Payout() {
                                     id="paypalEmail"
                                     label="Paypal Email Address"
                                     name="paypalEmail"
-                                    autoComplete="off"
+                                    type="email"
+                                    autoComplete="email"
                                     onChange={(event) => setValue('paypalEmail', event.target.value)}
                                 />
                             </Grid>
