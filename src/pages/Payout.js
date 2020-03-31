@@ -110,7 +110,7 @@ export default function Payout() {
             body: JSON.stringify(requestData)
         }).then((response) => {
             if(response.status === 200) {
-                history.push('/success')
+                history.push('/payout-success')
             } else {
                 alert("Something went wrong here")
             }

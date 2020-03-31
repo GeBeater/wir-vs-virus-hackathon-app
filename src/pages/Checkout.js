@@ -106,7 +106,7 @@ export default function Checkout() {
             body: JSON.stringify(data)
         }).then(response => {
             if (response.status === 200) {
-                history.push('/success');
+                history.push('/checkout-success');
             }
         })
     }

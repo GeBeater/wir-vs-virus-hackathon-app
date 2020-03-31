@@ -11,11 +11,12 @@ import DonationOverview from "./pages/DonationOverview";
 import Home from './pages/Home';
 import InvitationCode from "./pages/InvitationCode";
 import SignUp from "./pages/SignUp";
-import Success from "./pages/Success";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import {appTheme} from "./theme/theme";
 import {CompanyContextWrapper} from './context/CompanyContext';
 import PlaceResolver from './pages/PlaceResolver';
 import Payout from "./pages/Payout";
+import PayoutSuccess from "./pages/PayoutSuccess";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -47,11 +48,11 @@ function App() {
                             <Route path="/checkout">
                                 <Checkout />
                             </Route>
+                            <Route path="/checkout-success">
+                                <CheckoutSuccess />
+                            </Route>
                             <Route path="/anmeldung">
                                 <InvitationCode />
-                            </Route>
-                            <Route path="/success">
-                                <Success />
                             </Route>
                             <Route path="/signup">
                                 <SignUp />
@@ -61,6 +62,9 @@ function App() {
                             </Route>
                             <Route path="/payout">
                                 <Payout />
+                            </Route>
+                            <Route path="/payout-success">
+                                <PayoutSuccess />
                             </Route>
                             <Route path="/">
                                 <Home />

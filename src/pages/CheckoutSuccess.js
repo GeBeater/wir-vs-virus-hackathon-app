@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Success() {
+export default function CheckoutSuccess() {
     const shareUrl = 'https://cofund.de';
     const instagramUrl = 'https://instagram.com/cofund.de';
     const classes = useStyles();
@@ -83,6 +83,7 @@ const ContainerWrapper = styled.div`
     align-items: center;
     margin: 0 auto;
 `
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
