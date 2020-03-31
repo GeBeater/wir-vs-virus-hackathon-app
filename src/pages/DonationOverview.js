@@ -61,6 +61,11 @@ export default function DonationOverview() {
             setTotal(data);
         }).catch(()=>{})
     }
+
+    function proceedToPayout() {
+        history.push('/payout');
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -79,14 +84,14 @@ export default function DonationOverview() {
                 </Typography>
             </div>
             <Button
-                href='/payout'
+                onClick={proceedToPayout}
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
             >
-                {t('payout')}
+                {t('payout.button')}
             </Button>
             <Box mt={5}>
                 <Copyright />

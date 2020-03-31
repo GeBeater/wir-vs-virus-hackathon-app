@@ -13,6 +13,7 @@ import {fade} from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
+import {useCompanyContext} from "../context/CompanyContext";
 
 function Copyright() {
     return (
@@ -46,29 +47,31 @@ const useStyles = makeStyles(theme => ({
     },
     disabled: {
         backgroundColor: fade(theme.palette.common.black, 0.05)
+    },
+    link: {
+        cursor: 'pointer'
     }
 }));
 
 export default function Payout() {
-    const {t} = useTranslation()
+    const {t} = useTranslation();
     const classes = useStyles();
     const history = useHistory();
-
+    const [{invitationCode, place}] = useCompanyContext();
     const [form, setForm] = useState({data: {paypalEmail: null, bankAccountName: null, bankAccountIban: null, bankAccountBic: null}, valid: false});
     const [state, setState] = React.useState({
         usePaypal: true
     });
 
+    useEffect(() => {
+        if (!invitationCode || !place) {
+            history.push('/anmeldung')
+        }
+    }, [invitationCode, place])
+
     const toggleState = () => {
         setState({usePaypal: !state.usePaypal});
-        if (!state.usePaypal) {
-            setValue('bankAccountName', '');
-            setValue('bankAccountIban', '');
-            setValue('bankAccountBic', '');
-        } else {
-            setValue('bankAccountBic', '');
-        }
-        setForm({...form, valid: false});
+        setForm({...form, valid: isValid(form.data)});
     };
 
     function isValid(data) {
@@ -99,7 +102,8 @@ export default function Payout() {
             bankAccountIban: form.data.bankAccountIban,
             bankAccountBic: form.data.bankAccountBic
         };
-        fetch('/api/payout/process', {
+        requestData.placeId = place.id;
+        fetch(`/api/payout/request`, {
             method: "POST", headers: {
                 "Content-Type": 'application/json',
             },
@@ -111,6 +115,10 @@ export default function Payout() {
                 alert("Something went wrong here")
             }
         });
+    }
+
+    function goBack() {
+        history.push('/showmethemoney');
     }
 
     return (
@@ -140,7 +148,7 @@ export default function Payout() {
                                     required
                                     fullWidth
                                     id="paypalEmail"
-                                    label="Paypal Email Address"
+                                    label={t('payout.paypalEmail')}
                                     name="paypalEmail"
                                     type="email"
                                     autoComplete="email"
@@ -156,7 +164,7 @@ export default function Payout() {
                                     required
                                     fullWidth
                                     id="bankAccountName"
-                                    label="Name"
+                                    label={t('payout.payee')}
                                     name="bankAccountName"
                                     autoComplete="off"
                                     onChange={(event) => setValue('bankAccountName', event.target.value)}
@@ -200,7 +208,7 @@ export default function Payout() {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="/showmethemoney" variant="body2">
+                            <Link onClick={goBack} className={classes.link} variant="body2">
                                 {t('goback')}
                             </Link>
                         </Grid>

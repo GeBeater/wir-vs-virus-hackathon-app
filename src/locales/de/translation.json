@@ -2,7 +2,6 @@
   "goback": "Gehe zurück",
   "close": "Schließen",
   "next": "Weiter",
-  "payout": "Auszahlen",
   "requestpayout": "Auszahlung anfordern",
   "home": {
     "welcome": {
@@ -123,5 +122,10 @@
       "label": "Dein Kürzel",
       "description": "Verwende dieses Feld, um ein Kürzel für dein Unternehmen zu erstellen, wobei nur Kleinbuchstaben und Bindestriche verwendet werden dürfen. Du kannst es später verwenden, um einen persönlichen Link mit Kunden, Freunden und Familie zu teilen, um aktiv für Spenden zu werben."
     }
+  },
+  "payout": {
+    "button": "Auszahlen",
+    "payee": "Empfänger",
+    "paypalEmail": "PayPal E-Mail-Adresse"
   }
 }
