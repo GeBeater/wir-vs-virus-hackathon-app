@@ -6,15 +6,10 @@ import {createGlobalStyle} from 'styled-components';
 import './App.css';
 import {AppContextWrapper} from "./context/AppContext";
 import {AppInitializer} from "./context/AppInitializer";
-import Checkout from './pages/Checkout';
-import DonationOverview from "./pages/DonationOverview";
 import Home from './pages/Home';
-import InvitationCode from "./pages/InvitationCode";
-import SignUp from "./pages/SignUp";
+import PlaceResolver from './pages/PlaceResolver';
 import Success from "./pages/Success";
 import {appTheme} from "./theme/theme";
-import {CompanyContextWrapper} from './context/CompanyContext';
-import PlaceResolver from './pages/PlaceResolver';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -35,35 +30,21 @@ function App() {
     return (
         <ThemeProvider theme={appTheme}>
             <AppContextWrapper>
-                <CompanyContextWrapper>
-                    <AppInitializer />
-                    <GlobalStyle />
-                    <Router history={history}>
-                        <Switch>
-                            <Route path="/spende/:placeIdOrSlug/:amount?">
-                                <PlaceResolver/>
-                            </Route>
-                            <Route path="/checkout">
-                                <Checkout />
-                            </Route>
-                            <Route path="/anmeldung">
-                                <InvitationCode />
-                            </Route>
-                            <Route path="/signup">
-                                <SignUp />
-                            </Route>
-                            <Route path="/showmethemoney">
-                                <DonationOverview />
-                            </Route>
-                            <Route path="/success">
-                                <Success />
-                            </Route>
-                            <Route path="/">
-                                <Home />
-                            </Route>
-                        </Switch>
-                    </Router>
-                </CompanyContextWrapper>
+                <AppInitializer />
+                <GlobalStyle />
+                <Router history={history}>
+                    <Switch>
+                        <Route path="/spende/:placeIdOrSlug/:amount?">
+                            <PlaceResolver/>
+                        </Route>
+                        <Route path="/success">
+                            <Success />
+                        </Route>
+                        <Route path="/">
+                            <Home />
+                        </Route>
+                    </Switch>
+                </Router>
             </AppContextWrapper>
         </ThemeProvider>
     );
