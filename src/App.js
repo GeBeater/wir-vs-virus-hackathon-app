@@ -9,6 +9,7 @@ import {AppInitializer} from "./context/AppInitializer";
 import Home from './pages/Home';
 import PlaceResolver from './pages/PlaceResolver';
 import Success from "./pages/Success";
+import Checkout from "./pages/Checkout";
 import {appTheme} from "./theme/theme";
 
 
@@ -34,8 +35,11 @@ function App() {
                 <GlobalStyle />
                 <Router history={history}>
                     <Switch>
+                        <Route path="/checkout">
+                            <Checkout />
+                        </Route>
                         <Route path="/spende/:placeIdOrSlug/:amount?">
-                            <PlaceResolver/>
+                            <PlaceResolver />
                         </Route>
                         <Route path="/success">
                             <Success />
