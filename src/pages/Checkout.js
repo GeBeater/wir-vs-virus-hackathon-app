@@ -1,5 +1,4 @@
 import {Button, Grid, TextField, Typography} from '@material-ui/core';
-import DropIn from "braintree-web-drop-in-react";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
@@ -14,7 +13,7 @@ import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useHistory, Link } from 'react-router-dom';
-import Search from "../search/Search";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -42,34 +41,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Checkout() {
-    const [token, setToken] = useState(null);
-    const [instance, setInstance] = useState(null);
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
-    const [brainTreeReady, setBrainTreeReady] = useState(false);
     const [paying, setPaying] = useState(false);
     const [isPayBtnEnabled, setIsPayBtnEnabled] = useState(false);
+    const [payByLinkUrl, setPayByLinkUrl] = useState(null);
     const history = useHistory();
 
     const [{places}, dispatch] = useAppContext();
 
     const classes = useStyles();
-
-    useEffect(() => {
-        fetch("/api/payment/token", {method: 'POST'}).then(resp => {
-            return resp.json();
-        }).then(json => {
-            setToken(json.token);
-        });
-
-    }, []);
-
-    useEffect(() => {
-        if (instance != null) {
-            instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
-            instance.on('noPaymentMethodRequestable', () => setBrainTreeReady(false))
-        }
-    }, [instance]);
 
     useEffect(() => {
         let amount = 0;
@@ -85,20 +66,19 @@ export default function Checkout() {
     function startPayment(event) {
         event.preventDefault();
         setStep(2)
+        requestPayoutLink();
     }
 
-    async function pay() {
-        setPaying(true)
-        const {nonce} = await instance.requestPaymentMethod();
+    async function requestPayoutLink() {
+        setPaying(true);
         const placeAmounts = places.reduce((acc, place) => {
             return {...acc, [place.details.place_id]: place.amount}
         }, {});
         const data = {
-            nonce,
             amount: amount,
             placeIdAmounts: placeAmounts,
             places
-        }
+        };
         fetch('/api/payment/checkout', {
             method: "POST",
             headers: {
@@ -106,10 +86,13 @@ export default function Checkout() {
             },
             body: JSON.stringify(data)
         }).then(response => {
-            if (response.status === 200) {
-                history.push('/success');
-            }
-        })
+            return response.json()
+        }).then(checkoutResponse => {
+            setPayByLinkUrl(checkoutResponse.redirectUrl);
+            setPaying(false);
+        }).catch((error) => {
+            setPaying(false);
+        });
     }
 
     const handleDistributeAmount = (evt) => {
@@ -138,7 +121,7 @@ export default function Checkout() {
                     </Toolbar>
                 </AppBar>
             </div>
-            <ConatinerWrapper>
+            <ContainerWrapper>
                 <TitleContainer>
                     <Button component={Link} to="/">
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Back Icon" />
@@ -147,14 +130,14 @@ export default function Checkout() {
                     <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
                         <Typography component="h1" variant="h4">
                             Klasse!
-                            </Typography>
+                        </Typography>
                         <Typography component="h1" variant="h4" style={{color: '#3E4650'}}>
                             Sag uns noch mit wie viel du unterstützen möchtest
-                            </Typography>
+                        </Typography>
                     </header>
                 </TitleContainer>
-            </ConatinerWrapper>
-            <ConatinerWrapper>
+            </ContainerWrapper>
+            <ContainerWrapper>
                 <Container>
                     {step === 1 ?
                         <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
@@ -194,22 +177,18 @@ export default function Checkout() {
                         </Panel>
                         :
                         <Panel style={{width: "100%", gridArea: "right", padding: '20px 0'}}>
-                            {token && amount && <DropIn
-                                options={{
-                                    authorization: token,
-                                    locale: 'de_DE'
-                                }}
-                                onInstance={setInstance}
-                            />
-                            }
+                            <Typography component="h1" variant="h6">
+                                Alles klar. Wir wären dann so weit.
+                            </Typography>
                             <Button
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                onClick={pay}
-                                disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
+                                href={payByLinkUrl ? payByLinkUrl : '#'}
+                                target="_blank"
+                                disabled={(paying || places.length === 0 || !(amount > 0))}
                             >
-                                Bezahlen
+                                { paying ? <CircularProgress/> : 'Bezahlen' }
                             </Button>
                         </Panel>
                     }
@@ -220,10 +199,10 @@ export default function Checkout() {
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
                         <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
                         <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
-                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Mastercard Nummer und ein Ablaufdatum in der Zukunft: 5555555555554444</h3>
+                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Visa Nummer 4444 3333 2222 1111, gültig bis 03/2030 und Verification Code 737</h3>
                     </div>
                 </Container>
-            </ConatinerWrapper>
+            </ContainerWrapper>
             <img src={Google} style={{position: "absolute", bottom: 10, left: 10}}></img>
         </Wrapper>
     )
@@ -233,7 +212,7 @@ const Panel = styled.div`
     padding: 20px;
 `
 
-const ConatinerWrapper = styled.div`
+const ContainerWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
