@@ -12,7 +12,7 @@ import Google from "../assets/google.png";
 import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useHistory, Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
@@ -45,11 +45,7 @@ export default function Checkout() {
     const [amount, setAmount] = useState(0);
     const [paying, setPaying] = useState(false);
     const [isPayBtnEnabled, setIsPayBtnEnabled] = useState(false);
-    const [payByLinkUrl, setPayByLinkUrl] = useState(null);
-    const history = useHistory();
-
     const [{places}, dispatch] = useAppContext();
-
     const classes = useStyles();
 
     useEffect(() => {
@@ -88,7 +84,10 @@ export default function Checkout() {
         }).then(response => {
             return response.json()
         }).then(checkoutResponse => {
-            setPayByLinkUrl(checkoutResponse.redirectUrl);
+            Object.defineProperty(window.location, 'href', {
+                writable: true,
+                value: checkoutResponse.redirectUrl
+            });
             setPaying(false);
         }).catch((error) => {
             setPaying(false);
@@ -168,29 +167,15 @@ export default function Checkout() {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    disabled={!isPayBtnEnabled}
+                                    disabled={!isPayBtnEnabled || (paying || places.length === 0 || !(amount > 0))}
                                     className={classes.submitBtn}
                                 >
-                                    Weiter
+                                    Bezahlen
                                 </Button>
                             </form>
                         </Panel>
                         :
-                        <Panel style={{width: "100%", gridArea: "right", padding: '20px 0'}}>
-                            <Typography component="h1" variant="h6">
-                                Alles klar. Wir wären dann so weit.
-                            </Typography>
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                href={payByLinkUrl ? payByLinkUrl : '#'}
-                                target="_blank"
-                                disabled={(paying || places.length === 0 || !(amount > 0))}
-                            >
-                                { paying ? <CircularProgress/> : 'Bezahlen' }
-                            </Button>
-                        </Panel>
+                        <CircularProgress/>
                     }
                 </Container>
                 <Container step={step}>
