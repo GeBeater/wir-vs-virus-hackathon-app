@@ -55,7 +55,7 @@ export const appReducer = (state, action) => {
 };
 
 
-export const defaultDispatch = () =>
+export const defaultDispatch = (action) =>
     initialAppContextState;
 
 export const AppContext = React.createContext([
