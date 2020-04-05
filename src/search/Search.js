@@ -10,12 +10,10 @@ import {colors, spacing} from '../theme/theme';
 
 const useStyles = makeStyles(() => ({
     search: {
-        backgroundColor: colors.grayA05,
+        backgroundColor: colors.white,
         display: "flex",
         borderRadius: "4px",
         flexGrow: 1,
-        padding: `${spacing.s} ${spacing.m}`,
-        marginLeft: spacing.m
     },
     searchInput: {
         marginLeft: spacing.m,
@@ -24,7 +22,7 @@ const useStyles = makeStyles(() => ({
     searchField: {
         '&::placeholder': {
             color: colors.grayA50,
-            opacity: 1
+            opacity: 1,
         }
     },
     results: {
