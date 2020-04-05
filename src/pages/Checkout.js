@@ -205,8 +205,8 @@ export default function Checkout() {
                     <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: '#3E4650'}}>
                         <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
-                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
-                        <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
+                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der die UnternehmerIn über die Unterstützung informiert. </h3>
+                        <h3><b>3/</b> Die UnternehmerIn besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
                         <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Mastercard Nummer und ein Ablaufdatum in der Zukunft: 5555555555554444</h3>
                     </div>
                 </Container>
