@@ -6,15 +6,11 @@ import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
 import {makeStyles} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Logo from "../assets/cofund.svg";
 import Google from "../assets/google.png";
-import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useHistory, Link } from 'react-router-dom';
-import Search from "../search/Search";
+import {HeaderBar} from "../components/HeaderBar";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -126,18 +122,9 @@ export default function Checkout() {
     };
 
     return (
-        <Wrapper>
-            <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
-                <AppBar position="static">
-                    <Toolbar className={classes.toolbar}>
-                        <Button component={Link} to="/">
-                            <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        </Button>
-                        <div style={{width: '100%'}}></div>
-                        <FAQ />
-                    </Toolbar>
-                </AppBar>
-            </div>
+        <>
+            <HeaderBar />
+            <Wrapper>
             <ConatinerWrapper>
                 <TitleContainer>
                     <Button component={Link} to="/">
@@ -226,6 +213,8 @@ export default function Checkout() {
             </ConatinerWrapper>
             <img src={Google} style={{position: "absolute", bottom: 10, left: 10}}></img>
         </Wrapper>
+        </>
+
     )
 }
 
