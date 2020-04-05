@@ -63,5 +63,8 @@ const MobileStartNow = styled(StartNow)`
     z-index: 3;
     width: 70%;
     align-self: center;
+    margin: auto;
+    left: 0;
+    right: 0;
 `
 
