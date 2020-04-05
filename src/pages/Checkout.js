@@ -5,13 +5,10 @@ import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
 import CompanyList from './CompanyList';
 import Back from "../assets/back.svg";
 import {makeStyles} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Logo from "../assets/cofund.svg";
 import Google from "../assets/google.png";
-import FAQ from "./FAQ";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import {HeaderBar} from "../components/HeaderBar";
 import {Link} from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -108,18 +105,9 @@ export default function Checkout() {
     };
 
     return (
-        <Wrapper>
-            <div className={classes.root} style={{position: "fixed", top: 0, left: 0, width: '100%'}}>
-                <AppBar position="static">
-                    <Toolbar className={classes.toolbar}>
-                        <Button component={Link} to="/">
-                            <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
-                        </Button>
-                        <div style={{width: '100%'}}></div>
-                        <FAQ />
-                    </Toolbar>
-                </AppBar>
-            </div>
+        <>
+            <HeaderBar />
+            <Wrapper>
             <ContainerWrapper>
                 <TitleContainer>
                     <Button component={Link} to="/">
@@ -182,14 +170,16 @@ export default function Checkout() {
                     <div style={{backgroundColor: colors.grayA05, borderRadius: '5px', padding: spacing.l, color: '#3E4650'}}>
                         <h1>Von dir direkt zum Betrieb – Wie das funktioniert:</h1>
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
-                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der den Unternehmer über die Unterstützung informiert. </h3>
-                        <h3><b>3/</b> Der Unternehmer besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
-                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Visa Nummer 4444 3333 2222 1111, gültig bis 03/2030 und Verification Code 737</h3>
+                        <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der die UnternehmerIn über die Unterstützung informiert. </h3>
+                        <h3><b>3/</b> Die UnternehmerIn besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
+                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach die Visa Nummer 4444333322221111 als Ablaufdatum 03/30 und Code 737</h3>
                     </div>
                 </Container>
             </ContainerWrapper>
             <img src={Google} style={{position: "absolute", bottom: 10, left: 10}}></img>
         </Wrapper>
+        </>
+
     )
 }
 

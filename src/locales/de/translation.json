@@ -4,7 +4,7 @@
   "payout": "Auszahlen",
   "home": {
     "welcome": {
-      "headline": "Hallo Unterstützer!",
+      "headline": "Hallo UnterstützerIn!",
       "subline": "Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:",
       "step1": "Unternehmen auf der Karte wählen",
       "step2": "Betrag festlegen",
@@ -32,7 +32,7 @@
   "faq": {
     "who": {
       "headline": "Wer sind wir?",
-      "text": "Dieses Projekt ist aus dem WirVsVirus Hackathon der Bundesregierung entstanden. Das Projektteam besteht aus ehrenamtlichen Helfern, die in der jetzigen Situation helfen und einen Beitrag leisten wollen."
+      "text": "Dieses Projekt ist aus dem WirVsVirus Hackathon der Bundesregierung entstanden. Das Projektteam besteht aus ehrenamtlichen HelferInnen, die in der jetzigen Situation helfen und einen Beitrag leisten wollen."
     },
     "what": {
       "headline": "Was ist das Ziel?",
@@ -52,7 +52,7 @@
     },
     "help": {
       "headline": "Wie kann ich helfen?",
-      "text": "Derzeit ist es für die kleinen Unternehmen am wichtigsten, die nötige Liquidität zu erhalten, um zu überleben. Ihr könnt mithelfen, indem ihr eure Familie, Freunde und Bekannte auf unser Projekt aufmerksam macht und bittet, ebenfalls teilzunehmen."
+      "text": "Derzeit ist es für die kleinen Unternehmen am wichtigsten, die nötige Liquidität zu erhalten, um zu überleben. Ihr könnt mithelfen, indem ihr eure Familie, FreundInnen und Bekannte auf unser Projekt aufmerksam macht und bittet, ebenfalls teilzunehmen."
     }
   },
   "place": {

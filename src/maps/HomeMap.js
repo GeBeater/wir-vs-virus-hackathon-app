@@ -130,30 +130,29 @@ export default function HomeMap(props) {
 
     return (
         <>
-        <BoxedMap>
-            <Toolbar className={classes.toolBar} style={{zIndex: 3}}>
-                <Search onSelected={selectSearch} location={location} />
-            </Toolbar>
-            <WeVsVirus style={{zIndex: 2}}>
-                <img src={WeVsVirusLogo} alt="We versus virus project" />
-            </WeVsVirus>
-            {isLoading ? <Preloader/> : (
-                <MapWrapper>
-                    <Map
-                        zoom={16}
-                        center={center}
-                        events={events}
-                        google={google}
-                    />
-                </MapWrapper>
-            )}
-
-            <div className={classes.notificationWrapper}>
-                {isNotificationVisible && (
-                    <Alert severity="success" className={classes.notification}>{t('home.success.text')}</Alert>
+            <BoxedMap>
+                <Toolbar className={classes.toolBar} style={{zIndex: 3}}>
+                    <Search onSelected={selectSearch} location={location} />
+                </Toolbar>
+                <WeVsVirus style={{zIndex: 2}}>
+                    <img src={WeVsVirusLogo} alt="We versus virus project" />
+                </WeVsVirus>
+                {isLoading ? <Preloader/> : (
+                    <MapWrapper>
+                        <Map
+                            zoom={16}
+                            center={center}
+                            events={events}
+                            google={google}
+                        />
+                    </MapWrapper>
                 )}
-            </div>
-        </BoxedMap>
+                <div className={classes.notificationWrapper}>
+                    {isNotificationVisible && (
+                        <Alert severity="success" className={classes.notification}>{t('home.success.text')}</Alert>
+                    )}
+                </div>
+            </BoxedMap>
             {isAlertVisible && (
                 <AlertDialog
                     title={t('home.error.headline')}
@@ -177,7 +176,14 @@ export default function HomeMap(props) {
 }
 
 const MapWrapper = styled.div`
-    height: 100%;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @media (min-width: 768px) {
+        top: 64px;
+    }
 `;
 
 const BoxedMap = styled.div`
