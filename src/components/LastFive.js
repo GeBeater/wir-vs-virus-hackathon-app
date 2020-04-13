@@ -93,11 +93,6 @@ export default function LiveTicker() {
                     </List>
                 </>
             }
-            {(!transactions || transactions.length === 0) && (
-                <div className={classes.placeholder}>
-                    <span style={{color: '#ababab'}}>Noch nichts gespendet</span>
-                </div>
-            )}
         </>
     );
 }

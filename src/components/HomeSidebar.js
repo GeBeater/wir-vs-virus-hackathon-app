@@ -2,7 +2,7 @@ import {Button, Paper} from "@material-ui/core";
 import CompanyList from "../pages/CompanyList";
 import LastFive from "./LastFive";
 import Hidden from "@material-ui/core/Hidden";
-import React from "react";
+import React, {useState} from "react";
 import {useAppContext} from "../context/AppContext";
 import {makeStyles} from "@material-ui/styles";
 import {spacing} from "../theme/theme";
@@ -18,6 +18,17 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "space-between"
     },
+    mobileSideBar: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        height: "50%",
+        padding: spacing.l,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        zIndex: 100
+    },
 }));
 
 export const HomeSideBar = () => {
@@ -25,10 +36,28 @@ export const HomeSideBar = () => {
     const {t} = useTranslation();
     const classes = useStyles();
 
+    const [showMobileIntro, setShowMobileIntro] = useState(true);
+
+    function toggleShowMobileIntro() {
+        setShowMobileIntro(false);
+    }
+
     return (
         <>
             <Hidden smUp implementation={"js"} >
-                <MobileStartNow amount={places.length} />
+                {(showMobileIntro) &&
+                    <Paper className={classes.mobileSideBar} elevation={1}>
+                        <header style={{flexGrow: 1}}>
+                            <h1>{t('home.welcome.headline')}</h1>
+                            <h3>{t('home.welcome.subline')}</h3>
+                            <h3><b>1/</b> {t('home.welcome.step1')}</h3>
+                            <h3><b>2/</b> {t('home.welcome.step2')}</h3>
+                        </header>
+                        <Button onClick={toggleShowMobileIntro}>Loslegen</Button>
+                    </Paper>
+                } : {
+                    <MobileStartNow amount={places.length} />
+                }
             </Hidden>
             <Hidden smDown implementation="js">
                 <Paper className={classes.sideBar} elevation={1}>
@@ -37,7 +66,6 @@ export const HomeSideBar = () => {
                         <h3>{t('home.welcome.subline')}</h3>
                         <h3><b>1/</b> {t('home.welcome.step1')}</h3>
                         <h3><b>2/</b> {t('home.welcome.step2')}</h3>
-                        <h3><b>3/</b> {t('home.welcome.step3')}</h3>
                     </header>
                     {places.length > 0 ? <CompanyList /> : <LastFive />}
                     <StartNow amount={places.length} />

@@ -5,10 +5,9 @@
   "home": {
     "welcome": {
       "headline": "Hallo UnterstützerIn!",
-      "subline": "Gemeinsam unterstützen wir mit CoFund.de in der Corona Krise Unternehmen schnell und einfach:",
-      "step1": "Unternehmen auf der Karte wählen",
-      "step2": "Betrag festlegen",
-      "step3": "Mit PayPal spenden",
+      "subline": "Gemeinsam mit Cofund Unternehmen unterstützen:",
+      "step1": "Unternehmen auf der Karte auswählen",
+      "step2": "Betrag festlegen & unterstützen",
       "benext": "Schau dir hier die letzten Unterstützungen an und sei du der nächste!"
     },
     "warning": {
@@ -27,7 +26,7 @@
     }
   },
   "search": {
-    "address": "Suche nach einer Adresse..."
+    "address": "Suche nach Namen oder Adresse..."
   },
   "faq": {
     "who": {

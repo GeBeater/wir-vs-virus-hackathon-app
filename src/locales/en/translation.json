@@ -5,10 +5,9 @@
   "home": {
     "welcome": {
       "headline": "Hello supporter!",
-      "subline": "Together with CoFund.de we support companies in the Corona crisis quickly and easily:",
+      "subline": "Support companies together with Cofund:",
       "step1": "Select company on the map",
-      "step2": "Set amount",
-      "step3": "Donate with PayPal",
+      "step2": "Choose amount & support",
       "benext": "Check out the last supports here and be the next one!"
     },
     "warning": {
@@ -27,7 +26,7 @@
     }
   },
   "search": {
-    "address": "Search for an address"
+    "address": "Search for name or address..."
   },
   "faq": {
     "who": {

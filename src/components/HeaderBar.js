@@ -5,8 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {colors, spacing} from "../theme/theme";
-import {Button} from "@material-ui/core";
-import Help from "../assets/help-icon.svg";
+import {Button, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Imprint} from "../pages/Imprint";
 import {Privacy} from "../pages/Privacy";
@@ -24,6 +23,11 @@ const useStyles = makeStyles(theme => ({
     toolBar: {
         backgroundColor: colors.grayA05,
         justifyContent: 'space-between'
+    },
+    logoName: {
+        margin: '10px',
+        color: colors.purpleA80,
+        fontWeight: 600
     },
     buttonGroup: {
         display: 'flex'
@@ -44,10 +48,14 @@ const useStyles = makeStyles(theme => ({
         fontWeight: '600'
     },
     mobileMenuIcon: {
-        color: colors.black
+        color: colors.black,
+        cursor: 'pointer'
     },
     drawerPaper: {
         width: 'calc(100% - 70px)'
+    },
+    pointer: {
+        cursor: 'pointer'
     }
 }));
 
@@ -66,20 +74,20 @@ export const HeaderBar = () => {
     const [faqOpen, setFaqOpen] = React.useState(false);
     const [imprintOpen, setImprintOpen] = React.useState(false);
     const [privacyOpen, setPrivacyOpen] = React.useState(false);
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
     const toggleFaqOpen = () => {
-        setMobileOpen(false);
+        setMobileMenuOpen(false);
         setFaqOpen(!faqOpen);
     };
     const toggleImprintOpen = () => {
-        setMobileOpen(false);
+        setMobileMenuOpen(false);
         setImprintOpen(!imprintOpen);
     };
     const togglePrivacyOpen = () => {
-        setMobileOpen(false);
+        setMobileMenuOpen(false);
         setPrivacyOpen(!privacyOpen);
     };
-    const toggleMobileOpen = () => setMobileOpen(!mobileOpen);
+    const toggleMobileOpen = () => setMobileMenuOpen(!mobileMenuOpen);
 
     return (
         <AppBar position="static" className={classes.appBar}>
@@ -88,6 +96,9 @@ export const HeaderBar = () => {
                     <Link to={'/'} >
                         <img src={Logo} style={{width: 40, height: 40}} alt="CoFund Logo" />
                     </Link>
+                    <Typography component="h1" className={classes.logoName}>
+                        Cofund
+                    </Typography>
                 </div>
                 <div className={classes.buttonGroup}>
                     {/* mobile burger icon */}
@@ -96,9 +107,9 @@ export const HeaderBar = () => {
                     </Hidden>
                     {/* desktop nav items */}
                     <Hidden xsDown implementation="js">
-                        <HeaderBarItem text={'FAQ'} icon={Help} handleClick={toggleFaqOpen} />
-                        <HeaderBarItem text={'Impressum'} handleClick={toggleImprintOpen} />
+                        <HeaderBarItem text={'Das Projekt'} handleClick={toggleFaqOpen} />
                         <HeaderBarItem text={'Datenschutz'} handleClick={togglePrivacyOpen} />
+                        <HeaderBarItem text={'Impressum'} handleClick={toggleImprintOpen} />
                     </Hidden>
                 </div>
             </Toolbar>
@@ -106,7 +117,7 @@ export const HeaderBar = () => {
             <Drawer
                 variant="temporary"
                 anchor={'right'}
-                open={mobileOpen}
+                open={mobileMenuOpen}
                 onClose={toggleMobileOpen}
                 classes={{
                     paper: classes.drawerPaper,
@@ -115,15 +126,15 @@ export const HeaderBar = () => {
                     keepMounted: true, // Better open performance on mobile.
                 }}
             >
-                <List>
+                <List className={classes.pointer}>
                     <ListItem key={'faq'} onClick={toggleFaqOpen}>
-                        <ListItemText primary={'FAQ'} />
-                    </ListItem>
-                    <ListItem key={'Impressum'} onClick={toggleImprintOpen}>
-                        <ListItemText primary={'Impressum'} />
+                        <ListItemText primary={'Das Projekt'} />
                     </ListItem>
                     <ListItem key={'Datenschutz'} onClick={togglePrivacyOpen}>
                         <ListItemText primary={'Datenschutz'} />
+                    </ListItem>
+                    <ListItem key={'Impressum'} onClick={toggleImprintOpen}>
+                        <ListItemText primary={'Impressum'} />
                     </ListItem>
                 </List>
             </Drawer>

@@ -6,10 +6,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import {useTranslation} from 'react-i18next';
 import Typography from "@material-ui/core/Typography";
+import {spacing} from "../theme/theme";
+import MenuIcon from "@material-ui/icons/Menu";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles(theme => ({
     faqItem: {
         marginBottom: theme.spacing(2)
+    },
+    disableOverflow: {
+        overflow: 'hidden',
+        padding: spacing.l
     }
 }));
 
@@ -27,11 +34,12 @@ const FaqItem = ({headline, text}) => {
 
 export const FAQ = ({open, handleClose}) => {
     const {t} = useTranslation();
+    const classes = useStyles();
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} maxWidth={'md'}>
-            <DialogContent dividers>
-                <b>FAQ</b>
+            <DialogContent dividers className={classes.disableOverflow}>
+                <b>Das Projekt</b>
             </DialogContent>
             <DialogContent dividers>
                 <FaqItem headline={t('faq.who.headline')} text={t('faq.who.text')} />
