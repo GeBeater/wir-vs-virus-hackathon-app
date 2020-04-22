@@ -1,5 +1,4 @@
 import {Button, Grid, TextField, Typography} from '@material-ui/core';
-import DropIn from "braintree-web-drop-in-react";
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {UPDATE_PLACES, useAppContext} from "../context/AppContext";
@@ -9,8 +8,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import Google from "../assets/google.png";
 import {colors, spacing} from "../theme/theme";
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useHistory, Link } from 'react-router-dom';
 import {HeaderBar} from "../components/HeaderBar";
+import {Link} from 'react-router-dom';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,34 +38,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Checkout() {
-    const [token, setToken] = useState(null);
-    const [instance, setInstance] = useState(null);
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(0);
-    const [brainTreeReady, setBrainTreeReady] = useState(false);
     const [paying, setPaying] = useState(false);
     const [isPayBtnEnabled, setIsPayBtnEnabled] = useState(false);
-    const history = useHistory();
-
     const [{places}, dispatch] = useAppContext();
-
     const classes = useStyles();
-
-    useEffect(() => {
-        fetch("/api/payment/token", {method: 'POST'}).then(resp => {
-            return resp.json();
-        }).then(json => {
-            setToken(json.token);
-        });
-
-    }, []);
-
-    useEffect(() => {
-        if (instance != null) {
-            instance.on('paymentMethodRequestable', () => setBrainTreeReady(true))
-            instance.on('noPaymentMethodRequestable', () => setBrainTreeReady(false))
-        }
-    }, [instance]);
 
     useEffect(() => {
         let amount = 0;
@@ -81,20 +59,19 @@ export default function Checkout() {
     function startPayment(event) {
         event.preventDefault();
         setStep(2)
+        requestPayoutLink();
     }
 
-    async function pay() {
-        setPaying(true)
-        const {nonce} = await instance.requestPaymentMethod();
+    async function requestPayoutLink() {
+        setPaying(true);
         const placeAmounts = places.reduce((acc, place) => {
             return {...acc, [place.details.place_id]: place.amount}
         }, {});
         const data = {
-            nonce,
             amount: amount,
             placeIdAmounts: placeAmounts,
             places
-        }
+        };
         fetch('/api/payment/checkout', {
             method: "POST",
             headers: {
@@ -102,10 +79,16 @@ export default function Checkout() {
             },
             body: JSON.stringify(data)
         }).then(response => {
-            if (response.status === 200) {
-                history.push('/success');
-            }
-        })
+            return response.json()
+        }).then(checkoutResponse => {
+            Object.defineProperty(window.location, 'href', {
+                writable: true,
+                value: checkoutResponse.redirectUrl
+            });
+            setPaying(false);
+        }).catch((error) => {
+            setPaying(false);
+        });
     }
 
     const handleDistributeAmount = (evt) => {
@@ -125,7 +108,7 @@ export default function Checkout() {
         <>
             <HeaderBar />
             <Wrapper>
-            <ConatinerWrapper>
+            <ContainerWrapper>
                 <TitleContainer>
                     <Button component={Link} to="/">
                         <img src={Back} style={{width: 20, height: 20, marginRight: '8px'}} alt="Back Icon" />
@@ -134,14 +117,14 @@ export default function Checkout() {
                     <header style={{gridArea: "header", textAlign: "left", marginBottom: "40px", color: '#3E4650'}}>
                         <Typography component="h1" variant="h4">
                             Klasse!
-                            </Typography>
+                        </Typography>
                         <Typography component="h1" variant="h4" style={{color: '#3E4650'}}>
                             Sag uns noch mit wie viel du unterstützen möchtest
-                            </Typography>
+                        </Typography>
                     </header>
                 </TitleContainer>
-            </ConatinerWrapper>
-            <ConatinerWrapper>
+            </ContainerWrapper>
+            <ContainerWrapper>
                 <Container>
                     {step === 1 ?
                         <Panel style={{width: "100%", gridArea: "left", padding: '0'}}>
@@ -172,33 +155,15 @@ export default function Checkout() {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    disabled={!isPayBtnEnabled}
+                                    disabled={!isPayBtnEnabled || (paying || places.length === 0 || !(amount > 0))}
                                     className={classes.submitBtn}
                                 >
-                                    Weiter
+                                    Bezahlen
                                 </Button>
                             </form>
                         </Panel>
                         :
-                        <Panel style={{width: "100%", gridArea: "right", padding: '20px 0'}}>
-                            {token && amount && <DropIn
-                                options={{
-                                    authorization: token,
-                                    locale: 'de_DE'
-                                }}
-                                onInstance={setInstance}
-                            />
-                            }
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                onClick={pay}
-                                disabled={(paying || !brainTreeReady || places.length === 0 || !(amount > 0))}
-                            >
-                                Bezahlen
-                            </Button>
-                        </Panel>
+                        <CircularProgress/>
                     }
                 </Container>
                 <Container step={step}>
@@ -207,10 +172,10 @@ export default function Checkout() {
                         <h3><b>1/</b> Wir sammeln die Beträge von dir und anderen die den Betrieb unterstützen möchten und verwalten diese Beträge treuhänderisch.</h3>
                         <h3><b>2/</b> Mit deiner Spende wird vollautomatisch ein Brief verschickt, der die UnternehmerIn über die Unterstützung informiert. </h3>
                         <h3><b>3/</b> Die UnternehmerIn besucht CoFund.de und kann die Unterstützung abrufen. Schnell, einfach, transparent und ohne Gebühren oder Verpflichtungen. </h3>
-                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach folgende Mastercard Nummer und ein Ablaufdatum in der Zukunft: 5555555555554444</h3>
+                        <h3><b>Derzeit laufen wir noch im Testbetrieb</b><br/>Um unsere Platform zu testen verwende einfach die Visa Nummer 4444333322221111 als Ablaufdatum 03/30 und Code 737</h3>
                     </div>
                 </Container>
-            </ConatinerWrapper>
+            </ContainerWrapper>
             <img src={Google} style={{position: "absolute", bottom: 10, left: 10}}></img>
         </Wrapper>
         </>
@@ -222,7 +187,7 @@ const Panel = styled.div`
     padding: 20px;
 `
 
-const ConatinerWrapper = styled.div`
+const ContainerWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
